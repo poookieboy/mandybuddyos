@@ -1,0 +1,12 @@
+
+#ifndef MANDYS_BUDDY_CLOCK_H
+#define MANDYS_BUDDY_CLOCK_H
+
+#include <Arduino.h>
+
+void initializeClock();
+String getCurrentTime();
+String getCurrentDate();
+void displayClock();
+
+#endif
