@@ -1,0 +1,55 @@
+
+#include "face.h"
+
+static BuddyMood currentMood = HAPPY;
+static unsigned long lastUpdate = 0;
+static bool blinkState = false;
+
+void initializeFace() {
+    currentMood = HAPPY;
+    lastUpdate = millis();
+
+    Serial.println("Buddy face initialized.");
+    Serial.println("Mood: HAPPY");
+}
+
+void updateFace() {
+    unsigned long now = millis();
+
+    if (now - lastUpdate >= 3000) {
+        lastUpdate = now;
+        blinkState = !blinkState;
+
+        Serial.print("Buddy face: ");
+
+        switch (currentMood) {
+            case HAPPY:
+                Serial.println(blinkState ? "^_^" : "• •");
+                break;
+
+            case SLEEPY:
+                Serial.println("-_-");
+                break;
+
+            case EXCITED:
+                Serial.println("\\(^o^)/");
+                break;
+
+            case THINKING:
+                Serial.println("o_O");
+                break;
+
+            case NEUTRAL:
+                Serial.println(":|");
+                break;
+        }
+    }
+}
+
+void setMood(BuddyMood mood) {
+    currentMood = mood;
+}
+
+BuddyMood getMood() {
+    return currentMood;
+}
