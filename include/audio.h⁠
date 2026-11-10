@@ -1,0 +1,13 @@
+
+#ifndef MANDYS_BUDDY_AUDIO_H
+#define MANDYS_BUDDY_AUDIO_H
+
+#include <Arduino.h>
+
+void initializeAudio();
+void playNotification();
+void playSound(int frequency, int duration);
+void setVolume(int volume);
+void stopAudio();
+
+#endif
