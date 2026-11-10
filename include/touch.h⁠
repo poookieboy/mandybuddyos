@@ -1,0 +1,19 @@
+
+#ifndef MANDYS_BUDDY_TOUCH_H
+#define MANDYS_BUDDY_TOUCH_H
+
+#include <Arduino.h>
+
+struct TouchPoint {
+    int x;
+    int y;
+    bool pressed;
+};
+
+void initializeTouch();
+void updateTouch();
+bool isTouchPressed();
+TouchPoint getTouchPoint();
+void calibrateTouch();
+
+#endif
