@@ -1,0 +1,28 @@
+
+#include "touch.h"
+
+static TouchPoint currentTouch = {0, 0, false};
+
+void initializeTouch() {
+    currentTouch = {0, 0, false};
+    Serial.println("Touch system initialized.");
+    Serial.println("Hardware driver will be configured later.");
+}
+
+void updateTouch() {
+    // Actual touch reading will be added
+    // after the touchscreen pin configuration
+    // is confirmed.
+}
+
+bool isTouchPressed() {
+    return currentTouch.pressed;
+}
+
+TouchPoint getTouchPoint() {
+    return currentTouch;
+}
+
+void calibrateTouch() {
+    Serial.println("Touch calibration pending.");
+}
