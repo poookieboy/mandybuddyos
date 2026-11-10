@@ -1,0 +1,40 @@
+
+#include "settings.h"
+
+static BuddySettings settings = {
+    80,
+    50,
+    false,
+    true
+};
+
+void loadSettings() {
+    Serial.println("Loading settings...");
+}
+
+void saveSettings() {
+    Serial.println("Settings saved.");
+}
+
+void showSettings() {
+    Serial.println();
+    Serial.println("======= SETTINGS =======");
+
+    Serial.print("Brightness: ");
+    Serial.println(settings.brightness);
+
+    Serial.print("Volume: ");
+    Serial.println(settings.volume);
+
+    Serial.print("Wi-Fi: ");
+    Serial.println(settings.wifiEnabled ? "ON" : "OFF");
+
+    Serial.print("Sound: ");
+    Serial.println(settings.soundEnabled ? "ON" : "OFF");
+
+    Serial.println("========================");
+}
+
+BuddySettings getSettings() {
+    return settings;
+}
