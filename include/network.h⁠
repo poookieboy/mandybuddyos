@@ -1,0 +1,12 @@
+
+#ifndef MANDYS_BUDDY_NETWORK_H
+#define MANDYS_BUDDY_NETWORK_H
+
+#include <Arduino.h>
+
+void connectWiFi();
+void disconnectWiFi();
+bool isWiFiConnected();
+void checkNetworkStatus();
+
+#endif
