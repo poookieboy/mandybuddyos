@@ -1,0 +1,26 @@
+
+#include "network.h"
+#include <WiFi.h>
+
+void connectWiFi() {
+    Serial.println("Wi-Fi connection requested.");
+
+    // Wi-Fi credentials will be configured securely later.
+}
+
+void disconnectWiFi() {
+    WiFi.disconnect();
+    Serial.println("Wi-Fi disconnected.");
+}
+
+bool isWiFiConnected() {
+    return WiFi.status() == WL_CONNECTED;
+}
+
+void checkNetworkStatus() {
+    if (isWiFiConnected()) {
+        Serial.println("Network: Connected");
+    } else {
+        Serial.println("Network: Offline");
+    }
+}
