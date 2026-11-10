@@ -1,0 +1,66 @@
+
+#include "reminders.h"
+
+#define MAX_REMINDERS 30
+
+static BuddyReminder reminders[MAX_REMINDERS];
+static int reminderCount = 0;
+
+void initializeReminders() {
+    reminderCount = 0;
+    Serial.println("Reminders initialized.");
+}
+
+void addReminder(
+    String title,
+    String description,
+    String date,
+    String time
+) {
+    if (reminderCount >= MAX_REMINDERS) {
+        Serial.println("Reminder storage full.");
+        return;
+    }
+
+    BuddyReminder& item = reminders[reminderCount];
+
+    item.title = title;
+    item.description = description;
+    item.date = date;
+    item.time = time;
+    item.completed = false;
+
+    reminderCount++;
+
+    Serial.println("Reminder added.");
+}
+
+void showReminders() {
+    Serial.println("======= REMINDERS =======");
+
+    for (int i = 0; i < reminderCount; i++) {
+        Serial.println(reminders[i].title);
+        Serial.println(reminders[i].description);
+        Serial.println(reminders[i].date);
+        Serial.println(reminders[i].time);
+
+        Serial.println(
+            reminders[i].completed ? "Completed" : "Pending"
+        );
+
+        Serial.println("-------------------------");
+    }
+}
+
+void completeReminder(int index) {
+    if (index < 0 || index >= reminderCount) {
+        return;
+    }
+
+    reminders[index].completed = true;
+    Serial.println("Reminder completed.");
+}
+
+int getReminderCount() {
+    return reminderCount;
+}
