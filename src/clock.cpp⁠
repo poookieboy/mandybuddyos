@@ -1,0 +1,72 @@
+
+#include "clock.h"
+#include <Wire.h>
+#include <RTClib.h>
+
+static RTC_DS3231 rtc;
+static bool clockReady = false;
+
+void initializeClock() {
+    Wire.begin();
+
+    if (!rtc.begin()) {
+        Serial.println("RTC module not detected.");
+        clockReady = false;
+        return;
+    }
+
+    if (rtc.lostPower()) {
+        Serial.println("RTC needs its time set.");
+    }
+
+    clockReady = true;
+    Serial.println("RTC clock initialized.");
+}
+
+String getCurrentTime() {
+    if (!clockReady) {
+        return "Time unavailable";
+    }
+
+    DateTime now = rtc.now();
+
+    char buffer[9];
+    snprintf(
+        buffer,
+        sizeof(buffer),
+        "%02d:%02d:%02d",
+        now.hour(),
+        now.minute(),
+        now.second()
+    );
+
+    return String(buffer);
+}
+
+String getCurrentDate() {
+    if (!clockReady) {
+        return "Date unavailable";
+    }
+
+    DateTime now = rtc.now();
+
+    char buffer[11];
+    snprintf(
+        buffer,
+        sizeof(buffer),
+        "%04d-%02d-%02d",
+        now.year(),
+        now.month(),
+        now.day()
+    );
+
+    return String(buffer);
+}
+
+void displayClock() {
+    Serial.print("Time: ");
+    Serial.println(getCurrentTime());
+
+    Serial.print("Date: ");
+    Serial.println(getCurrentDate());
+}
