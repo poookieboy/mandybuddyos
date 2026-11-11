@@ -1,0 +1,17 @@
+
+#ifndef MANDYS_BUDDY_APP_H
+#define MANDYS_BUDDY_APP_H
+
+#include <Arduino.h>
+
+void initializeApp();
+
+void updateApp();
+
+void shutdownApp();
+
+bool isAppReady();
+
+String getAppVersion();
+
+#endif
