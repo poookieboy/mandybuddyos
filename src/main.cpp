@@ -1,10 +1,9 @@
 
 #include <Arduino.h>
-#include "app.h"
+#include "../include/app.h"
 
 void setup() {
     Serial.begin(115200);
-
     delay(500);
 
     Serial.println();
@@ -15,6 +14,5 @@ void setup() {
 
 void loop() {
     updateApp();
-
     delay(10);
 }
