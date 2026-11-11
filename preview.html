@@ -9,1075 +9,864 @@
 
 <style>
 :root {
-  --bg: #f5f7fa;
-  --surface: #ffffff;
-  --surface2: #f0f3f7;
-  --surface3: #e8edf4;
-  --text: #202b3b;
-  --muted: #758195;
-  --blue: #347fe5;
-  --blue-light: #e8f1ff;
-  --border: #e4e9f0;
-  --face: #172438;
-  --face-eye: #8ed6ff;
-  --shadow: 0 12px 35px rgba(31,48,75,.10);
+  --bg:#f4f6f9;
+  --surface:#fff;
+  --surface2:#f0f3f7;
+  --text:#202b3b;
+  --muted:#788598;
+  --blue:#347fe5;
+  --blue-light:#eaf2ff;
+  --border:#e3e8ef;
+  --face:#172438;
+  --eye:#8ed6ff;
 }
 
-* { box-sizing: border-box; }
+* {box-sizing:border-box}
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background:
-    radial-gradient(circle at 15% 15%, #e7f1ff, transparent 35%),
-    #eef1f5;
-  font-family: Inter, system-ui, -apple-system, sans-serif;
-  color: var(--text);
+  margin:0;
+  min-height:100vh;
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at 15% 15%,#e5efff,transparent 35%),#edf0f5;
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
 }
 
-button, input, textarea { font: inherit; }
-button { cursor: pointer; }
+button,input,textarea {font:inherit}
+button {cursor:pointer}
 
 .device {
-  width: min(900px, 100%);
-  padding: 15px;
-  border-radius: 34px;
-  background: linear-gradient(145deg,#fff,#e9edf2);
-  box-shadow: 0 25px 70px rgba(27,43,66,.17);
-  border: 1px solid #fff;
+  width:min(900px,100%);
+  padding:14px;
+  border-radius:32px;
+  background:linear-gradient(145deg,#fff,#e9edf2);
+  border:1px solid #fff;
+  box-shadow:0 25px 70px rgba(27,43,66,.17);
 }
 
 .bezel {
-  padding: 9px;
-  border-radius: 25px;
-  background: #182334;
+  padding:9px;
+  border-radius:24px;
+  background:#182334;
 }
 
 .screen {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  min-height: 390px;
-  max-height: 650px;
-  overflow: hidden;
-  border-radius: 17px;
-  background: var(--bg);
-  display: flex;
-  flex-direction: column;
+  position:relative;
+  width:100%;
+  aspect-ratio:4/3;
+  min-height:390px;
+  max-height:650px;
+  overflow:hidden;
+  border-radius:16px;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
 }
 
+/* SVG ICON SYSTEM */
+
+svg.icon {
+  width:21px;
+  height:21px;
+  display:block;
+  flex-shrink:0;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.icon-box {
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0;
+  border-radius:14px;
+  color:var(--blue);
+  background:var(--blue-light);
+}
+
+.icon-box svg {width:23px;height:23px}
+
 .status {
-  height: 37px;
-  flex-shrink: 0;
-  padding: 0 17px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--muted);
-  font-size: 11px;
-  font-weight: 650;
-  border-bottom: 1px solid var(--border);
-  background: rgba(255,255,255,.85);
+  height:37px;
+  flex-shrink:0;
+  padding:0 17px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+  background:rgba(255,255,255,.9);
+  border-bottom:1px solid var(--border);
 }
 
 .status-right {
-  display: flex;
-  gap: 9px;
-  align-items: center;
+  display:flex;
+  gap:9px;
+  align-items:center;
 }
 
 .dot {
-  height: 7px;
-  width: 7px;
-  border-radius: 50%;
-  background: #36bd85;
-  display: inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#36bd85;
 }
 
 .content {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding: 17px;
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  padding:17px;
+  scrollbar-width:thin;
 }
 
-.page { display: none; }
-.page.active { display: block; }
+.page {display:none}
+.page.active {display:block}
 
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
 }
 
 .brand {
-  font-size: 17px;
-  font-weight: 800;
-  letter-spacing: -.6px;
+  font-size:17px;
+  font-weight:850;
+  letter-spacing:-.6px;
 }
 
-.brand span { color: var(--blue); }
+.brand span {color:var(--blue)}
 
 .small-muted {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 3px;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
 }
 
 .avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: var(--blue-light);
-  color: var(--blue);
-  font-weight: 800;
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:var(--blue-light);
+  color:var(--blue);
+  font-weight:800;
 }
 
 .face-card {
-  background: linear-gradient(140deg,#1c2c43,#101b2b);
-  border-radius: 20px;
-  min-height: 175px;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 8px 22px rgba(20,36,58,.16);
+  min-height:175px;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  border-radius:20px;
+  color:white;
+  background:linear-gradient(140deg,#1c2c43,#101b2b);
+  box-shadow:0 8px 22px rgba(20,36,58,.16);
 }
 
 .face-card:before {
-  content: "";
-  position: absolute;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: rgba(80,157,230,.10);
-  top: -110px;
-  right: -35px;
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  top:-110px;
+  right:-35px;
+  border-radius:50%;
+  background:rgba(80,157,230,.10);
 }
 
 .face {
-  display: flex;
-  gap: 23px;
-  align-items: center;
-  justify-content: center;
-  height: 75px;
-  position: relative;
+  height:75px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:23px;
+  position:relative;
 }
 
 .eye {
-  width: 25px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--face-eye);
-  box-shadow: 0 0 17px rgba(111,204,255,.55);
-  animation: blink 5s infinite;
+  width:25px;
+  height:34px;
+  border-radius:50%;
+  background:var(--eye);
+  box-shadow:0 0 17px rgba(111,204,255,.55);
+  animation:blink 5s infinite;
 }
 
-.eye:nth-child(2) { animation-delay: .12s; }
+.eye:nth-child(2) {animation-delay:.12s}
 
 @keyframes blink {
-  0%, 44%, 48%, 100% { transform: scaleY(1); }
-  46% { transform: scaleY(.08); }
+  0%,44%,48%,100% {transform:scaleY(1)}
+  46% {transform:scaleY(.08)}
 }
 
-.face.sleepy .eye { height: 9px; }
-.face.happy .eye { height: 19px; }
-.face.surprised .eye { height: 40px; }
+.face.sleepy .eye {height:9px}
+.face.happy .eye {height:19px}
+.face.surprised .eye {height:40px}
 
 .face-caption {
-  font-size: 12px;
-  color: #c9d9ec;
-  margin-top: 4px;
+  margin-top:4px;
+  color:#c9d9ec;
+  font-size:12px;
 }
 
 .greeting {
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: -.7px;
-  margin-top: 12px;
+  margin-top:12px;
+  font-size:20px;
+  font-weight:850;
+  letter-spacing:-.7px;
 }
 
 .sub-greeting {
-  color: #bdcde0;
-  font-size: 11px;
-  margin-top: 4px;
+  margin-top:4px;
+  color:#bdcde0;
+  font-size:11px;
 }
 
 .clock {
-  font-size: 12px;
-  color: #dce8f6;
-  margin-top: 9px;
+  margin-top:9px;
+  color:#dce8f6;
+  font-size:12px;
 }
 
 .section-title {
-  font-size: 14px;
-  font-weight: 800;
-  margin: 18px 0 10px;
+  margin:18px 0 10px;
+  font-size:14px;
+  font-weight:800;
 }
 
 .quick-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 9px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
 }
 
 .quick {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 12px 8px;
-  text-align: center;
-  min-width: 0;
-  transition: .2s;
+  padding:12px 8px;
+  min-width:0;
+  text-align:center;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--surface);
+  transition:.18s;
 }
 
-.quick:active { transform: scale(.97); }
-
-.quick-icon {
-  width: 35px;
-  height: 35px;
-  border-radius: 12px;
-  background: var(--blue-light);
-  color: var(--blue);
-  display: grid;
-  place-items: center;
-  margin: auto auto 7px;
-  font-size: 17px;
+.quick:active,.app-tile:active {
+  transform:scale(.97);
+  background:#f0f5fc;
 }
 
-.quick b { font-size: 11px; }
+.quick .icon-box {
+  width:36px;
+  height:36px;
+  margin:0 auto 7px;
+}
+
+.quick b {font-size:11px}
 
 .quick small {
-  display: block;
-  color: var(--muted);
-  font-size: 9px;
-  margin-top: 3px;
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:9px;
 }
 
 .nav {
-  flex-shrink: 0;
-  height: 53px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  border-top: 1px solid var(--border);
-  background: #fff;
+  height:56px;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  border-top:1px solid var(--border);
+  background:#fff;
 }
 
 .nav button {
-  border: 0;
-  background: transparent;
-  color: #8994a4;
-  font-size: 10px;
-  font-weight: 650;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
+  min-width:48px;
+  padding:5px 4px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  border:0;
+  background:transparent;
+  color:#8994a4;
+  font-size:10px;
+  font-weight:650;
 }
 
-.nav button span { font-size: 17px; }
-.nav button.active { color: var(--blue); }
+.nav button svg {
+  width:19px;
+  height:19px;
+}
+
+.nav button.active {color:var(--blue)}
 
 .page-title {
-  font-size: 20px;
-  font-weight: 850;
-  letter-spacing: -.6px;
-  margin: 0 0 5px;
+  margin:0 0 5px;
+  font-size:20px;
+  font-weight:850;
+  letter-spacing:-.6px;
 }
 
 .page-description {
-  font-size: 11px;
-  color: var(--muted);
-  margin-bottom: 17px;
+  margin-bottom:17px;
+  color:var(--muted);
+  font-size:11px;
 }
 
 .panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 13px;
-  margin-bottom: 10px;
+  padding:13px;
+  margin-bottom:10px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:var(--surface);
 }
 
-input, textarea {
-  width: 100%;
-  border: 1px solid var(--border);
-  background: #f8fafc;
-  color: var(--text);
-  padding: 10px 11px;
-  border-radius: 10px;
-  outline: none;
-  font-size: 12px;
-  margin-bottom: 8px;
+input,textarea {
+  width:100%;
+  padding:10px 11px;
+  margin-bottom:8px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  outline:none;
+  background:#f8fafc;
+  color:var(--text);
+  font-size:12px;
 }
 
-input:focus, textarea:focus {
-  border-color: #82b5f4;
-  box-shadow: 0 0 0 3px #e8f1ff;
+input:focus,textarea:focus {
+  border-color:#82b5f4;
+  box-shadow:0 0 0 3px #e8f1ff;
 }
 
-textarea { resize: vertical; min-height: 65px; }
+textarea {min-height:65px;resize:vertical}
+
+.primary,.secondary {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
 
 .primary {
-  border: 0;
-  border-radius: 10px;
-  background: var(--blue);
-  color: white;
-  padding: 10px 14px;
-  font-size: 11px;
-  font-weight: 750;
+  padding:10px 14px;
+  border:0;
+  border-radius:10px;
+  background:var(--blue);
+  color:white;
+  font-size:11px;
+  font-weight:750;
 }
 
 .secondary {
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--surface2);
-  color: var(--text);
-  padding: 7px 10px;
-  font-size: 10px;
-  font-weight: 650;
+  padding:8px 10px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:var(--surface2);
+  color:var(--text);
+  font-size:10px;
+  font-weight:650;
+}
+
+.secondary svg,.primary svg {
+  width:15px;
+  height:15px;
 }
 
 .item {
-  padding: 11px 0;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
+  padding:11px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
 }
 
-.item:last-child { border-bottom: 0; }
+.item:last-child {border-bottom:0}
 
 .item small {
-  display: block;
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 4px;
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
 }
 
-.item-actions { display: flex; gap: 5px; }
+.item-actions {
+  display:flex;
+  gap:5px;
+  flex-shrink:0;
+}
 
 .apps-grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 10px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
 }
 
 .app-tile {
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  min-height: 82px;
-  padding: 10px 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  color: var(--text);
-  font-size: 11px;
-  font-weight: 700;
+  min-height:88px;
+  padding:10px 5px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:white;
+  color:var(--text);
+  font-size:11px;
+  font-weight:700;
+  transition:.18s;
 }
 
-.app-tile .quick-icon { margin: 0; }
+.app-tile .icon-box {
+  width:40px;
+  height:40px;
+}
+
+.app-tile .icon-box svg {
+  width:22px;
+  height:22px;
+}
 
 .setting-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 12px;
+  padding:12px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
 }
 
-.setting-row:last-child { border: 0; }
+.setting-row:last-child {border:0}
 
 .toggle {
-  accent-color: var(--blue);
-  width: 17px;
-  height: 17px;
-  margin: 0;
+  width:17px;
+  height:17px;
+  margin:0;
+  accent-color:var(--blue);
 }
 
 .empty {
-  text-align: center;
-  padding: 22px 10px;
-  color: var(--muted);
-  font-size: 11px;
+  padding:22px 10px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
 }
 
 .toast {
-  position: absolute;
-  bottom: 62px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #203047;
-  color: white;
-  border-radius: 20px;
-  padding: 9px 14px;
-  font-size: 11px;
-  opacity: 0;
-  pointer-events: none;
-  transition: .2s;
-  z-index: 5;
-  white-space: nowrap;
+  position:absolute;
+  z-index:5;
+  bottom:65px;
+  left:50%;
+  padding:9px 14px;
+  transform:translateX(-50%);
+  border-radius:20px;
+  background:#203047;
+  color:white;
+  font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  white-space:nowrap;
 }
 
-.toast.show { opacity: 1; }
+.toast.show {opacity:1}
 
 @media(max-width:550px) {
-  body { padding: 7px; align-items: center; }
-  .device { padding: 7px; border-radius: 22px; }
-  .bezel { padding: 5px; border-radius: 17px; }
-  .screen { min-height: 0; aspect-ratio: 4/3; border-radius: 12px; }
-  .status { height: 27px; padding: 0 10px; font-size: 9px; }
-  .content { padding: 11px; }
-  .face-card { min-height: 145px; border-radius: 15px; }
-  .face { height: 60px; }
-  .eye { width: 20px; height: 28px; }
-  .greeting { font-size: 16px; margin-top: 8px; }
-  .nav { height: 43px; }
-  .nav button { font-size: 8px; }
-  .nav button span { font-size: 14px; }
-  .quick-grid { gap: 6px; }
-  .quick { padding: 8px 3px; }
-  .quick-icon { width: 29px; height: 29px; }
-  .quick b { font-size: 9px; }
-  .quick small { font-size: 8px; }
-  .apps-grid { gap: 6px; }
-  .app-tile { min-height: 68px; font-size: 9px; }
-  .page-title { font-size: 17px; }
-  .section-title { font-size: 12px; }
+  body {padding:7px}
+  .device {padding:7px;border-radius:22px}
+  .bezel {padding:5px;border-radius:17px}
+  .screen {min-height:0;aspect-ratio:4/3;border-radius:12px}
+  .status {height:27px;padding:0 10px;font-size:9px}
+  .content {padding:11px}
+  .face-card {min-height:145px;border-radius:15px}
+  .face {height:60px}
+  .eye {width:20px;height:28px}
+  .greeting {margin-top:8px;font-size:16px}
+  .nav {height:46px}
+  .nav button {font-size:8px}
+  .nav button svg {width:17px;height:17px}
+  .quick-grid {gap:6px}
+  .quick {padding:8px 3px}
+  .quick .icon-box {width:30px;height:30px}
+  .quick .icon-box svg {width:19px;height:19px}
+  .quick b {font-size:9px}
+  .quick small {font-size:8px}
+  .apps-grid {gap:6px}
+  .app-tile {min-height:72px;font-size:9px}
+  .app-tile .icon-box {width:34px;height:34px}
+  .app-tile .icon-box svg {width:20px;height:20px}
+  .page-title {font-size:17px}
+  .section-title {font-size:12px}
 }
 </style>
 </head>
 
 <body>
+
+<!-- ICON DEFINITIONS -->
+<svg xmlns="http://www.w3.org/2000/svg"
+     style="position:absolute;width:0;height:0;overflow:hidden"
+     aria-hidden="true">
+
+  <symbol id="i-home" viewBox="0 0 24 24">
+    <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>
+  </symbol>
+
+  <symbol id="i-apps" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="7" height="7" rx="2"/>
+    <rect x="14" y="3" width="7" height="7" rx="2"/>
+    <rect x="3" y="14" width="7" height="7" rx="2"/>
+    <rect x="14" y="14" width="7" height="7" rx="2"/>
+  </symbol>
+
+  <symbol id="i-message" viewBox="0 0 24 24">
+    <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8 8 0 0 1 8 8z"/>
+  </symbol>
+
+  <symbol id="i-notes" viewBox="0 0 24 24">
+    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+    <path d="M8 8h8M8 12h8M8 16h5"/>
+  </symbol>
+
+  <symbol id="i-heart" viewBox="0 0 24 24">
+    <path d="M20.8 8.6c0 5.4-8.8 11-8.8 11s-8.8-5.6-8.8-11A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.8 2.6z"/>
+  </symbol>
+
+  <symbol id="i-bell" viewBox="0 0 24 24">
+    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+    <path d="M10 21h4"/>
+  </symbol>
+
+  <symbol id="i-calendar" viewBox="0 0 24 24">
+    <rect x="3" y="5" width="18" height="16" rx="2"/>
+    <path d="M16 3v4M8 3v4M3 10h18M8 14h2M14 14h2M8 17h2"/>
+  </symbol>
+
+  <symbol id="i-timer" viewBox="0 0 24 24">
+    <circle cx="12" cy="13" r="8"/>
+    <path d="M12 9v4l3 2M9 2h6M12 2v3"/>
+  </symbol>
+
+  <symbol id="i-games" viewBox="0 0 24 24">
+    <path d="M6 9h12a4 4 0 0 1 3.8 5.2l-1 3a2 2 0 0 1-3.3 1l-2.5-2.2H9l-2.5 2.2a2 2 0 0 1-3.3-1l-1-3A4 4 0 0 1 6 9z"/>
+    <path d="M7 12v4M5 14h4M16 13h.01M18 15h.01"/>
+  </symbol>
+
+  <symbol id="i-smile" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="9"/>
+    <path d="M8 14s1.5 3 4 3 4-3 4-3M9 9h.01M15 9h.01"/>
+  </symbol>
+
+  <symbol id="i-settings" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="3"/>
+    <path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.6a8 8 0 0 1-1.5.9l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.6-1.5-2.6 1.4-1.1a8 8 0 0 1 0-1.8l-1.4-1.1 1.5-2.6 1.7.6a8 8 0 0 1 1.5-.9l.3-1.8h3l.3 1.8a8 8 0 0 1 1.5.9l1.7-.6 1.5 2.6-1.4 1.1a8 8 0 0 1 0 1.7z"/>
+  </symbol>
+
+  <symbol id="i-search" viewBox="0 0 24 24">
+    <circle cx="10.8" cy="10.8" r="6.8"/>
+    <path d="m16 16 5 5"/>
+  </symbol>
+
+  <symbol id="i-send" viewBox="0 0 24 24">
+    <path d="m22 2-7 20-4-9-9-4z"/>
+    <path d="M22 2 11 13"/>
+  </symbol>
+
+  <symbol id="i-trash" viewBox="0 0 24 24">
+    <path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6"/>
+    <path d="M10 11v5M14 11v5"/>
+  </symbol>
+
+  <symbol id="i-check" viewBox="0 0 24 24">
+    <path d="m5 12 4 4L19 6"/>
+  </symbol>
+
+</svg>
+
 <div class="device">
- <div class="bezel">
-  <div class="screen">
+<div class="bezel">
+<div class="screen">
 
-   <div class="status">
-    <span>MANDY'S BUDDY</span>
-    <div class="status-right">
-     <span id="statusTime">--:--</span>
-     <span class="dot"></span>
-     <span>100%</span>
-    </div>
-   </div>
-
-   <main class="content">
-
-    <section class="page active" id="home">
-     <div class="header">
-      <div>
-       <div class="brand">Mandy's <span>Buddy</span></div>
-       <div class="small-muted">Your little everyday companion</div>
-      </div>
-      <div class="avatar">M</div>
-     </div>
-
-     <div class="face-card">
-      <div class="face" id="face">
-       <div class="eye"></div>
-       <div class="eye"></div>
-      </div>
-      <div class="face-caption" id="faceCaption">I'm right here.</div>
-      <div class="greeting" id="greeting">Hello, Mandy!</div>
-      <div class="sub-greeting">It's nice to have you here.</div>
-      <div class="clock" id="homeClock">Loading time...</div>
-     </div>
-
-     <div class="section-title">Your everyday tools</div>
-     <div class="quick-grid">
-      <button class="quick" onclick="showPage('messages')">
-       <div class="quick-icon">✉</div><b>Messages</b><small>Your messages</small>
-      </button>
-      <button class="quick" onclick="showPage('notes')">
-       <div class="quick-icon">▤</div><b>Notes</b><small>Save an idea</small>
-      </button>
-      <button class="quick" onclick="showPage('reminders')">
-       <div class="quick-icon">◷</div><b>Reminders</b><small>Stay organised</small>
-      </button>
-     </div>
-    </section>
-
-    <section class="page" id="apps">
-     <h1 class="page-title">Applications</h1>
-     <div class="page-description">Everything you need, in one place.</div>
-     <div class="apps-grid">
-      <button class="app-tile" onclick="showPage('messages')"><div class="quick-icon">✉</div>Messages</button>
-      <button class="app-tile" onclick="showPage('notes')"><div class="quick-icon">▤</div>Notes</button>
-      <button class="app-tile" onclick="showPage('memories')"><div class="quick-icon">♡</div>Memories</button>
-      <button class="app-tile" onclick="showPage('reminders')"><div class="quick-icon">◷</div>Reminders</button>
-      <button class="app-tile" onclick="showPage('calendar')"><div class="quick-icon">▦</div>Calendar</button>
-      <button class="app-tile" onclick="showPage('timer')"><div class="quick-icon">◴</div>Timer</button>
-      <button class="app-tile" onclick="showPage('games')"><div class="quick-icon">◇</div>Games</button>
-      <button class="app-tile" onclick="showPage('expressions')"><div class="quick-icon">☺</div>Expressions</button>
-      <button class="app-tile" onclick="showPage('settings')"><div class="quick-icon">⚙</div>Settings</button>
-     </div>
-    </section>
-
-    <section class="page" id="messages">
-     <h1 class="page-title">Messages</h1>
-     <div class="page-description">Little notes and messages for Buddy.</div>
-     <div class="panel">
-      <textarea id="messageInput" placeholder="Write a message..."></textarea>
-      <button class="primary" onclick="addItem('messages','messageInput')">Save message</button>
-     </div>
-     <div class="panel" id="messagesList"></div>
-    </section>
-
-    <section class="page" id="notes">
-     <h1 class="page-title">Notes</h1>
-     <div class="page-description">Keep your ideas somewhere safe.</div>
-     <div class="panel">
-      <input id="noteTitle" placeholder="Note title">
-      <textarea id="noteInput" placeholder="Write your note..."></textarea>
-      <button class="primary" onclick="saveNote()">Save note</button>
-     </div>
-     <div class="panel" id="notesList"></div>
-    </section>
-
-    <section class="page" id="memories">
-     <h1 class="page-title">Memories</h1>
-     <div class="page-description">Save small moments worth remembering.</div>
-     <div class="panel">
-      <textarea id="memoryInput" placeholder="Write a memory..."></textarea>
-      <button class="primary" onclick="addItem('memories','memoryInput')">Save memory</button>
-     </div>
-     <div class="panel" id="memoriesList"></div>
-    </section>
-
-    <section class="page" id="reminders">
-     <h1 class="page-title">Reminders</h1>
-     <div class="page-description">Keep track of things to do.</div>
-     <div class="panel">
-      <input id="reminderInput" placeholder="What should you remember?">
-      <input id="reminderDate" type="datetime-local">
-      <button class="primary" onclick="addReminder()">Add reminder</button>
-     </div>
-     <div class="panel" id="remindersList"></div>
-    </section>
-
-    <section class="page" id="calendar">
-     <h1 class="page-title">Calendar</h1>
-     <div class="page-description" id="calendarDate"></div>
-     <div class="panel">
-      <b style="font-size:12px">Today's reminders</b>
-      <div id="calendarList"></div>
-     </div>
-    </section>
-
-    <section class="page" id="timer">
-     <h1 class="page-title">Focus timer</h1>
-     <div class="page-description">A little time to focus on one thing.</div>
-     <div class="panel" style="text-align:center;padding:25px">
-      <div id="timerDisplay" style="font-size:42px;font-weight:850;letter-spacing:-2px">25:00</div>
-      <p class="small-muted">Minutes of focused time</p>
-      <button class="secondary" onclick="changeTimer(-5)">− 5 min</button>
-      <button class="secondary" onclick="changeTimer(5)">+ 5 min</button>
-      <div style="margin-top:15px">
-       <button class="primary" id="timerButton" onclick="toggleTimer()">Start</button>
-       <button class="secondary" onclick="resetTimer()">Reset</button>
-      </div>
-     </div>
-    </section>
-
-    <section class="page" id="games">
-     <h1 class="page-title">Little games</h1>
-     <div class="page-description">A few simple ways to have fun.</div>
-     <div class="panel">
-      <b style="font-size:12px">Tap challenge</b>
-      <p class="small-muted">Tap the button as many times as you can.</p>
-      <div style="font-size:30px;font-weight:800;margin:12px" id="tapScore">0</div>
-      <button class="primary" onclick="tapGame()">Tap me!</button>
-      <button class="secondary" onclick="resetTap()">Reset</button>
-     </div>
-     <div class="panel">
-      <b style="font-size:12px">Number guessing</b>
-      <p class="small-muted">Guess a number from 1 to 10.</p>
-      <input id="guessInput" type="number" min="1" max="10" placeholder="Your guess">
-      <button class="primary" onclick="guessGame()">Guess</button>
-      <p id="guessResult" class="small-muted"></p>
-     </div>
-    </section>
-
-    <section class="page" id="expressions">
-     <h1 class="page-title">Expressions</h1>
-     <div class="page-description">Choose Buddy's current expression.</div>
-     <div class="panel">
-      <div class="face" id="expressionFace" style="background:#172438;border-radius:15px;height:110px;margin-bottom:15px">
-       <div class="eye"></div><div class="eye"></div>
-      </div>
-      <div class="apps-grid">
-       <button class="app-tile" onclick="setExpression('normal')">Normal</button>
-       <button class="app-tile" onclick="setExpression('happy')">Happy</button>
-       <button class="app-tile" onclick="setExpression('sleepy')">Sleepy</button>
-       <button class="app-tile" onclick="setExpression('surprised')">Surprised</button>
-      </div>
-     </div>
-    </section>
-
-    <section class="page" id="settings">
-     <h1 class="page-title">Settings</h1>
-     <div class="page-description">Make Buddy feel right for you.</div>
-     <div class="panel">
-      <div class="setting-row">
-       <div><b>Eye animations</b><div class="small-muted">Allow Buddy to blink</div></div>
-       <input class="toggle" type="checkbox" id="animationToggle" checked onchange="toggleAnimation()">
-      </div>
-      <div class="setting-row">
-       <div><b>Notifications</b><div class="small-muted">Browser reminder alerts</div></div>
-       <button class="secondary" onclick="enableNotifications()">Enable</button>
-      </div>
-      <div class="setting-row">
-       <div><b>Clear preview data</b><div class="small-muted">Remove locally saved items</div></div>
-       <button class="secondary" onclick="clearData()">Clear</button>
-      </div>
-     </div>
-     <div class="panel">
-      <b style="font-size:12px">About Mandy's Buddy</b>
-      <p class="small-muted">Mandy's Buddy OS · Browser preview</p>
-      <p class="small-muted">A little companion, always here.</p>
-     </div>
-    </section>
-
-   </main>
-
-   <nav class="nav">
-    <button class="active" data-page="home" onclick="showPage('home')"><span>⌂</span>Home</button>
-    <button data-page="apps" onclick="showPage('apps')"><span>▦</span>Apps</button>
-    <button data-page="messages" onclick="showPage('messages')"><span>✉</span>Messages</button>
-    <button data-page="memories" onclick="showPage('memories')"><span>♡</span>Memories</button>
-    <button data-page="settings" onclick="showPage('settings')"><span>⚙</span>Settings</button>
-   </nav>
-
-   <div class="toast" id="toast"></div>
+<div class="status">
+  <span>MANDY'S BUDDY</span>
+  <div class="status-right">
+    <span id="statusTime">--:--</span>
+    <span class="dot"></span>
+    <span>100%</span>
   </div>
- </div>
 </div>
 
-<script>
-const storageKey = "mandy_buddy_light_v1";
+<main class="content">
 
-let data = JSON.parse(localStorage.getItem(storageKey) || "{}");
-
-data.messages ||= [];
-data.notes ||= [];
-data.memories ||= [];
-data.reminders ||= [];
-
-function saveData() {
-  localStorage.setItem(storageKey, JSON.stringify(data));
-}
-
-function notify(text) {
-  const toast = document.getElementById("toast");
-  toast.textContent = text;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2200);
-}
-
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  const page = document.getElementById(id);
-  if (!page) return;
-  page.classList.add("active");
-
-  document.querySelectorAll(".nav button").forEach(b => {
-    b.classList.toggle("active", b.dataset.page === id);
-  });
-
-  if (id === "calendar") renderCalendar();
-  if (id === "messages") renderList("messages");
-  if (id === "notes") renderList("notes");
-  if (id === "memories") renderList("memories");
-  if (id === "reminders") renderReminders();
-}
-
-function addItem(type, inputId) {
-  const input = document.getElementById(inputId);
-  const value = input.value.trim();
-  if (!value) return notify("Write something first.");
-
-  data[type].unshift({
-    id: Date.now(),
-    text: value,
-    date: new Date().toLocaleString()
-  });
-
-  input.value = "";
-  saveData();
-  renderList(type);
-  notify("Saved successfully.");
-}
-
-function saveNote() {
-  const title = document.getElementById("noteTitle").value.trim();
-  const text = document.getElementById("noteInput").value.trim();
-  if (!title && !text) return notify("Write a note first.");
-
-  data.notes.unshift({
-    id: Date.now(),
-    title: title || "Untitled note",
-    text,
-    date: new Date().toLocaleString()
-  });
-
-  document.getElementById("noteTitle").value = "";
-  document.getElementById("noteInput").value = "";
-  saveData();
-  renderList("notes");
-  notify("Note saved.");
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, c => ({
-    "&":"&amp;", "<":"&lt;", ">":"&gt;",
-    '"':"&quot;", "'":"&#39;"
-  }[c]));
-}
-
-function renderList(type) {
-  const target = document.getElementById(type + "List");
-  if (!target) return;
-
-  const entries = data[type];
-  if (!entries.length) {
-    target.innerHTML = '<div class="empty">Nothing here yet.</div>';
-    return;
-  }
-
-  
-target.innerHTML = entries.map(item => {
-  const title = item.title
-    ? `<b>${escapeHTML(item.title)}</b>`
-    : "";
-
-  return `
-    <div class="item">
-      <div>
-        ${title}
-        <div>${escapeHTML(item.text)}</div>
-        <small>${escapeHTML(item.date)}</small>
-      </div>
-      <div class="item-actions">
-        <button class="secondary"
-          onclick="deleteItem('${type}', ${item.id})">
-          Delete
-        </button>
-      </div>
+<!-- HOME -->
+<section class="page active" id="home">
+  <div class="header">
+    <div>
+      <div class="brand">Mandy's <span>Buddy</span></div>
+      <div class="small-muted">Your little everyday companion</div>
     </div>
-  `;
-}).join("");
-}
+    <div class="avatar">M</div>
+  </div>
 
-function deleteItem(type, id) {
-  data[type] = data[type].filter(item => item.id !== id);
-  saveData();
-  renderList(type);
-  notify("Item deleted.");
-}
-
-function addReminder() {
-  const text = document.getElementById("reminderInput").value.trim();
-  const date = document.getElementById("reminderDate").value;
-
-  if (!text || !date) {
-    return notify("Enter a reminder and time.");
-  }
-
-  data.reminders.unshift({
-    id: Date.now(),
-    text,
-    date,
-    done: false,
-    alerted: false
-  });
-
-  document.getElementById("reminderInput").value = "";
-  document.getElementById("reminderDate").value = "";
-
-  saveData();
-  renderReminders();
-  notify("Reminder added.");
-}
-
-function renderReminders() {
-  const target = document.getElementById("remindersList");
-  if (!target) return;
-
-  if (!data.reminders.length) {
-    target.innerHTML = '<div class="empty">No reminders yet.</div>';
-    return;
-  }
-
-  target.innerHTML = data.reminders.map(r => `
-    <div class="item">
-      <div>
-        <b>${escapeHTML(r.text)}</b>
-        <small>${new Date(r.date).toLocaleString()}</small>
-        <small>${r.done ? "Completed" : "Pending"}</small>
-      </div>
-      <div class="item-actions">
-        <button class="secondary" onclick="toggleReminder(${r.id})">
-          ${r.done ? "Undo" : "Done"}
-        </button>
-        <button class="secondary" onclick="deleteItem('reminders',${r.id})">
-          ×
-        </button>
-      </div>
+  <div class="face-card">
+    <div class="face" id="face">
+      <div class="eye"></div>
+      <div class="eye"></div>
     </div>
-  `).join("");
-}
+    <div class="face-caption" id="faceCaption">I'm right here.</div>
+    <div class="greeting" id="greeting">Hello, Mandy!</div>
+    <div class="sub-greeting">It's nice to have you here.</div>
+    <div class="clock" id="homeClock">Loading time...</div>
+  </div>
 
-function toggleReminder(id) {
-  const item = data.reminders.find(r => r.id === id);
-  if (!item) return;
+  <div class="section-title">Your everyday tools</div>
 
-  item.done = !item.done;
-  saveData();
-  renderReminders();
-}
-
-function renderCalendar() {
-  const now = new Date();
-
-  document.getElementById("calendarDate").textContent =
-    now.toLocaleDateString(undefined, {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
-
-  const today = now.toDateString();
-  const items = data.reminders.filter(
-    r => new Date(r.date).toDateString() === today
-  );
-
-  const target = document.getElementById("calendarList");
-
-  target.innerHTML = items.length
-    ? items.map(r => `
-      <div class="item">
-        <div>
-          ${escapeHTML(r.text)}
-          <small>${new Date(r.date).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit"
-          })}</small>
-        </div>
-        <span>${r.done ? "✓" : "•"}</span>
+  <div class="quick-grid">
+    <button class="quick" onclick="showPage('messages')">
+      <div class="icon-box">
+        <svg class="icon"><use href="#i-message"/></svg>
       </div>
-    `).join("")
-    : '<div class="empty">Nothing scheduled for today.</div>';
-}
+      <b>Messages</b>
+      <small>Your messages</small>
+    </button>
 
-let tapScore = 0;
+    <button class="quick" onclick="showPage('notes')">
+      <div class="icon-box">
+        <svg class="icon"><use href="#i-notes"/></svg>
+      </div>
+      <b>Notes</b>
+      <small>Save an idea</small>
+    </button>
 
-function tapGame() {
-  tapScore++;
-  document.getElementById("tapScore").textContent = tapScore;
-}
+    <button class="quick" onclick="showPage('reminders')">
+      <div class="icon-box">
+        <svg class="icon"><use href="#i-bell"/></svg>
+      </div>
+      <b>Reminders</b>
+      <small>Stay organised</small>
+    </button>
+  </div>
+</section>
 
-function resetTap() {
-  tapScore = 0;
-  document.getElementById("tapScore").textContent = "0";
-}
+<!-- APPS -->
+<section class="page" id="apps">
+  <h1 class="page-title">Applications</h1>
+  <div class="page-description">Everything you need, in one place.</div>
 
-let secretNumber = Math.floor(Math.random() * 10) + 1;
+  <div class="apps-grid">
 
-function guessGame() {
-  const guess = Number(document.getElementById("guessInput").value);
-  const result = document.getElementById("guessResult");
+    <button class="app-tile" onclick="showPage('messages')">
+      <div class="icon-box"><svg class="icon"><use href="#i-message"/></svg></div>
+      Messages
+    </button>
 
-  if (guess < 1 || guess > 10) {
-    result.textContent = "Choose a number from 1 to 10.";
-    return;
-  }
+    <button class="app-tile" onclick="showPage('notes')">
+      <div class="icon-box"><svg class="icon"><use href="#i-notes"/></svg></div>
+      Notes
+    </button>
 
-  if (guess === secretNumber) {
-    result.textContent = "You got it! A new number is ready.";
-    secretNumber = Math.floor(Math.random() * 10) + 1;
-  } else {
-    result.textContent =
-      guess < secretNumber ? "Try a higher number." : "Try a lower number.";
-  }
-}
+    <button class="app-tile" onclick="showPage('memories')">
+      <div class="icon-box"><svg class="icon"><use href="#i-heart"/></svg></div>
+      Memories
+    </button>
 
-function setExpression(expression) {
-  const face = document.getElementById("expressionFace");
-  face.className = "face " + expression;
+    <button class="app-tile" onclick="showPage('reminders')">
+      <div class="icon-box"><svg class="icon"><use href="#i-bell"/></svg></div>
+      Reminders
+    </button>
 
-  document.getElementById("face").className = "face " + expression;
+    <button class="app-tile" onclick="showPage('calendar')">
+      <div class="icon-box"><svg class="icon"><use href="#i-calendar"/></svg></div>
+      Calendar
+    </button>
 
-  const captions = {
-    normal: "I'm right here.",
-    happy: "I'm feeling happy!",
-    sleepy: "Time to rest.",
-    surprised: "Oh! What's that?"
-  };
+    <button class="app-tile" onclick="showPage('timer')">
+      <div class="icon-box"><svg class="icon"><use href="#i-timer"/></svg></div>
+      Timer
+    </button>
 
-  document.getElementById("faceCaption").textContent =
-    captions[expression] || captions.normal;
+    <button class="app-tile" onclick="showPage('games')">
+      <div class="icon-box"><svg class="icon"><use href="#i-games"/></svg></div>
+      Games
+    </button>
 
-  notify("Expression changed.");
-}
+    <button class="app-tile" onclick="showPage('expressions')">
+      <div class="icon-box"><svg class="icon"><use href="#i-smile"/></svg></div>
+      Expressions
+    </button>
 
-function toggleAnimation() {
-  const enabled = document.getElementById("animationToggle").checked;
+    <button class="app-tile" onclick="showPage('settings')">
+      <div class="icon-box"><svg class="icon"><use href="#i-settings"/></svg></div>
+      Settings
+    </button>
 
-  document.querySelectorAll(".eye").forEach(eye => {
-    eye.style.animation = enabled ? "" : "none";
-  });
+  </div>
+</section>
 
-  localStorage.setItem("buddy_animation", enabled ? "on" : "off");
-  notify(enabled ? "Animations enabled." : "Animations paused.");
-}
+<!-- MESSAGES -->
+<section class="page" id="messages">
+  <h1 class="page-title">Messages</h1>
+  <div class="page-description">Little notes and messages for Buddy.</div>
 
-function enableNotifications() {
-  if (!("Notification" in window)) {
-    return notify("Notifications are not supported here.");
-  }
+  <div class="panel">
+    <textarea id="messageInput" placeholder="Write a message..."></textarea>
+    <button class="primary" onclick="addItem('messages','messageInput')">
+      <svg class="icon"><use href="#i-send"/></svg>
+      Save message
+    </button>
+  </div>
 
-  Notification.requestPermission().then(result => {
-    notify(
-      result === "granted"
-        ? "Notifications enabled."
-        : "Permission not granted."
-    );
-  });
-}
+  <div class="panel" id="messagesList"></div>
+</section>
 
-function checkReminders() {
-  const now = Date.now();
+<!-- NOTES -->
+<section class="page" id="notes">
+  <h1 class="page-title">Notes</h1>
+  <div class="page-description">Keep your ideas somewhere safe.</div>
 
-  data.reminders.forEach(r => {
-    if (!r.done && !r.alerted && new Date(r.date).getTime() <= now) {
-      r.alerted = true;
-      notify("Reminder: " + r.text);
+  <div class="panel">
+    <input id="noteTitle" placeholder="Note title">
+    <textarea id="noteInput" placeholder="Write your note..."></textarea>
+    <button class="primary" onclick="saveNote()">Save note</button>
+  </div>
 
-      if ("Notification" in window &&
-          Notification.permission === "granted") {
-        new Notification("Mandy's Buddy", { body: r.text });
-      }
-    }
-  });
+  <div class="panel" id="notesList"></div>
+</section>
 
-  saveData();
-}
+<!-- MEMORIES -->
+<section class="page" id="memories">
+  <h1 class="page-title">Memories</h1>
+  <div class="page-description">Save small moments worth remembering.</div>
 
-setInterval(checkReminders, 10000);
+  <div class="panel">
+    <textarea id="memoryInput" placeholder="Write a memory..."></textarea>
+    <button class="primary" onclick="addItem('memories','memoryInput')">Save memory</button>
+  </div>
 
-let timerSeconds = 25 * 60;
-let timerInterval = null;
+  <div class="panel" id="memoriesList"></div>
+</section>
 
-function renderTimer() {
-  const minutes = Math.floor(timerSeconds / 60);
-  const seconds = timerSeconds % 60;
+<!-- REMINDERS -->
+<section class="page" id="reminders">
+  <h1 class="page-title">Reminders</h1>
+  <div class="page-description">Keep track of things to do.</div>
 
-  document.getElementById("timerDisplay").textContent =
-    String(minutes).padStart(2, "0") + ":" +
-    String(seconds).padStart(2, "0");
-}
+  <div class="panel">
+    <input id="reminderInput" placeholder="What should you remember?">
+    <input id="reminderDate" type="datetime-local">
+    <button class="primary" onclick="addReminder()">Add reminder</button>
+  </div>
 
-function changeTimer(amount) {
-  if (timerInterval) return notify("Pause the timer first.");
+  <div class="panel" id="remindersList"></div>
+</section>
 
-  timerSeconds = Math.max(
-    60,
-    Math.min(90 * 60, timerSeconds + amount * 60)
-  );
+<!-- CALENDAR -->
+<section class="page" id="calendar">
+  <h1 class="page-title">Calendar</h1>
+  <div class="page-description" id="calendarDate"></div>
 
-  renderTimer();
-}
+  <div class="panel">
+    <b style="font-size:12px">Today's reminders</b>
+    <div id="calendarList"></div>
+  </div>
+</section>
 
-function toggleTimer() {
-  const button = document.getElementById("timerButton");
+<!-- TIMER -->
+<section class="page" id="timer">
+  <h1 class="page-title">Focus timer</h1>
+  <div class="page-description">A little time to focus on one thing.</div>
 
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    button.textContent = "Resume";
-    return;
-  }
+  <div class="panel" style="text-align:center;padding:25px">
+    <div id="timerDisplay" style="font-size:42px;font-weight:850;letter-spacing:-2px">25:00</div>
+    <p class="small-muted">Minutes of focused time</p>
 
-  button.textContent = "Pause";
+    <button class="secondary" onclick="changeTimer(-5)">− 5 min</button>
+    <button class="secondary" onclick="changeTimer(5)">+ 5 min</button>
 
-  timerInterval = setInterval(() => {
-    timerSeconds--;
-    renderTimer();
+    <div style="margin-top:15px">
+      <button class="primary" id="timerButton" onclick="toggleTimer()">Start</button>
+      <button class="secondary" onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+</section>
 
-    if (timerSeconds <= 0) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      button.textContent = "Start";
-      notify("Focus session complete!");
-    }
-  }, 1000);
-}
+<!-- GAMES -->
+<section class="page" id="games">
+  <h1 class="page-title">Little games</h1>
+  <div class="page-description">A few simple ways to have fun.</div>
 
-function resetTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-  timerSeconds = 25 * 60;
+  <div class="panel">
+    <b style="font-size:12px">Tap challenge</b>
+    <p class="small-muted">Tap the button as many times as you can.</p>
+    <div style="font-size:30px;font-weight:800;margin:12px" id="tapScore">0</div>
+    <button class="primary" onclick="tapGame()">Tap me!</button>
+    <button class="secondary" onclick="resetTap()">Reset</button>
+  </div>
 
-  document.getElementById("timerButton").textContent = "Start";
-  renderTimer();
-}
+  <div class="panel">
+    <b style="font-size:12px">Number guessing</b>
+    <p class="small-muted">Guess a number from 1 to 10.</p>
+    <input id="guessInput" type="number" min="1" max="10" placeholder="Your guess">
+    <button class="primary" onclick="guessGame()">Guess</button>
+    <p id="guessResult" class="small-muted"></p>
+  </div>
+</section>
 
-function clearData() {
-  if (!confirm("Delete all saved preview data?")) return;
+<!-- EXPRESSIONS -->
+<section class="page" id="expressions">
+  <h1 class="page-title">Expressions</h1>
+  <div class="page-description">Choose Buddy's current expression.</div>
 
-  data = {
-    messages: [],
-    notes: [],
-    memories: [],
-    reminders: []
-  };
+  <div class="panel">
+    <div class="face" id="expressionFace"
+      style="background:#172438;border-radius:15px;height:110px;margin-bottom:15px">
+      <div class="eye"></div>
+      <div class="eye"></div>
+    </div>
 
-  saveData();
+    <div class="apps-grid">
+      <button class="app-tile" onclick="setExpression('normal')">Normal</button>
+      <button class="app-tile" onclick="setExpression('happy')">Happy</button>
+      <button class="app-tile" onclick="setExpression('sleepy')">Sleepy</button>
+      <button class="app-tile" onclick="setExpression('surprised')">Surprised</button>
+    </div>
+  </div>
+</section>
 
-  renderList("messages");
-  renderList("notes");
-  renderList("memories");
-  renderReminders();
+<!-- SETTINGS -->
+<section class="page" id="settings">
+  <h1 class="page-title">Settings</h1>
+  <div class="page-description">Make Buddy feel right for you.</div>
 
-  notify("Preview data cleared.");
-}
+  <div class="panel">
 
-const savedAnimation = localStorage.getItem("buddy_animation");
+    <div class="setting-row">
+      <div>
+        <b>Eye animations</b>
+        <div class="small-muted">Allow Buddy to blink</div>
+      </div>
+      <input class="toggle" type="checkbox" id="animationToggle"
+        checked onchange="toggleAnimation()">
+    </div>
 
-if (savedAnimation === "off") {
-  document.getElementById("animationToggle").checked = false;
-  document.querySelectorAll(".eye").forEach(eye => {
-    eye.style.animation = "none";
-  });
-}
-
-renderList("messages");
-renderList("notes");
-renderList("memories");
-renderReminders();
-renderTimer();
-</script>
-</body>
-</html>
-
+    <div class="set
