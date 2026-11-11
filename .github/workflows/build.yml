@@ -29,29 +29,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install platformio
 
-      - name: Inspect repository
-        run: |
-          echo "CURRENT DIRECTORY:"
-          pwd
-          echo "PROJECT FILES:"
-          find . -maxdepth 5 -type f | sort
-          echo "APP HEADER SEARCH:"
-          find . -iname "app.h" -print
-
       - name: Install project dependencies
         run: pio pkg install
 
-      - name: Locate SPI framework files
-        run: |
-          echo "PLATFORMIO INFORMATION:"
-          pio system info
-
-          echo "SEARCHING FOR SPI.h:"
-          find "$HOME/.platformio" -type f -name "SPI.h" -print
-
-          echo "SEARCHING FOR SPI LIBRARY:"
-          find "$HOME/.platformio" -type d -name "SPI" -print
-
       - name: Compile firmware
         run: pio run
-        
+
+      - name: Verify firmware files
+        run: |
+          echo "Checking generated firmware..."
+          ls -lh .pio/build/esp32-s3-devkitc-1/firmware.bin
+          ls -lh .pio/build/esp32-s3-devkitc-1/bootloader.bin
+          ls -lh .pio/build/esp32-s3-devkitc-1/partitions.bin
+
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mandys-buddy-esp32s3-firmware
+          path: |
+            .pio/build/esp32-s3-devkitc-1/firmware.bin
+            .pio/build/esp32-s3-devkitc-1/bootloader.bin
+            .pio/build/esp32-s3-devkitc-1/partitions.bin
+          if-no-files-found: error
+          retention-days: 30
+          
