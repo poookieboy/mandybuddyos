@@ -1,0 +1,42 @@
+
+#include "input.h"
+
+static InputEvent currentEvent = {
+    INPUT_NONE,
+    0,
+    0
+};
+
+static bool inputAvailable = false;
+
+void initializeInput() {
+    currentEvent.type = INPUT_NONE;
+    currentEvent.x = 0;
+    currentEvent.y = 0;
+
+    inputAvailable = false;
+
+    Serial.println("Initializing input system...");
+    Serial.println("Input system ready.");
+}
+
+void updateInput() {
+    // Touchscreen reading will be implemented here.
+    // Hardware driver integration is still pending.
+}
+
+InputEvent getInputEvent() {
+    return currentEvent;
+}
+
+bool isInputAvailable() {
+    return inputAvailable;
+}
+
+void clearInputEvent() {
+    currentEvent.type = INPUT_NONE;
+    currentEvent.x = 0;
+    currentEvent.y = 0;
+
+    inputAvailable = false;
+}
