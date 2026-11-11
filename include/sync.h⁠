@@ -1,0 +1,25 @@
+
+#ifndef MANDYS_BUDDY_SYNC_H
+#define MANDYS_BUDDY_SYNC_H
+
+#include <Arduino.h>
+
+void initializeSync();
+
+bool connectToSyncServer(
+    const String& serverAddress
+);
+
+void syncMessages();
+
+void syncNotes();
+
+void syncReminders();
+
+void disconnectSync();
+
+bool isSyncConnected();
+
+String getSyncStatus();
+
+#endif
