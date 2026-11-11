@@ -1,26 +1,20 @@
 
 #include <Arduino.h>
-#include "config.h"
-#include "ui.h"
+#include "app.h"
 
 void setup() {
-    Serial.begin(SERIAL_BAUD_RATE);
-    delay(1000);
+    Serial.begin(115200);
 
-    Serial.println("Starting system...");
-    Serial.println(DEVICE_NAME);
-    Serial.println(DEVELOPER_NAME);
-    Serial.println("Version: " SOFTWARE_VERSION);
+    delay(500);
 
-    showWelcomeScreen();
-    delay(2000);
+    Serial.println();
+    Serial.println("Booting Mandy's Buddy OS...");
 
-    showHomeScreen();
+    initializeApp();
 }
 
 void loop() {
-    updateClock();
-    updateBuddyFace();
+    updateApp();
 
-    delay(1000);
+    delay(10);
 }
