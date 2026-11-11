@@ -1,0 +1,46 @@
+
+#include "photos.h"
+
+static int photoCount = 0;
+
+void initializePhotos() {
+    photoCount = 0;
+
+    Serial.println("Initializing photo gallery...");
+    Serial.println("Photo gallery ready.");
+}
+
+void listPhotos() {
+    Serial.println("Mandy's Buddy Photo Gallery");
+
+    if (photoCount == 0) {
+        Serial.println("No photos available yet.");
+        return;
+    }
+
+    Serial.print("Total photos: ");
+    Serial.println(photoCount);
+}
+
+void displayPhoto(const String& filename) {
+    Serial.print("Opening photo: ");
+    Serial.println(filename);
+
+    Serial.println("Photo display will be connected to the screen.");
+}
+
+void deletePhoto(const String& filename) {
+    Serial.print("Request to delete photo: ");
+    Serial.println(filename);
+
+    Serial.println("Photo storage deletion is not implemented yet.");
+}
+
+int getPhotoCount() {
+    return photoCount;
+}
+
+bool photoExists(const String& filename) {
+    (void)filename;
+    return false;
+}
