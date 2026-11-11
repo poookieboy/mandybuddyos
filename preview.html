@@ -3,441 +3,876 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101116">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b10">
 <title>Mandy's Buddy OS</title>
 
 <style>
 *{box-sizing:border-box}
+
+:root{
+  --bg:#090b10;
+  --panel:#171b25;
+  --panel2:#202634;
+  --line:#30394a;
+  --text:#f4f6ff;
+  --muted:#9ba6ba;
+  --accent:#a9caff;
+  --accentText:#101827;
+}
+
 body{
- margin:0;background:#101116;color:white;
- font-family:Arial,sans-serif;
- min-height:100vh;display:flex;
- align-items:center;justify-content:center;
- padding:20px;
+  margin:0;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:18px;
+  background:
+    radial-gradient(circle at 50% 30%,#273044 0%,#10141e 45%,#07090d 100%);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
 }
+
 .device{
- width:100%;max-width:390px;
- background:#202127;border-radius:38px;
- padding:16px;box-shadow:0 25px 80px #0009;
- border:2px solid #363840;
+  width:min(94vw,760px);
+  padding:clamp(8px,2vw,18px);
+  background:linear-gradient(145deg,#343944,#151820 55%,#303541);
+  border:2px solid #515968;
+  border-radius:clamp(18px,4vw,38px);
+  box-shadow:0 25px 65px #0009,inset 0 1px 2px #ffffff22;
 }
+
 .screen{
- height:650px;max-height:82vh;
- min-height:540px;
- background:#08090d;border-radius:25px;
- overflow:hidden;position:relative;
- border:2px solid #343640;
+  width:100%;
+  aspect-ratio:4/3;
+  position:relative;
+  overflow:hidden;
+  container-type:inline-size;
+  background:var(--bg);
+  border:2px solid #394253;
+  border-radius:clamp(10px,2.5vw,24px);
+  color:var(--text);
 }
-.status{
- display:flex;justify-content:space-between;
- padding:15px 18px;font-size:12px;color:#aaa;
+
+.topbar{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:12%;
+  padding:0 4%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:#10141d;
+  border-bottom:1px solid #252d3a;
+  font-size:3.1cqw;
+  color:var(--muted);
+  z-index:5;
 }
+
+.brand{
+  font-weight:700;
+  letter-spacing:.08em;
+  color:#e9efff;
+}
+
 .page{
- display:none;height:calc(100% - 45px);
- padding:18px;overflow-y:auto;
+  position:absolute;
+  top:12%;
+  bottom:13%;
+  left:0;right:0;
+  padding:4%;
+  display:none;
+  overflow:hidden;
 }
+
 .page.active{display:block}
-.center{
- height:100%;display:flex;
- flex-direction:column;align-items:center;
- justify-content:center;text-align:center;
+
+.bottombar{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:13%;
+  background:#10141d;
+  border-top:1px solid #252d3a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8%;
+  z-index:5;
 }
-.face{
- width:180px;height:125px;
- display:flex;align-items:center;
- justify-content:center;gap:25px;
- margin:20px auto;
+
+.navbtn{
+  background:transparent;
+  color:var(--muted);
+  border:0;
+  font-size:3.4cqw;
+  padding:2% 4%;
+  cursor:pointer;
 }
-.eye{
- width:35px;height:48px;
- background:#dceaff;border-radius:50%;
- box-shadow:0 0 20px #91c8ff77;
- animation:blink 5s infinite;
-}
-@keyframes blink{
- 0%,45%,48%,100%{transform:scaleY(1)}
- 46%,47%{transform:scaleY(.08)}
-}
-.mouth{
- width:48px;height:20px;
- border-bottom:5px solid #dceaff;
- border-radius:50%;margin:0 auto;
-}
-h1{font-size:27px;margin:10px 0}
-h2{font-size:22px;margin:8px 0 20px}
-p{color:#aaa;line-height:1.5}
-.clock{font-size:43px;font-weight:600;margin:10px}
-.date{color:#aaa;font-size:13px}
-.menu{
- display:grid;grid-template-columns:1fr 1fr;
- gap:12px;margin-top:25px;
-}
-.item{
- background:#1c1e27;border:1px solid #343640;
- border-radius:17px;padding:18px 10px;
- text-align:center;cursor:pointer;
- transition:.2s;
-}
-.item:active{transform:scale(.95)}
-.item span{font-size:27px;display:block;margin-bottom:9px}
-.item small{color:#ccc}
+
+.navbtn.active{color:var(--accent)}
+
 button{
- border:0;background:#e6e9f2;color:#11131a;
- padding:12px 17px;border-radius:12px;
- font-weight:bold;cursor:pointer;
+  font:inherit;
+  cursor:pointer;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:2.5% 4%;
+  color:var(--text);
+  background:var(--panel2);
+  font-size:3.3cqw;
 }
-button.secondary{
- background:#292c37;color:white;
- border:1px solid #454957;
+
+button.primary{
+  background:var(--accent);
+  color:var(--accentText);
+  border-color:var(--accent);
+  font-weight:700;
 }
-.back{margin-bottom:20px}
-input,textarea{
- width:100%;padding:13px;
- background:#20232d;color:white;
- border:1px solid #454957;border-radius:12px;
- margin:7px 0 12px;font:inherit;
+
+button:active{transform:scale(.97)}
+
+button:disabled{opacity:.4}
+
+h1,h2,h3,p{margin-top:0}
+
+h2{
+  font-size:5.5cqw;
+  margin-bottom:3%;
 }
-textarea{min-height:90px;resize:vertical}
-.card{
- background:#1c1e27;border:1px solid #343640;
- border-radius:15px;padding:15px;margin:10px 0;
+
+h3{font-size:4cqw;margin-bottom:2%}
+
+p{
+  color:var(--muted);
+  font-size:3.3cqw;
+  line-height:1.4;
 }
-.row{display:flex;justify-content:space-between;align-items:center}
-.small{font-size:12px;color:#9297a5}
-.nav{
- position:absolute;bottom:0;left:0;right:0;
- display:flex;justify-content:center;
- padding:10px;background:#11131a;
+
+.small{
+  font-size:2.8cqw;
+  color:var(--muted);
 }
-.nav button{background:transparent;color:#aaa}
-.nav button:hover{color:white}
-.expression{
- display:flex;gap:8px;justify-content:center;
- margin:15px 0;flex-wrap:wrap;
+
+.muted{color:var(--muted)}
+
+.row{
+  display:flex;
+  align-items:center;
+  gap:3%;
 }
-.expression button{font-size:12px}
-.game-button{
- width:65px;height:65px;font-size:25px;
- margin:5px;
+
+.between{justify-content:space-between}
+
+.stack{
+  display:flex;
+  flex-direction:column;
+  gap:3%;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:3%;
+}
+
+input,textarea,select{
+  width:100%;
+  min-width:0;
+  background:#111722;
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:3%;
+  font:inherit;
+  font-size:3.2cqw;
+  outline:none;
+}
+
+textarea{
+  resize:none;
+  height:48%;
+}
+
+input:focus,textarea:focus{
+  border-color:var(--accent);
+}
+
+.scroll{
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:#47536a transparent;
+}
+
+.home-layout{
+  height:100%;
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  align-items:center;
+  gap:3%;
+}
+
+.face-area{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8%;
+  height:100%;
+}
+
+.face{
+  width:70%;
+  aspect-ratio:1.35/1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18%;
+}
+
+.eye{
+  width:20%;
+  height:43%;
+  background:var(--accent);
+  border-radius:50%;
+  box-shadow:0 0 14px #a9caff88;
+  animation:blink 5s infinite;
+}
+
+@keyframes blink{
+  0%,44%,48%,100%{transform:scaleY(1)}
+  46%,47%{transform:scaleY(.08)}
+}
+
+.mouth{
+  width:27%;
+  height:13%;
+  border-bottom:4px solid var(--accent);
+  border-radius:50%;
+}
+
+.home-info{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  height:100%;
+  gap:5%;
+}
+
+.greeting{
+  font-size:6cqw;
+  font-weight:700;
+}
+
+.clock{
+  font-size:10cqw;
+  font-weight:700;
+  letter-spacing:-.04em;
+}
+
+.date{font-size:3cqw;color:var(--muted)}
+
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:3%;
+  height:82%;
+}
+
+.menu-item{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7%;
+  cursor:pointer;
+}
+
+.menu-item:active{background:#29364b}
+
+.menu-icon{font-size:8cqw}
+.menu-label{font-size:3cqw;color:#e7edfa}
+
+.app-layout{
+  height:100%;
+  display:grid;
+  grid-template-columns:35% 1fr;
+  gap:4%;
+}
+
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:5%;
+  overflow-y:auto;
+  min-height:0;
+}
+
+.list-item{
+  padding:7%;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:8px;
+  font-size:3cqw;
+  overflow-wrap:anywhere;
+}
+
+.editor{
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:5%;
+}
+
+.editor textarea{flex:1;min-height:0}
+
+.message-view{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  gap:4%;
+}
+
+.message-list{
+  flex:1;
+  min-height:0;
+}
+
+.compose{display:flex;gap:2%}
+.compose input{flex:1}
+
+.game-area{
+  height:100%;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4%;
+}
+
+.game-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:5%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:5%;
+  text-align:center;
+}
+
+.game-score{
+  font-size:11cqw;
+  font-weight:700;
+  color:var(--accent);
+}
+
+.face-options{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:4%;
+  margin-top:5%;
+}
+
+.face-options button{padding:7% 2%}
+
+.setting-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:4% 0;
+  border-bottom:1px solid var(--line);
+  font-size:3.5cqw;
+}
+
+.toast{
+  position:absolute;
+  z-index:10;
+  bottom:15%;
+  left:50%;
+  transform:translateX(-50%);
+  background:#e5edff;
+  color:#101827;
+  border-radius:20px;
+  padding:2% 5%;
+  font-size:3cqw;
+  display:none;
+  white-space:nowrap;
+}
+
+@media(max-width:480px){
+  body{padding:8px}
+  .device{width:96vw}
 }
 </style>
 </head>
 
 <body>
-<div class="device">
- <div class="screen">
 
-  <div class="status">
-   <span>● MANDY'S BUDDY</span>
-   <span id="statusTime">--:--</span>
-   <span>Wi-Fi</span>
-  </div>
+<div class="device">
+<div class="screen" id="screen">
+
+  <header class="topbar">
+    <span class="brand">● MANDY'S BUDDY</span>
+    <span id="topTime">00:00</span>
+    <span id="wifiStatus">Wi-Fi</span>
+  </header>
 
   <!-- HOME -->
   <section class="page active" id="home">
-   <div class="center">
-    <div class="small">YOUR LITTLE COMPANION</div>
-    <div class="face">
-     <div class="eye" id="eye1"></div>
-     <div class="eye" id="eye2"></div>
+    <div class="home-layout">
+      <div class="face-area">
+        <div class="small">YOUR COMPANION</div>
+        <div class="face">
+          <div class="eye" id="eye1"></div>
+          <div class="eye" id="eye2"></div>
+        </div>
+        <div class="mouth" id="mouth"></div>
+        <div class="small" id="faceMood">Feeling happy</div>
+      </div>
+
+      <div class="home-info">
+        <div class="greeting">Hello, Mandy.</div>
+        <p>It's nice to have you here.</p>
+        <div class="clock" id="clock">00:00</div>
+        <div class="date" id="date">Loading date...</div>
+        <button class="primary" onclick="openPage('menu')">
+          Open menu →
+        </button>
+      </div>
     </div>
-    <div class="mouth" id="mouth"></div>
-    <h1 id="greeting">Hello, Mandy.</h1>
-    <p id="homeMessage">It's nice to have you here.</p>
-    <div class="clock" id="clock">00:00</div>
-    <div class="date" id="date">Loading date...</div>
-    <button onclick="openPage('menu')" style="margin-top:25px">
-     Open Buddy OS →
-    </button>
-   </div>
   </section>
 
   <!-- MENU -->
   <section class="page" id="menu">
-   <button class="secondary back" onclick="openPage('home')">← Home</button>
-   <h2>Buddy Menu</h2>
-   <div class="menu">
-    <div class="item" onclick="openPage('messages')"><span>💌</span><small>Messages</small></div>
-    <div class="item" onclick="openPage('notes')"><span>📝</span><small>Notes</small></div>
-    <div class="item" onclick="openPage('memories')"><span>🌷</span><small>Memories</small></div>
-    <div class="item" onclick="openPage('reminders')"><span>⏰</span><small>Reminders</small></div>
-    <div class="item" onclick="openPage('games')"><span>🎮</span><small>Games</small></div>
-    <div class="item" onclick="openPage('expressions')"><span>😊</span><small>Expressions</small></div>
-    <div class="item" onclick="openPage('settings')"><span>⚙️</span><small>Settings</small></div>
-    <div class="item" onclick="openPage('about')"><span>✨</span><small>About</small></div>
-   </div>
+    <h2>Buddy Menu</h2>
+    <div class="menu-grid">
+      <div class="menu-item" onclick="openPage('messages')">
+        <span class="menu-icon">💌</span><span class="menu-label">Messages</span>
+      </div>
+      <div class="menu-item" onclick="openPage('notes')">
+        <span class="menu-icon">📝</span><span class="menu-label">Notes</span>
+      </div>
+      <div class="menu-item" onclick="openPage('memories')">
+        <span class="menu-icon">🌷</span><span class="menu-label">Memories</span>
+      </div>
+      <div class="menu-item" onclick="openPage('reminders')">
+        <span class="menu-icon">⏰</span><span class="menu-label">Reminders</span>
+      </div>
+      <div class="menu-item" onclick="openPage('games')">
+        <span class="menu-icon">🎮</span><span class="menu-label">Games</span>
+      </div>
+      <div class="menu-item" onclick="openPage('expressions')">
+        <span class="menu-icon">😊</span><span class="menu-label">Expressions</span>
+      </div>
+      <div class="menu-item" onclick="openPage('settings')">
+        <span class="menu-icon">⚙️</span><span class="menu-label">Settings</span>
+      </div>
+      <div class="menu-item" onclick="openPage('about')">
+        <span class="menu-icon">✨</span><span class="menu-label">About</span>
+      </div>
+    </div>
   </section>
 
   <!-- MESSAGES -->
   <section class="page" id="messages">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>Messages 💌</h2>
-   <div id="messageList">
-    <div class="card">Welcome to Mandy's Buddy OS! 🌷</div>
-    <div class="card">Your little companion is ready.</div>
-   </div>
-   <input id="messageInput" placeholder="Write a message...">
-   <button onclick="addMessage()">Send message</button>
+    <div class="message-view">
+      <h2>Messages 💌</h2>
+      <div class="list message-list scroll" id="messageList">
+        <div class="list-item">Welcome to Mandy's Buddy OS! 🌷</div>
+        <div class="list-item">Your little companion is ready.</div>
+      </div>
+      <div class="compose">
+        <input id="messageInput" placeholder="Write a message">
+        <button class="primary" onclick="addMessage()">Send</button>
+      </div>
+    </div>
   </section>
 
   <!-- NOTES -->
   <section class="page" id="notes">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>My Notes 📝</h2>
-   <input id="noteTitle" placeholder="Note title">
-   <textarea id="noteText" placeholder="Write something..."></textarea>
-   <button onclick="addNote()">Save note</button>
-   <div id="noteList"></div>
+    <h2>Notes 📝</h2>
+    <div class="app-layout">
+      <div class="list scroll" id="noteList">
+        <div class="small">Saved notes appear here.</div>
+      </div>
+      <div class="editor">
+        <input id="noteTitle" placeholder="Title">
+        <textarea id="noteText" placeholder="Write your note..."></textarea>
+        <button class="primary" onclick="addNote()">Save note</button>
+      </div>
+    </div>
   </section>
 
   <!-- MEMORIES -->
   <section class="page" id="memories">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>Memories 🌷</h2>
-   <p>A little collection of special moments.</p>
-   <input id="memoryInput" placeholder="Describe a memory...">
-   <button onclick="addMemory()">Save memory</button>
-   <div id="memoryList"></div>
+    <h2>Memories 🌷</h2>
+    <div class="app-layout">
+      <div class="list scroll" id="memoryList">
+        <div class="small">Your memories.</div>
+      </div>
+      <div class="editor">
+        <p>Keep a little record of special moments.</p>
+        <textarea id="memoryInput" placeholder="Describe a memory..."></textarea>
+        <button class="primary" onclick="addMemory()">Save memory</button>
+      </div>
+    </div>
   </section>
 
   <!-- REMINDERS -->
   <section class="page" id="reminders">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>Reminders ⏰</h2>
-   <input id="reminderInput" placeholder="What should I remember?">
-   <input id="reminderTime" type="datetime-local">
-   <button onclick="addReminder()">Add reminder</button>
-   <div id="reminderList"></div>
+    <h2>Reminders ⏰</h2>
+    <div class="app-layout">
+      <div class="list scroll" id="reminderList">
+        <div class="small">Upcoming reminders.</div>
+      </div>
+      <div class="editor">
+        <input id="reminderInput" placeholder="Reminder name">
+        <input id="reminderTime" type="datetime-local">
+        <button class="primary" onclick="addReminder()">Add reminder</button>
+      </div>
+    </div>
   </section>
 
   <!-- GAMES -->
   <section class="page" id="games">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>Mini Games 🎮</h2>
-   <div class="card">
-    <h3>Tap the button!</h3>
-    <p>Score: <strong id="score">0</strong></p>
-    <button onclick="increaseScore()">TAP ME!</button>
-    <button class="secondary" onclick="resetScore()">Reset</button>
-   </div>
-   <div class="card">
-    <h3>Guess the number</h3>
-    <p>I'm thinking of a number from 1 to 5.</p>
-    <input id="guess" type="number" min="1" max="5" placeholder="Your guess">
-    <button onclick="guessNumber()">Guess</button>
-    <p id="guessResult"></p>
-   </div>
+    <h2>Mini Games 🎮</h2>
+    <div class="game-area">
+      <div class="game-card">
+        <h3>Tap challenge</h3>
+        <div class="game-score" id="score">0</div>
+        <span class="small">Your score</span>
+        <button class="primary" onclick="increaseScore()">TAP ME!</button>
+        <button onclick="resetScore()">Reset</button>
+      </div>
+      <div class="game-card">
+        <h3>Guess the number</h3>
+        <p>Pick a number from 1 to 5.</p>
+        <input id="guess" type="number" min="1" max="5" placeholder="1 to 5">
+        <button class="primary" onclick="guessNumber()">Guess</button>
+        <span class="small" id="guessResult">Good luck!</span>
+      </div>
+    </div>
   </section>
 
   <!-- EXPRESSIONS -->
   <section class="page" id="expressions">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>Buddy's Face 😊</h2>
-   <p>Choose an expression.</p>
-   <div class="expression">
-    <button onclick="setFace('happy')">Happy</button>
-    <button onclick="setFace('sad')">Sad</button>
-    <button onclick="setFace('sleepy')">Sleepy</button>
-    <button onclick="setFace('surprised')">Surprised</button>
-    <button onclick="setFace('love')">Excited</button>
-    <button onclick="setFace('normal')">Normal</button>
-   </div>
-   <div class="face">
-    <div class="eye" id="eye3"></div>
-    <div class="eye" id="eye4"></div>
-   </div>
-   <div class="mouth" id="mouth2"></div>
-   <p id="expressionText" style="text-align:center">Feeling happy!</p>
+    <h2>Buddy's Expressions 😊</h2>
+    <div class="row" style="height:48%;justify-content:center">
+      <div class="face">
+        <div class="eye" id="eye3"></div>
+        <div class="eye" id="eye4"></div>
+      </div>
+      <div class="mouth" id="mouth2"></div>
+    </div>
+    <p id="expressionText" style="text-align:center">Feeling happy!</p>
+    <div class="face-options">
+      <button onclick="setFace('happy')">Happy</button>
+      <button onclick="setFace('sad')">Sad</button>
+      <button onclick="setFace('sleepy')">Sleepy</button>
+      <button onclick="setFace('surprised')">Surprised</button>
+      <button onclick="setFace('excited')">Excited</button>
+      <button onclick="setFace('normal')">Normal</button>
+    </div>
   </section>
 
   <!-- SETTINGS -->
   <section class="page" id="settings">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <h2>Settings ⚙️</h2>
-   <div class="card">
-    <div class="row"><span>Device name</span><strong>Mandy's Buddy</strong></div>
-   </div>
-   <div class="card">
-    <div class="row"><span>Software version</span><strong>1.0.0</strong></div>
-   </div>
-   <div class="card">
-    <div class="row"><span>Display theme</span><button class="secondary" onclick="toggleTheme()">Toggle</button></div>
-   </div>
-   <div class="card">
-    <div class="row"><span>Animations</span><button class="secondary" onclick="toggleAnimations()">Toggle</button></div>
-   </div>
-   <p id="settingsStatus" class="small">Preview settings</p>
+    <h2>Settings ⚙️</h2>
+    <div class="setting-row">
+      <span>Display theme</span>
+      <button onclick="toggleTheme()" id="themeButton">Light mode</button>
+    </div>
+    <div class="setting-row">
+      <span>Face animations</span>
+      <button onclick="toggleAnimations()" id="animationButton">On</button>
+    </div>
+    <div class="setting-row">
+      <span>Device name</span>
+      <strong>Mandy's Buddy</strong>
+    </div>
+    <div class="setting-row">
+      <span>OS version</span>
+      <strong>1.0.0</strong>
+    </div>
   </section>
 
   <!-- ABOUT -->
   <section class="page" id="about">
-   <button class="secondary back" onclick="openPage('menu')">← Menu</button>
-   <div class="center">
-    <div style="font-size:55px">✨</div>
-    <h1>Mandy's Buddy OS</h1>
-    <p>A little companion, built with care.</p>
-    <p>Designed by EZEN UEL Studios.</p>
-    <p class="small">Version 1.0.0<br>ESP32-S3 Web Simulator</p>
-   </div>
+    <div class="home-layout">
+      <div class="face-area">
+        <div style="font-size:18cqw">✦</div>
+        <strong>Mandy's Buddy</strong>
+      </div>
+      <div class="home-info">
+        <h2>Buddy OS</h2>
+        <p>A little companion, built with care.</p>
+        <p>Designed by EZEN UEL Studios.</p>
+        <div class="small">Version 1.0.0</div>
+        <div class="small">ESP32-S3 edition</div>
+      </div>
+    </div>
   </section>
 
-  <div class="nav">
-   <button onclick="openPage('home')">⌂ Home</button>
-   <button onclick="openPage('menu')">☷ Menu</button>
-  </div>
+  <footer class="bottombar">
+    <button class="navbtn active" id="homeNav" onclick="openPage('home')">⌂ Home</button>
+    <button class="navbtn" id="menuNav" onclick="openPage('menu')">☷ Menu</button>
+    <button class="navbtn" onclick="goBack()">← Back</button>
+  </footer>
 
- </div>
+  <div class="toast" id="toast">Saved</div>
+</div>
 </div>
 
 <script>
+const pages=[
+  'home','menu','messages','notes','memories',
+  'reminders','games','expressions','settings','about'
+];
+
+let previousPage='menu';
 let score=0;
 let darkTheme=true;
 let animations=true;
+let faceMode='happy';
 
 function openPage(id){
- document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.getElementById(id).classList.add('active');
+  if(!pages.includes(id))return;
+
+  const current=document.querySelector('.page.active');
+  if(current && current.id!=='home' && current.id!=='menu'){
+    previousPage=current.id;
+  }
+
+  document.querySelectorAll('.page').forEach(page=>{
+    page.classList.toggle('active',page.id===id);
+  });
+
+  document.getElementById('homeNav').classList.toggle('active',id==='home');
+  document.getElementById('menuNav').classList.toggle('active',id==='menu');
+}
+
+function goBack(){
+  const active=document.querySelector('.page.active');
+  if(active && active.id!=='home' && active.id!=='menu'){
+    openPage('menu');
+  }else if(active && active.id==='menu'){
+    openPage('home');
+  }else{
+    openPage('menu');
+  }
 }
 
 function updateClock(){
- const now=new Date();
- const time=now.toLocaleTimeString([],{
-  hour:'2-digit',minute:'2-digit'
- });
- document.getElementById('clock').textContent=time;
- document.getElementById('statusTime').textContent=time;
- document.getElementById('date').textContent=
- now.toLocaleDateString([],{
-  weekday:'long',day:'numeric',month:'long',year:'numeric'
- });
+  const now=new Date();
+  const time=now.toLocaleTimeString([],{
+    hour:'2-digit',minute:'2-digit'
+  });
+
+  document.getElementById('clock').textContent=time;
+  document.getElementById('topTime').textContent=time;
+  document.getElementById('date').textContent=
+    now.toLocaleDateString([],{
+      weekday:'short',day:'numeric',month:'short'
+    });
 }
+
 updateClock();
 setInterval(updateClock,1000);
 
+function notify(message){
+  const toast=document.getElementById('toast');
+  toast.textContent=message;
+  toast.style.display='block';
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>{
+    toast.style.display='none';
+  },1800);
+}
+
 function addMessage(){
- const input=document.getElementById('messageInput');
- if(!input.value.trim())return;
- const div=document.createElement('div');
- div.className='card';
- div.textContent=input.value;
- document.getElementById('messageList').appendChild(div);
- input.value='';
+  const input=document.getElementById('messageInput');
+  const value=input.value.trim();
+  if(!value)return;
+
+  const item=document.createElement('div');
+  item.className='list-item';
+  item.textContent=value;
+  document.getElementById('messageList').appendChild(item);
+  input.value='';
+  notify('Message added');
 }
 
 function addNote(){
- const title=document.getElementById('noteTitle').value.trim();
- const content=document.getElementById('noteText').value.trim();
- if(!title&&!content)return;
- const div=document.createElement('div');
- div.className='card';
- const heading=document.createElement('strong');
- heading.textContent=title||'Untitled';
- const paragraph=document.createElement('p');
- paragraph.textContent=content;
- div.append(heading,paragraph);
- document.getElementById('noteList').appendChild(div);
- document.getElementById('noteTitle').value='';
- document.getElementById('noteText').value='';
+  const title=document.getElementById('noteTitle').value.trim();
+  const content=document.getElementById('noteText').value.trim();
+
+  if(!title&&!content){
+    notify('Write something first');
+    return;
+  }
+
+  const item=document.createElement('div');
+  item.className='list-item';
+
+  const heading=document.createElement('strong');
+  heading.textContent=title||'Untitled note';
+
+  const body=document.createElement('div');
+  body.className='small';
+  body.textContent=content||'No content';
+
+  item.append(heading,body);
+  document.getElementById('noteList').appendChild(item);
+
+  document.getElementById('noteTitle').value='';
+  document.getElementById('noteText').value='';
+  notify('Note saved');
 }
 
 function addMemory(){
- const input=document.getElementById('memoryInput');
- if(!input.value.trim())return;
- const div=document.createElement('div');
- div.className='card';
- div.textContent='🌷 '+input.value;
- document.getElementById('memoryList').appendChild(div);
- input.value='';
+  const input=document.getElementById('memoryInput');
+  const value=input.value.trim();
+  if(!value)return;
+
+  const item=document.createElement('div');
+  item.className='list-item';
+  item.textContent='🌷 '+value;
+  document.getElementById('memoryList').appendChild(item);
+
+  input.value='';
+  notify('Memory saved');
 }
 
 function addReminder(){
- const input=document.getElementById('reminderInput');
- const time=document.getElementById('reminderTime');
- if(!input.value.trim())return;
- const div=document.createElement('div');
- div.className='card';
- div.textContent='⏰ '+input.value+
- (time.value?' · '+new Date(time.value).toLocaleString():'');
- document.getElementById('reminderList').appendChild(div);
- input.value='';
- time.value='';
+  const input=document.getElementById('reminderInput');
+  const time=document.getElementById('reminderTime');
+
+  if(!input.value.trim()){
+    notify('Enter a reminder');
+    return;
+  }
+
+  const item=document.createElement('div');
+  item.className='list-item';
+
+  const date=time.value
+    ?new Date(time.value).toLocaleString()
+    :'No time set';
+
+  item.textContent='⏰ '+input.value+' · '+date;
+  document.getElementById('reminderList').appendChild(item);
+
+  input.value='';
+  time.value='';
+  notify('Reminder added');
 }
 
 function increaseScore(){
- score++;
- document.getElementById('score').textContent=score;
+  score++;
+  document.getElementById('score').textContent=score;
 }
 
 function resetScore(){
- score=0;
- document.getElementById('score').textContent=score;
+  score=0;
+  document.getElementById('score').textContent=score;
 }
 
 function guessNumber(){
- const value=Number(document.getElementById('guess').value);
- const answer=Math.floor(Math.random()*5)+1;
- const result=document.getElementById('guessResult');
- if(value<1||value>5){
-  result.textContent='Choose a number from 1 to 5.';
- }else if(value===answer){
-  result.textContent='Correct! 🎉';
- }else{
-  result.textContent='Not this time! The number was '+answer+'.';
- }
+  const input=document.getElementById('guess');
+  const value=Number(input.value);
+  const result=document.getElementById('guessResult');
+
+  if(!input.value || value<1 || value>5){
+    result.textContent='Choose 1 to 5.';
+    return;
+  }
+
+  const answer=Math.floor(Math.random()*5)+1;
+  result.textContent=value===answer
+    ?'Correct! 🎉'
+    :'It was '+answer+'. Try again!';
 }
 
-function setFace(expression){
- const eye3=document.getElementById('eye3');
- const eye4=document.getElementById('eye4');
- const mouth=document.getElementById('mouth2');
- const text=document.getElementById('expressionText');
- let eyeHeight='48px';
- let mouthStyle='border-bottom:5px solid #dceaff';
- let message='Feeling happy!';
- if(expression==='sad'){
-  mouthStyle='border-top:5px solid #dceaff;border-bottom:0';
-  message='A little sad.';
- }else if(expression==='sleepy'){
-  eyeHeight='9px';
-  message='Feeling sleepy...';
- }else if(expression==='surprised'){
-  mouthStyle='border:5px solid #dceaff;width:24px;height:24px';
-  message='Surprise!';
- }else if(expression==='love'){
-  eye3.style.background='#ff8db6';
-  eye4.style.background='#ff8db6';
-  message='Feeling excited! 💗';
- }else{
-  eye3.style.background='#dceaff';
-  eye4.style.background='#dceaff';
-  if(expression==='normal')message='Just relaxing.';
- }
- eye3.style.height=eyeHeight;
- eye4.style.height=eyeHeight;
- mouth.style.cssText=mouthStyle;
- text.textContent=message;
+function setFace(mode){
+  faceMode=mode;
+
+  const eyes=[
+    document.getElementById('eye3'),
+    document.getElementById('eye4')
+  ];
+
+  const mouth=document.getElementById('mouth2');
+  const message=document.getElementById('expressionText');
+  const homeMood=document.getElementById('faceMood');
+
+  eyes.forEach(eye=>{
+    eye.style.height='43%';
+    eye.style.background='var(--accent)';
+    eye.style.borderRadius='50%';
+  });
+
+  mouth.style.cssText='';
+  mouth.className='mouth';
+
+  const moods={
+    happy:'Feeling happy!',
+    sad:'A little sad.',
+    sleepy:'Feeling sleepy...',
+    surprised:'Surprise!',
+    excited:'Feeling excited!',
+    normal:'Just relaxing.'
+  };
+
+  if(mode==='sleepy'){
+    eyes.forEach(eye=>eye.style.height='10%');
+  }
+
+  if(mode==='sad'){
+    mouth.style.borderBottom='0';
+    mouth.style.borderTop='4px solid var(--accent)';
+  }
+
+  if(mode==='surprised'){
+    mouth.style.width='12%';
+    mouth.style.height='18%';
+    mouth.style.border='3px solid var(--accent)';
+    mouth.style.borderRadius='50%';
+  }
+
+  if(mode==='excited'){
+    eyes.forEach(eye=>eye.style.background='#ff9fc4');
+  }
+
+  message.textContent=moods[mode];
+  homeMood.textContent=moods[mode];
 }
 
 function toggleTheme(){
- darkTheme=!darkTheme;
- document.querySelector('.screen').style.background=
- darkTheme?'#08090d':'#e9edf5';
- document.querySelector('.screen').style.color=
- darkTheme?'white':'#171923';
- document.getElementById('settingsStatus').textContent=
- darkTheme?'Dark theme enabled':'Light theme enabled';
+  darkTheme=!darkTheme;
+
+  const root=document.documentElement;
+  if(darkTheme){
+    root.style.setProperty('--bg','#090b10');
+    root.style.setProperty('--panel','#171b25');
+    root.style.setProperty('--panel2','#202634');
+    root.style.setProperty('--text','#f4f6ff');
+    root.style.setProperty('--muted','#9ba6ba');
+    document.getElementById('themeButton').textContent='Light mode';
+  }else{
+    root.style.setProperty('--bg','#e9edf5');
+    root.style.setProperty('--panel','#dce2ed');
+    root.style.setProperty('--panel2','#cbd5e5');
+    root.style.setProperty('--text','#172033');
+    root.style.setProperty('--muted','#59667b');
+    document.getElementById('themeButton').textContent='Dark mode';
+  }
 }
 
 function toggleAnimations(){
- animations=!animations;
- document.querySelectorAll('.eye').forEach(eye=>{
-  eye.style.animation=animations?'blink 5s infinite':'none';
- });
- document.getElementById('settingsStatus').textContent=
- animations?'Animations enabled':'Animations disabled';
-}
-</script>
-</body>
-      </html>
-      
+  animations=!animations;
+
+  doc
