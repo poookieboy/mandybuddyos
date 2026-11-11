@@ -6,70 +6,27 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#090d16">
 <title>Mandy's Buddy OS</title>
-
 <style>
 *{box-sizing:border-box}
-:root{
- --bg:#090d16;--panel:#151d2b;--panel2:#202b3c;
- --line:#303e53;--text:#f2f6ff;--muted:#9baac0;
- --accent:#a9caff;--accentText:#101827;
-}
-body{
- margin:0;min-height:100vh;padding:12px;
- display:grid;place-items:center;
- background:radial-gradient(circle at top,#29364b,#090d16 65%);
- color:var(--text);font-family:Arial,sans-serif;
-}
-.device{
- width:min(96vw,800px);padding:12px;
- border:2px solid #566174;border-radius:28px;
- background:linear-gradient(145deg,#414958,#141923,#343c4b);
- box-shadow:0 25px 70px #000a;
-}
-.screen{
- width:100%;aspect-ratio:4/3;position:relative;
- overflow:hidden;container-type:inline-size;
- background:var(--bg);border:2px solid #39465a;
- border-radius:16px;color:var(--text);
-}
-.topbar{
- position:absolute;top:0;left:0;right:0;height:12%;
- display:flex;align-items:center;justify-content:space-between;
- padding:0 4%;background:#111824;border-bottom:1px solid var(--line);
- color:var(--muted);font-size:3cqw;z-index:5;
-}
-.brand{font-weight:bold;letter-spacing:.07em;color:var(--text)}
-.page{
- position:absolute;top:12%;bottom:13%;left:0;right:0;
- padding:4%;display:none;overflow-x:hidden;overflow-y:auto;
- overscroll-behavior:contain;scrollbar-width:thin;
- scrollbar-color:#47536a transparent;
-}
+:root{--bg:#090d16;--panel:#151d2b;--panel2:#202b3c;--line:#303e53;--text:#f2f6ff;--muted:#9baac0;--accent:#a9caff}
+body{margin:0;min-height:100vh;padding:10px;display:grid;place-items:center;background:radial-gradient(circle at top,#29364b,#090d16 65%);color:var(--text);font-family:Arial,sans-serif}
+.device{width:min(96vw,800px);padding:10px;border:2px solid #566174;border-radius:24px;background:linear-gradient(145deg,#414958,#141923,#343c4b);box-shadow:0 25px 70px #000a}
+.screen{width:100%;aspect-ratio:4/3;position:relative;overflow:hidden;container-type:inline-size;background:var(--bg);border:2px solid #39465a;border-radius:15px;color:var(--text)}
+.topbar{position:absolute;top:0;left:0;right:0;height:12%;display:flex;align-items:center;justify-content:space-between;padding:0 4%;background:#111824;border-bottom:1px solid var(--line);color:var(--muted);font-size:3cqw;z-index:5}
+.brand{font-weight:bold;letter-spacing:.06em;color:var(--text)}
+.page{position:absolute;top:12%;bottom:13%;left:0;right:0;padding:4%;display:none;overflow:auto;overscroll-behavior:contain}
 .page.active{display:block}
-.bottombar{
- position:absolute;bottom:0;left:0;right:0;height:13%;
- display:flex;align-items:center;justify-content:center;gap:8%;
- background:#111824;border-top:1px solid var(--line);z-index:5;
-}
-button{
- border:1px solid var(--line);border-radius:9px;
- padding:2.5% 4%;background:var(--panel2);
- color:var(--text);font:inherit;font-size:3.2cqw;cursor:pointer;
-}
-button:active{transform:scale(.97)}
-button.primary{background:var(--accent);color:var(--accentText);font-weight:bold}
-button:disabled{opacity:.4}
+.bottombar{position:absolute;bottom:0;left:0;right:0;height:13%;display:flex;align-items:center;justify-content:center;gap:8%;background:#111824;border-top:1px solid var(--line);z-index:5}
+button{border:1px solid var(--line);border-radius:9px;padding:2.5% 4%;background:var(--panel2);color:var(--text);font:inherit;font-size:3.2cqw;cursor:pointer;touch-action:manipulation}
+button:active,.menu-item:active{transform:scale(.97)}
+button.primary{background:var(--accent);color:#101827;font-weight:bold}
 .navbtn{border:0;background:transparent;color:var(--muted)}
 .navbtn.active{color:var(--accent)}
 h2{font-size:5.2cqw;margin:0 0 3%}
 h3{font-size:3.8cqw;margin:0}
 p{font-size:3.2cqw;line-height:1.4;color:var(--muted);margin:0}
 .small{font-size:2.8cqw;color:var(--muted)}
-input,textarea{
- width:100%;min-width:0;padding:3%;
- border:1px solid var(--line);border-radius:8px;
- background:#111a28;color:var(--text);font:inherit;font-size:3.1cqw;
-}
+input,textarea{width:100%;min-width:0;padding:3%;border:1px solid var(--line);border-radius:8px;background:#111a28;color:var(--text);font:inherit;font-size:3.1cqw}
 textarea{resize:none;min-height:65px;flex:1}
 .home-layout{height:100%;min-height:100%;display:grid;grid-template-columns:1fr 1.2fr;gap:4%;align-items:center}
 .face-area{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6%}
@@ -81,19 +38,14 @@ textarea{resize:none;min-height:65px;flex:1}
 .greeting{font-size:6cqw;font-weight:bold}
 .clock{font-size:10cqw;font-weight:bold;letter-spacing:-.05em}
 .date{font-size:3cqw;color:var(--muted)}
-.menu-grid{height:100%;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:3%}
-.menu-item{
- display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7%;
- background:var(--panel);border:1px solid var(--line);border-radius:10px;cursor:pointer;
-}
-.menu-item:active{background:var(--panel2)}
+.menu-grid{height:88%;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:3%}
+.menu-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7%;background:var(--panel);border:1px solid var(--line);border-radius:10px;cursor:pointer;touch-action:manipulation}
 .menu-icon{font-size:8cqw}
 .menu-label{font-size:3cqw}
 .app-layout{height:100%;min-height:125px;display:grid;grid-template-columns:36% 1fr;gap:4%}
-.list{display:flex;flex-direction:column;gap:5%;overflow-y:auto;min-height:0}
-.list-item{padding:7%;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:3cqw;overflow-wrap:anywhere}
+.list{display:flex;flex-direction:column;gap:5%;overflow:auto;min-height:0}
+.list-item{padding:7%;background:var(--panel);border:1px solid var(--line);border-radius:8px;font-size:3cqw;white-space:pre-wrap;overflow-wrap:anywhere}
 .editor{display:flex;flex-direction:column;gap:5%;min-height:0}
-.editor textarea{flex:1}
 .message-view{height:100%;min-height:130px;display:flex;flex-direction:column;gap:4%}
 .message-list{flex:1;min-height:0}
 .compose{display:flex;gap:2%}
@@ -102,13 +54,8 @@ textarea{resize:none;min-height:65px;flex:1}
 .game-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:5%;display:flex;flex-direction:column;justify-content:center;align-items:stretch;gap:5%;text-align:center}
 .game-score{font-size:11cqw;font-weight:bold;color:var(--accent)}
 .face-options{display:grid;grid-template-columns:repeat(3,1fr);gap:3%;margin-top:4%}
-.face-options button{padding:6% 2%}
 .setting-row{display:flex;align-items:center;justify-content:space-between;gap:4%;padding:4% 0;border-bottom:1px solid var(--line);font-size:3.4cqw}
-.toast{
- display:none;position:absolute;z-index:10;bottom:15%;left:50%;
- transform:translateX(-50%);padding:2% 5%;border-radius:20px;
- background:#e5edff;color:#101827;font-size:3cqw;white-space:nowrap;
-}
+.toast{display:none;position:absolute;z-index:10;bottom:15%;left:50%;transform:translateX(-50%);padding:2% 5%;border-radius:20px;background:#e5edff;color:#101827;font-size:3cqw;white-space:nowrap}
 @media(max-width:480px){body{padding:5px}.device{width:98vw;padding:7px}}
 </style>
 </head>
@@ -117,329 +64,519 @@ textarea{resize:none;min-height:65px;flex:1}
 <div class="screen">
 
 <header class="topbar">
- <span class="brand">● MANDY'S BUDDY</span>
- <span id="topTime">--:--</span>
- <span id="status">READY</span>
+<span class="brand">● MANDY'S BUDDY</span>
+<span id="topTime">--:--</span>
+<span>READY</span>
 </header>
 
 <section class="page active" id="home">
- <div class="home-layout">
-  <div class="face-area">
-   <div class="small">YOUR COMPANION</div>
-   <div class="face"><div class="eye"></div><div class="eye"></div></div>
-   <div class="mouth" id="homeMouth"></div>
-   <div class="small" id="homeMood">Feeling happy</div>
-  </div>
-  <div class="home-info">
-   <div class="greeting">Hello, Mandy.</div>
-   <p>It's nice to have you here.</p>
-   <div class="clock" id="clock">--:--</div>
-   <div class="date" id="date">Loading...</div>
-   <button class="primary" onclick="openPage('menu')">Open menu →</button>
-  </div>
- </div>
+<div class="home-layout">
+<div class="face-area">
+<div class="small">YOUR COMPANION</div>
+<div class="face">
+<div class="eye"></div>
+<div class="eye"></div>
+</div>
+<div class="mouth"></div>
+<div class="small" id="homeMood">Feeling happy</div>
+</div>
+<div class="home-info">
+<div class="greeting">Hello, Mandy.</div>
+<p>It's nice to have you here.</p>
+<div class="clock" id="clock">--:--</div>
+<div class="date" id="date">Loading...</div>
+<button class="primary" onclick="openPage('menu')">Open menu →</button>
+</div>
+</div>
 </section>
 
 <section class="page" id="menu">
- <h2>Buddy Menu</h2>
- <div class="menu-grid">
-  <div class="menu-item" onclick="openPage('messages')"><span class="menu-icon">💌</span><span class="menu-label">Messages</span></div>
-  <div class="menu-item" onclick="openPage('notes')"><span class="menu-icon">📝</span><span class="menu-label">Notes</span></div>
-  <div class="menu-item" onclick="openPage('memories')"><span class="menu-icon">🌷</span><span class="menu-label">Memories</span></div>
-  <div class="menu-item" onclick="openPage('reminders')"><span class="menu-icon">⏰</span><span class="menu-label">Reminders</span></div>
-  <div class="menu-item" onclick="openPage('games')"><span class="menu-icon">🎮</span><span class="menu-label">Games</span></div>
-  <div class="menu-item" onclick="openPage('expressions')"><span class="menu-icon">😊</span><span class="menu-label">Expressions</span></div>
-  <div class="menu-item" onclick="openPage('settings')"><span class="menu-icon">⚙️</span><span class="menu-label">Settings</span></div>
-  <div class="menu-item" onclick="openPage('about')"><span class="menu-icon">✨</span><span class="menu-label">About</span></div>
- </div>
+<h2>Buddy Menu</h2>
+<div class="menu-grid">
+<div class="menu-item" onclick="openPage('messages')"><span class="menu-icon">💌</span><span class="menu-label">Messages</span></div>
+<div class="menu-item" onclick="openPage('notes')"><span class="menu-icon">📝</span><span class="menu-label">Notes</span></div>
+<div class="menu-item" onclick="openPage('memories')"><span class="menu-icon">🌷</span><span class="menu-label">Memories</span></div>
+<div class="menu-item" onclick="openPage('reminders')"><span class="menu-icon">⏰</span><span class="menu-label">Reminders</span></div>
+<div class="menu-item" onclick="openPage('games')"><span class="menu-icon">🎮</span><span class="menu-label">Games</span></div>
+<div class="menu-item" onclick="openPage('expressions')"><span class="menu-icon">😊</span><span class="menu-label">Expressions</span></div>
+<div class="menu-item" onclick="openPage('settings')"><span class="menu-icon">⚙️</span><span class="menu-label">Settings</span></div>
+<div class="menu-item" onclick="openPage('about')"><span class="menu-icon">✨</span><span class="menu-label">About</span></div>
+</div>
 </section>
 
 <section class="page" id="messages">
- <div class="message-view">
-  <h2>Messages 💌</h2>
-  <div class="list message-list" id="messageList"></div>
-  <div class="compose"><input id="messageInput" placeholder="Write a message"><button class="primary" onclick="addMessage()">Send</button></div>
- </div>
+<div class="message-view">
+<h2>Messages</h2>
+<div class="list message-list" id="messageList"></div>
+<div class="compose">
+<input id="messageInput" placeholder="Write a message">
+<button class="primary" onclick="addMessage()">Send</button>
+</div>
+</div>
 </section>
 
 <section class="page" id="notes">
- <h2>Notes 📝</h2>
- <div class="app-layout">
-  <div class="list" id="noteList"></div>
-  <div class="editor">
-   <input id="noteTitle" placeholder="Note title">
-   <textarea id="noteText" placeholder="Write your note..."></textarea>
-   <button class="primary" onclick="addNote()">Save note</button>
-   <button onclick="clearNoteForm()">Clear</button>
-  </div>
- </div>
+<h2>Notes</h2>
+<div class="app-layout">
+<div class="list" id="noteList"></div>
+<div class="editor">
+<input id="noteTitle" placeholder="Note title">
+<textarea id="noteText" placeholder="Write your note..."></textarea>
+<button class="primary" onclick="addNote()">Save note</button>
+<button onclick="clearNoteForm()">Clear</button>
+</div>
+</div>
 </section>
 
 <section class="page" id="memories">
- <h2>Memories 🌷</h2>
- <div class="app-layout">
-  <div class="list" id="memoryList"></div>
-  <div class="editor">
-   <p>Keep a record of special moments.</p>
-   <textarea id="memoryInput" placeholder="Write a memory..."></textarea>
-   <button class="primary" onclick="addMemory()">Save memory</button>
-  </div>
- </div>
+<h2>Memories</h2>
+<div class="app-layout">
+<div class="list" id="memoryList"></div>
+<div class="editor">
+<p>Keep a record of special moments.</p>
+<textarea id="memoryInput" placeholder="Write a memory..."></textarea>
+<button class="primary" onclick="addMemory()">Save memory</button>
+</div>
+</div>
 </section>
 
 <section class="page" id="reminders">
- <h2>Reminders ⏰</h2>
- <div class="app-layout">
-  <div class="list" id="reminderList"></div>
-  <div class="editor">
-   <input id="reminderInput" placeholder="Reminder name">
-   <input id="reminderTime" type="datetime-local">
-   <button class="primary" onclick="addReminder()">Add reminder</button>
-   <button onclick="enableNotifications()">Enable browser alerts</button>
-   <p class="small">Alerts work while this preview is open.</p>
-  </div>
- </div>
+<h2>Reminders</h2>
+<div class="app-layout">
+<div class="list" id="reminderList"></div>
+<div class="editor">
+<input id="reminderInput" placeholder="Reminder name">
+<input id="reminderTime" type="datetime-local">
+<button class="primary" onclick="addReminder()">Add reminder</button>
+<button onclick="enableNotifications()">Enable browser alerts</button>
+<p class="small">Alerts work while this preview is open.</p>
+</div>
+</div>
 </section>
 
 <section class="page" id="games">
- <h2>Mini Games 🎮</h2>
- <div class="game-area">
-  <div class="game-card">
-   <h3>Tap challenge</h3>
-   <div class="game-score" id="score">0</div>
-   <span class="small">Your score</span>
-   <button class="primary" onclick="increaseScore()">TAP ME!</button>
-   <button onclick="resetScore()">Reset</button>
-  </div>
-  <div class="game-card">
-   <h3>Guess the number</h3>
-   <p>Choose from 1 to 5.</p>
-   <input id="guess" type="number" min="1" max="5" placeholder="1 to 5">
-   <button class="primary" onclick="guessNumber()">Guess</button>
-   <span class="small" id="guessResult">Good luck!</span>
-  </div>
- </div>
+<h2>Mini Games</h2>
+<div class="game-area">
+<div class="game-card">
+<h3>Tap challenge</h3>
+<div class="game-score" id="score">0</div>
+<span class="small">Your score</span>
+<button class="primary" onclick="increaseScore()">TAP ME!</button>
+<button onclick="resetScore()">Reset</button>
+</div>
+<div class="game-card">
+<h3>Guess the number</h3>
+<p>Choose from 1 to 5.</p>
+<input id="guess" type="number" min="1" max="5" placeholder="1 to 5">
+<button class="primary" onclick="guessNumber()">Guess</button>
+<span class="small" id="guessResult">Good luck!</span>
+</div>
+</div>
 </section>
 
 <section class="page" id="expressions">
- <h2>Expressions 😊</h2>
- <div class="row" style="height:42%;justify-content:center">
-  <div class="face"><div class="eye" id="eye3"></div><div class="eye" id="eye4"></div></div>
-  <div class="mouth" id="expressionMouth"></div>
- </div>
- <p id="expressionText" style="text-align:center">Feeling happy!</p>
- <div class="face-options">
-  <button onclick="setFace('happy')">Happy</button>
-  <button onclick="setFace('sad')">Sad</button>
-  <button onclick="setFace('sleepy')">Sleepy</button>
-  <button onclick="setFace('surprised')">Surprised</button>
-  <button onclick="setFace('excited')">Excited</button>
-  <button onclick="setFace('normal')">Normal</button>
- </div>
+<h2>Expressions</h2>
+<div class="face-area" style="height:38%">
+<div class="face">
+<div class="eye" id="eye3"></div>
+<div class="eye" id="eye4"></div>
+</div>
+<div class="mouth" id="expressionMouth"></div>
+</div>
+<p id="expressionText" style="text-align:center">Feeling happy!</p>
+<div class="face-options">
+<button onclick="setFace('happy')">Happy</button>
+<button onclick="setFace('sad')">Sad</button>
+<button onclick="setFace('sleepy')">Sleepy</button>
+<button onclick="setFace('surprised')">Surprised</button>
+<button onclick="setFace('excited')">Excited</button>
+<button onclick="setFace('normal')">Normal</button>
+</div>
 </section>
 
 <section class="page" id="settings">
- <h2>Settings ⚙️</h2>
- <div class="setting-row"><span>Display theme</span><button id="themeButton" onclick="toggleTheme()">Light mode</button></div>
- <div class="setting-row"><span>Face animations</span><button id="animationButton" onclick="toggleAnimations()">On</button></div>
- <div class="setting-row"><span>Device name</span><strong>Mandy's Buddy</strong></div>
- <div class="setting-row"><span>Orientation</span><strong>Landscape</strong></div>
- <div class="setting-row"><span>Display</span><strong>320 × 240</strong></div>
- <div class="setting-row"><span>Version</span><strong>1.0.0</strong></div>
- <button onclick="clearAllData()">Clear preview data</button>
+<h2>Settings</h2>
+<div class="setting-row"><span>Display theme</span><button id="themeButton" onclick="toggleTheme()">Light mode</button></div>
+<div class="setting-row"><span>Face animations</span><button id="animationButton" onclick="toggleAnimations()">On</button></div>
+<div class="setting-row"><span>Device name</span><strong>Mandy's Buddy</strong></div>
+<div class="setting-row"><span>Orientation</span><strong>Landscape</strong></div>
+<div class="setting-row"><span>Display</span><strong>320 × 240</strong></div>
+<div class="setting-row"><span>Version</span><strong>1.0.0</strong></div>
+<button onclick="clearAllData()">Clear preview data</button>
 </section>
 
 <section class="page" id="about">
- <div class="home-layout">
-  <div class="face-area"><div style="font-size:18cqw">✦</div><strong>Mandy's Buddy</strong></div>
-  <div class="home-info">
-   <h2>Buddy OS</h2>
-   <p>A little companion, built with care.</p>
-   <p>Designed by EZEN UEL Studios.</p>
-   <div class="small">Version 1.0.0</div>
-   <div class="small">ESP32-S3 edition</div>
-   <div class="small">Landscape interface</div>
-  </div>
- </div>
+<div class="home-layout">
+<div class="face-area">
+<div style="font-size:18cqw">✦</div>
+<strong>Mandy's Buddy</strong>
+</div>
+<div class="home-info">
+<h2>Buddy OS</h2>
+<p>A little companion, built with care.</p>
+<p>Designed by EZEN UEL Studios.</p>
+<div class="small">Version 1.0.0</div>
+<div class="small">ESP32-S3 edition</div>
+<div class="small">Landscape interface</div>
+</div>
+</div>
 </section>
 
 <footer class="bottombar">
- <button class="navbtn active" id="homeNav" onclick="openPage('home')">⌂ Home</button>
- <button class="navbtn" id="menuNav" onclick="openPage('menu')">☷ Menu</button>
- <button class="navbtn" onclick="goBack()">← Back</button>
+<button class="navbtn active" id="homeNav" onclick="openPage('home')">⌂ Home</button>
+<button class="navbtn" id="menuNav" onclick="openPage('menu')">☷ Menu</button>
+<button class="navbtn" onclick="goBack()">← Back</button>
 </footer>
-<div class="toast" id="toast"></div>
 
+<div class="toast" id="toast"></div>
 </div>
 </div>
 
 <script>
-const pageIds=['home','menu','messages','notes','memories','reminders','games','expressions','settings','about'];
-const historyStack=[];
-let score=0,dark=true,animations=true,face='happy';
-let reminders=load('reminders',[]);
-let notes=load('notes',[]);
-let memories=load('memories',[]);
-let messages=load('messages',[
- 'Welcome to Mandy\\'s Buddy OS! 🌷',
- 'Your little companion is ready.'
+'use strict';
+
+const pageIds = [
+'home','menu','messages','notes','memories',
+'reminders','games','expressions','settings','about'
+];
+
+const historyStack = [];
+let score = 0;
+let dark = true;
+let animations = true;
+
+function el(id) {
+return document.getElementById(id);
+}
+
+function load(key, fallback) {
+try {
+return JSON.parse(localStorage.getItem('buddy_' + key)) ?? fallback;
+} catch {
+return fallback;
+}
+}
+
+function save(key, value) {
+try {
+localStorage.setItem('buddy_' + key, JSON.stringify(value));
+} catch {
+notify('Browser storage unavailable');
+}
+}
+
+let reminders = load('reminders', []);
+let notes = load('notes', []);
+let memories = load('memories', []);
+let messages = load('messages', [
+"Welcome to Mandy's Buddy OS! 🌷",
+'Your little companion is ready.'
 ]);
 
-function load(key,fallback){
- try{return JSON.parse(localStorage.getItem('buddy_'+key))??fallback}
- catch{return fallback}
+function notify(message) {
+const box = el('toast');
+box.textContent = message;
+box.style.display = 'block';
+clearTimeout(window.toastTimer);
+window.toastTimer = setTimeout(() => {
+box.style.display = 'none';
+}, 1800);
 }
-function save(key,value){
- try{localStorage.setItem('buddy_'+key,JSON.stringify(value))}
- catch{notify('Browser storage unavailable')}
+
+function openPage(id, remember = true) {
+if (!pageIds.includes(id)) return;
+
+const current = document.querySelector('.page.active');
+
+if (current && current.id !== id && remember) {
+historyStack.push(current.id);
+if (historyStack.length > 30) historyStack.shift();
 }
-function notify(message){
- const el=document.getElementById('toast');
- el.textContent=message;el.style.display='block';
- clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>el.style.display='none',1800);
+
+document.querySelectorAll('.page').forEach(page => {
+page.classList.toggle('active', page.id === id);
+if (page.id === id) page.scrollTop = 0;
+});
+
+el('homeNav').classList.toggle('active', id === 'home');
+el('menuNav').classList.toggle('active', id === 'menu');
 }
-function openPage(id,remember=true){
- if(!pageIds.includes(id))return;
- const current=document.querySelector('.page.active');
- if(current&&current.id!==id&&remember){
-  historyStack.push(current.id);
-  if(historyStack.length>30)historyStack.shift();
- }
- document.querySelectorAll('.page').forEach(p=>{
-  p.classList.toggle('active',p.id===id);
-  if(p.id===id)p.scrollTop=0;
- });
- document.getElementById('homeNav').classList.toggle('active',id==='home');
- document.getElementById('menuNav').classList.toggle('active',id==='menu');
+
+function goBack() {
+const previous = historyStack.pop();
+openPage(previous && pageIds.includes(previous) ? previous : 'menu', false);
 }
-function goBack(){
- const previous=historyStack.pop();
- openPage(previous&&pageIds.includes(previous)?previous:'menu',false);
+
+function updateClock() {
+const now = new Date();
+const time = now.toLocaleTimeString([], {
+hour: '2-digit',
+minute: '2-digit'
+});
+
+el('clock').textContent = time;
+el('topTime').textContent = time;
+
+el('date').textContent = now.toLocaleDateString([], {
+weekday: 'short',
+day: 'numeric',
+month: 'short'
+});
 }
-function updateClock(){
- const now=new Date();
- const time=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
- document.getElementById('clock').textContent=time;
- document.getElementById('topTime').textContent=time;
- document.getElementById('date').textContent=now.toLocaleDateString([],{weekday:'short',day:'numeric',month:'short'});
+
+function makeItem(text, parent) {
+const item = document.createElement('div');
+item.className = 'list-item';
+item.textContent = text;
+el(parent).appendChild(item);
 }
-function makeItem(text,parent){
- const item=document.createElement('div');
- item.className='list-item';item.textContent=text;
- document.getElementById(parent).appendChild(item);
+
+function renderLists() {
+['messageList','noteList','memoryList','reminderList'].forEach(id => {
+el(id).replaceChildren();
+});
+
+messages.forEach(x => makeItem(x, 'messageList'));
+
+notes.forEach(x => {
+makeItem('📝 ' + x.title + '\n' + x.text, 'noteList');
+});
+
+memories.forEach(x => makeItem('🌷 ' + x, 'memoryList'));
+
+reminders.forEach(x => {
+makeItem(
+'⏰ ' + x.title + '\n' +
+(x.time ? new Date(x.time).toLocaleString() : 'No time set') +
+'\n' + (x.done ? 'Completed' : 'Pending'),
+'reminderList'
+);
+});
 }
-function renderLists(){
- ['messageList','noteList','memoryList','reminderList'].forEach(id=>document.getElementById(id).replaceChildren());
- messages.forEach(x=>makeItem(x,'messageList'));
- notes.forEach(x=>makeItem('📝 '+x.title+'\\n'+x.text,'noteList'));
- memories.forEach(x=>makeItem('🌷 '+x,'memoryList'));
- reminders.forEach((x,i)=>{
-  makeItem('⏰ '+x.title+'\\n'+(x.time?new Date(x.time).toLocaleString():'No time set')+'\\n'+(x.done?'Completed':'Pending'),'reminderList');
- });
+
+function addMessage() {
+const input = el('messageInput');
+const value = input.value.trim();
+
+if (!value) return;
+
+messages.push(value);
+save('messages', messages);
+input.value = '';
+renderLists();
+notify('Message saved');
 }
-function addMessage(){
- const input=document.getElementById('messageInput');
- const value=input.value.trim();if(!value)return;
- messages.push(value);save('messages',messages);input.value='';
- renderLists();notify('Message saved');
+
+function addNote() {
+const title = el('noteTitle').value.trim() || 'Untitled';
+const text = el('noteText').value.trim();
+
+if (!text) {
+notify('Write a note first');
+return;
 }
-function addNote(){
- const title=document.getElementById('noteTitle').value.trim()||'Untitled';
- const text=document.getElementById('noteText').value.trim();
- if(!text){notify('Write a note first');return}
- notes.unshift({title,text,created:Date.now()});
- save('notes',notes);renderLists();clearNoteForm();notify('Note saved');
+
+notes.unshift({title, text, created: Date.now()});
+save('notes', notes);
+renderLists();
+clearNoteForm();
+notify('Note saved');
 }
-function clearNoteForm(){
- document.getElementById('noteTitle').value='';
- document.getElementById('noteText').value='';
+
+function clearNoteForm() {
+el('noteTitle').value = '';
+el('noteText').value = '';
 }
-function addMemory(){
- const input=document.getElementById('memoryInput');
- const value=input.value.trim();if(!value)return;
- memories.unshift(value);save('memories',memories);
- input.value='';renderLists();notify('Memory saved');
+
+function addMemory() {
+const input = el('memoryInput');
+const value = input.value.trim();
+
+if (!value) return;
+
+memories.unshift(value);
+save('memories', memories);
+input.value = '';
+renderLists();
+notify('Memory saved');
 }
-function addReminder(){
- const title=document.getElementById('reminderInput').value.trim();
- const time=document.getElementById('reminderTime').value;
- if(!title){notify('Enter a reminder');return}
- reminders.push({title,time:time?new Date(time).toISOString():null,done:false,alerted:false});
- save('reminders',reminders);renderLists();
- document.getElementById('reminderInput').value='';
- document.getElementById('reminderTime').value='';
- notify('Reminder added');
+
+function addReminder() {
+const title = el('reminderInput').value.trim();
+const time = el('reminderTime').value;
+
+if (!title) {
+notify('Enter a reminder');
+return;
 }
-async function enableNotifications(){
- if(!('Notification'in window)){notify('Notifications not supported');return}
- const permission=await Notification.requestPermission();
- notify(permission==='granted'?'Browser alerts enabled':'Permission not granted');
+
+reminders.push({
+title,
+time: time ? new Date(time).toISOString() : null,
+done: false,
+alerted: false
+});
+
+save('reminders', reminders);
+renderLists();
+
+el('reminderInput').value = '';
+el('reminderTime').value = '';
+
+notify('Reminder added');
 }
-function checkReminders(){
- const now=Date.now();let changed=false;
- reminders.forEach(r=>{
-  if(!r.done&&!r.alerted&&r.time&&new Date(r.time).getTime()<=now){
-   r.alerted=true;changed=true;
-   notify('Reminder: '+r.title);
-   if('Notification'in window&&Notification.permission==='granted'){
-    new Notification("Mandy's Buddy",{body:r.title});
-   }
-  }
- });
- if(changed){save('reminders',reminders);renderLists()}
+
+async function enableNotifications() {
+if (!('Notification' in window)) {
+notify('Notifications not supported');
+return;
 }
-function increaseScore(){
- score++;document.getElementById('score').textContent=score;
+
+const permission = await Notification.requestPermission();
+
+notify(
+permission === 'granted'
+? 'Browser alerts enabled'
+: 'Permission not granted'
+);
 }
-function resetScore(){
- score=0;document.getElementById('score').textContent=0;
+
+function checkReminders() {
+const now = Date.now();
+let changed = false;
+
+reminders.forEach(r => {
+if (!r.done && !r.alerted && r.time &&
+new Date(r.time).getTime() <= now) {
+
+r.alerted = true;
+changed = true;
+
+notify('Reminder: ' + r.title);
+
+if ('Notification' in window &&
+Notification.permission === 'granted') {
+new Notification("Mandy's Buddy", {body: r.title});
 }
-function guessNumber(){
- const input=document.getElementById('guess');
- const value=Number(input.value);
- const result=document.getElementById('guessResult');
- if(!input.value||value<1||value>5||!Number.isInteger(value)){
-  result.textContent='Choose a number from 1 to 5.';return;
- }
- const answer=Math.floor(Math.random()*5)+1;
- result.textContent=value===answer?'Correct! 🎉':'It was '+answer+'. Try again!';
 }
-function setFace(mode){
- face=mode;
- const moods={happy:'Feeling happy!',sad:'A little sad.',sleepy:'Feeling sleepy...',surprised:'Surprise!',excited:'Feeling excited!',normal:'Just relaxing.'};
- const eyes=[document.getElementById('eye3'),document.getElementById('eye4')];
- const mouth=document.getElementById('expressionMouth');
- eyes.forEach(e=>{e.style.height=mode==='sleepy'?'10%':'43%';e.style.background=mode==='excited'?'#ff9fc4':'var(--accent)'});
- mouth.style.cssText='';
- if(mode==='sad'){mouth.style.borderBottom='0';mouth.style.borderTop='3px solid var(--accent)'}
- if(mode==='surprised'){mouth.style.width='12%';mouth.style.height='18%';mouth.style.border='3px solid var(--accent)';mouth.style.borderRadius='50%'}
- document.getElementById('expressionText').textContent=moods[mode];
- document.getElementById('homeMood').textContent=moods[mode];
+});
+
+if (changed) {
+save('reminders', reminders);
+renderLists();
 }
-function toggleTheme(){
- dark=!dark;
- const root=document.documentElement;
- const vars=dark?
-  ['#090d16','#151d2b','#202b3c','#f2f6ff','#9baac0']:
-  ['#edf2fa','#ffffff','#dce5f1','#172033','#64748b'];
- ['--bg','--panel','--panel2','--text','--muted'].forEach((v,i)=>root.style.setProperty(v,vars[i]));
- document.getElementById('themeButton').textContent=dark?'Light mode':'Dark mode';
 }
-function toggleAnimations(){
- animations=!animations;
- document.querySelectorAll('.eye').forEach(e=>e.style.animation=animations?'blink 5s infinite':'none');
- document.getElementById('animationButton').textContent=animations?'On':'Off';
+
+function increaseScore() {
+score++;
+el('score').textContent = score;
 }
-function clearAllData(){
- if(!confirm('Delete all saved preview notes, messages, memories and reminders?'))return;
- ['notes','messages','memories','reminders'].forEach(k=>localStorage.removeItem('buddy_'+k));
- notes=[];memories=[];reminders=[];messages=[];
- renderLists();notify('Preview data cleared');
+
+function resetScore() {
+score = 0;
+el('score').textContent = '0';
 }
+
+function guessNumber() {
+const input = el('guess');
+const value = Number(input.value);
+const result = el('guessResult');
+
+if (!input.value || value < 1 || value > 5 ||
+!Number.isInteger(value)) {
+result.textContent = 'Choose a number from 1 to 5.';
+return;
+}
+
+const answer = Math.floor(Math.random() * 5) + 1;
+
+result.textContent = value === answer
+? 'Correct! 🎉'
+: 'It was ' + answer + '. Try again!';
+}
+
+function setFace(mode) {
+const moods = {
+happy: 'Feeling happy!',
+sad: 'A little sad.',
+sleepy: 'Feeling sleepy...',
+surprised: 'Surprise!',
+excited: 'Feeling excited!',
+normal: 'Just relaxing.'
+};
+
+[el('eye3'), el('eye4')].forEach(e => {
+e.style.height = mode === 'sleepy' ? '10%' : '43%';
+e.style.background = mode === 'excited'
+? '#ff9fc4'
+: 'var(--accent)';
+});
+
+const mouth = el('expressionMouth');
+mouth.style.cssText = '';
+
+if (mode === 'sad') {
+mouth.style.borderBottom = '0';
+mouth.style.borderTop = '3px solid var(--accent)';
+}
+
+if (mode === 'surprised') {
+mouth.style.width = '12%';
+mouth.style.height = '18%';
+mouth.style.border = '3px solid var(--accent)';
+mouth.style.borderRadius = '50%';
+}
+
+el('expressionText').textContent = moods[mode];
+el('homeMood').textContent = moods[mode];
+}
+
+function toggleTheme() {
+dark = !dark;
+
+const vars = dark
+? ['#090d16','#151d2b','#202b3c','#f2f6ff','#9baac0']
+: ['#edf2fa','#fff','#dce5f1','#172033','#64748b'];
+
+['--bg','--panel','--panel2','--text','--muted'].forEach((v, i) => {
+document.documentElement.style.setProperty(v, vars[i]);
+});
+
+el('themeButton').textContent = dark ? 'Light mode' : 'Dark mode';
+}
+
+function toggleAnimations() {
+animations = !animations;
+
+document.querySelectorAll('.eye').forEach(e => {
+e.style.animation = animations ? 'blink 5s infinite' : 'none';
+});
+
+el('animationButton').textContent = animations ? 'On' : 'Off';
+}
+
+function clearAllData() {
+if (!confirm('Delete all saved preview notes, messages, memories and reminders?')) {
+return;
+}
+
+['notes','messages','memories','reminders'].forEach(k => {
+localStorage.removeItem('buddy_' + k);
+});
+
+notes = [];
+memories = [];
+reminders = [];
+messages = [];
+
+renderLists();
+notify('Preview data cleared');
+}
+
+// Start the preview.
 updateClock();
-setInterval(updateClock,1000);
-setInterval(checkReminders,10000);
+setInterval(updateClock, 1000);
+setInterval(checkReminders, 10000);
 renderLists();
 </script>
 </body>
