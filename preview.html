@@ -869,4 +869,517 @@ textarea {min-height:65px;resize:vertical}
         checked onchange="toggleAnimation()">
     </div>
 
-    <div class="set
+    
+<div class="setting-row">
+  <div>
+    <b>Eye animations</b>
+    <div class="small-muted">Allow Buddy to blink</div>
+  </div>
+  <input class="toggle" type="checkbox" id="animationToggle"
+    checked onchange="toggleAnimation()">
+</div>
+
+<div class="setting-row">
+  <div>
+    <b>Notifications</b>
+    <div class="small-muted">Browser reminder alerts</div>
+  </div>
+  <button class="secondary" onclick="enableNotifications()">Enable</button>
+</div>
+
+<div class="setting-row">
+  <div>
+    <b>Clear preview data</b>
+    <div class="small-muted">Remove locally saved items</div>
+  </div>
+  <button class="secondary" onclick="clearData()">Clear</button>
+</div>
+
+</div>
+
+<div class="panel">
+  <b style="font-size:12px">About Mandy's Buddy</b>
+  <p class="small-muted">Mandy's Buddy OS · Browser preview</p>
+  <p class="small-muted">A little companion, always here.</p>
+</div>
+</section>
+
+</main>
+
+<nav class="nav">
+  <button class="active" data-page="home" onclick="showPage('home')">
+    <svg class="icon"><use href="#i-home"/></svg>
+    Home
+  </button>
+  <button data-page="apps" onclick="showPage('apps')">
+    <svg class="icon"><use href="#i-apps"/></svg>
+    Apps
+  </button>
+  <button data-page="messages" onclick="showPage('messages')">
+    <svg class="icon"><use href="#i-message"/></svg>
+    Messages
+  </button>
+  <button data-page="memories" onclick="showPage('memories')">
+    <svg class="icon"><use href="#i-heart"/></svg>
+    Memories
+  </button>
+  <button data-page="settings" onclick="showPage('settings')">
+    <svg class="icon"><use href="#i-settings"/></svg>
+    Settings
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+</div>
+</div>
+</div>
+
+<script>
+const storageKey = "mandy_buddy_light_v1";
+
+let data = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+data.messages ||= [];
+data.notes ||= [];
+data.memories ||= [];
+data.reminders ||= [];
+
+function saveData() {
+  localStorage.setItem(storageKey, JSON.stringify(data));
+}
+
+function notify(text) {
+  const toast = document.getElementById("toast");
+  toast.textContent = text;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.remove("active")
+  );
+
+  const page = document.getElementById(id);
+  if (!page) return;
+
+  page.classList.add("active");
+
+  document.querySelectorAll(".nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === id);
+  });
+
+  if (id === "calendar") renderCalendar();
+  if (id === "messages") renderList("messages");
+  if (id === "notes") renderList("notes");
+  if (id === "memories") renderList("memories");
+  if (id === "reminders") renderReminders();
+}
+
+function addItem(type, inputId) {
+  const input = document.getElementById(inputId);
+  const value = input.value.trim();
+
+  if (!value) return notify("Write something first.");
+
+  data[type].unshift({
+    id: Date.now(),
+    text: value,
+    date: new Date().toLocaleString()
+  });
+
+  input.value = "";
+  saveData();
+  renderList(type);
+  notify("Saved successfully.");
+}
+
+function saveNote() {
+  const title = document.getElementById("noteTitle").value.trim();
+  const text = document.getElementById("noteInput").value.trim();
+
+  if (!title && !text) return notify("Write a note first.");
+
+  data.notes.unshift({
+    id: Date.now(),
+    title: title || "Untitled note",
+    text,
+    date: new Date().toLocaleString()
+  });
+
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteInput").value = "";
+
+  saveData();
+  renderList("notes");
+  notify("Note saved.");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[c]));
+}
+
+function renderList(type) {
+  const target = document.getElementById(type + "List");
+  if (!target) return;
+
+  const entries = data[type];
+
+  if (!entries.length) {
+    target.innerHTML = '<div class="empty">Nothing here yet.</div>';
+    return;
+  }
+
+  target.innerHTML = entries.map(item => {
+    const title = item.title
+      ? `<b>${escapeHTML(item.title)}</b>`
+      : "";
+
+    return `
+      <div class="item">
+        <div>
+          ${title}
+          <div>${escapeHTML(item.text)}</div>
+          <small>${escapeHTML(item.date)}</small>
+        </div>
+        <div class="item-actions">
+          <button class="secondary"
+            onclick="deleteItem('${type}',${item.id})"
+            aria-label="Delete item">
+            <svg class="icon"><use href="#i-trash"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function deleteItem(type, id) {
+  data[type] = data[type].filter(item => item.id !== id);
+  saveData();
+
+  if (type === "reminders") renderReminders();
+  else renderList(type);
+
+  notify("Item deleted.");
+}
+
+function addReminder() {
+  const text = document.getElementById("reminderInput").value.trim();
+  const date = document.getElementById("reminderDate").value;
+
+  if (!text || !date) return notify("Enter a reminder and time.");
+
+  data.reminders.unshift({
+    id: Date.now(),
+    text,
+    date,
+    done: false,
+    alerted: false
+  });
+
+  document.getElementById("reminderInput").value = "";
+  document.getElementById("reminderDate").value = "";
+
+  saveData();
+  renderReminders();
+  notify("Reminder added.");
+}
+
+function renderReminders() {
+  const target = document.getElementById("remindersList");
+  if (!target) return;
+
+  if (!data.reminders.length) {
+    target.innerHTML = '<div class="empty">No reminders yet.</div>';
+    return;
+  }
+
+  target.innerHTML = data.reminders.map(r => `
+    <div class="item">
+      <div>
+        <b>${escapeHTML(r.text)}</b>
+        <small>${new Date(r.date).toLocaleString()}</small>
+        <small>${r.done ? "Completed" : "Pending"}</small>
+      </div>
+      <div class="item-actions">
+        <button class="secondary" onclick="toggleReminder(${r.id})">
+          ${r.done ? "Undo" : "Done"}
+        </button>
+        <button class="secondary"
+          onclick="deleteItem('reminders',${r.id})"
+          aria-label="Delete reminder">
+          <svg class="icon"><use href="#i-trash"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleReminder(id) {
+  const item = data.reminders.find(r => r.id === id);
+  if (!item) return;
+
+  item.done = !item.done;
+  saveData();
+  renderReminders();
+}
+
+function renderCalendar() {
+  const now = new Date();
+
+  document.getElementById("calendarDate").textContent =
+    now.toLocaleDateString(undefined, {
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    });
+
+  const today = now.toDateString();
+  const items = data.reminders.filter(r =>
+    new Date(r.date).toDateString() === today
+  );
+
+  const target = document.getElementById("calendarList");
+
+  target.innerHTML = items.length
+    ? items.map(r => `
+      <div class="item">
+        <div>
+          ${escapeHTML(r.text)}
+          <small>${new Date(r.date).toLocaleTimeString([], {
+            hour:"2-digit",
+            minute:"2-digit"
+          })}</small>
+        </div>
+        <span>${r.done ? "✓" : "•"}</span>
+      </div>
+    `).join("")
+    : '<div class="empty">Nothing scheduled for today.</div>';
+}
+
+let tapScore = 0;
+
+function tapGame() {
+  tapScore++;
+  document.getElementById("tapScore").textContent = tapScore;
+}
+
+function resetTap() {
+  tapScore = 0;
+  document.getElementById("tapScore").textContent = "0";
+}
+
+let secretNumber = Math.floor(Math.random() * 10) + 1;
+
+function guessGame() {
+  const guess = Number(document.getElementById("guessInput").value);
+  const result = document.getElementById("guessResult");
+
+  if (guess < 1 || guess > 10 || !Number.isInteger(guess)) {
+    result.textContent = "Choose a whole number from 1 to 10.";
+    return;
+  }
+
+  if (guess === secretNumber) {
+    result.textContent = "You got it! A new number is ready.";
+    secretNumber = Math.floor(Math.random() * 10) + 1;
+  } else {
+    result.textContent =
+      guess < secretNumber ? "Try a higher number." : "Try a lower number.";
+  }
+}
+
+function setExpression(expression) {
+  const face = document.getElementById("expressionFace");
+  face.className = "face " + expression;
+
+  document.getElementById("face").className = "face " + expression;
+
+  const captions = {
+    normal:"I'm right here.",
+    happy:"I'm feeling happy!",
+    sleepy:"Time to rest.",
+    surprised:"Oh! What's that?"
+  };
+
+  document.getElementById("faceCaption").textContent =
+    captions[expression] || captions.normal;
+
+  notify("Expression changed.");
+}
+
+function toggleAnimation() {
+  const enabled = document.getElementById("animationToggle").checked;
+
+  document.querySelectorAll(".eye").forEach(eye => {
+    eye.style.animation = enabled ? "" : "none";
+  });
+
+  localStorage.setItem("buddy_animation", enabled ? "on" : "off");
+  notify(enabled ? "Animations enabled." : "Animations paused.");
+}
+
+function enableNotifications() {
+  if (!("Notification" in window)) {
+    return notify("Notifications are not supported here.");
+  }
+
+  Notification.requestPermission().then(result => {
+    notify(
+      result === "granted"
+        ? "Notifications enabled."
+        : "Permission not granted."
+    );
+  });
+}
+
+function checkReminders() {
+  const now = Date.now();
+
+  data.reminders.forEach(r => {
+    if (!r.done && !r.alerted && new Date(r.date).getTime() <= now) {
+      r.alerted = true;
+      notify("Reminder: " + r.text);
+
+      if ("Notification" in window &&
+          Notification.permission === "granted") {
+        new Notification("Mandy's Buddy", {body:r.text});
+      }
+    }
+  });
+
+  saveData();
+}
+
+setInterval(checkReminders, 10000);
+
+let timerSeconds = 25 * 60;
+let timerInterval = null;
+
+function renderTimer() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+
+  document.getElementById("timerDisplay").textContent =
+    String(minutes).padStart(2,"0") + ":" +
+    String(seconds).padStart(2,"0");
+}
+
+function changeTimer(amount) {
+  if (timerInterval) return notify("Pause the timer first.");
+
+  timerSeconds = Math.max(
+    60,
+    Math.min(90 * 60, timerSeconds + amount * 60)
+  );
+
+  renderTimer();
+}
+
+function toggleTimer() {
+  const button = document.getElementById("timerButton");
+
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    button.textContent = "Resume";
+    return;
+  }
+
+  button.textContent = "Pause";
+
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    renderTimer();
+
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      button.textContent = "Start";
+      notify("Focus session complete!");
+    }
+  },1000);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerSeconds = 25 * 60;
+
+  document.getElementById("timerButton").textContent = "Start";
+  renderTimer();
+}
+
+function clearData() {
+  if (!confirm("Delete all saved preview data?")) return;
+
+  data = {
+    messages:[],
+    notes:[],
+    memories:[],
+    reminders:[]
+  };
+
+  saveData();
+
+  renderList("messages");
+  renderList("notes");
+  renderList("memories");
+  renderReminders();
+
+  notify("Preview data cleared.");
+}
+
+function updateClock() {
+  const now = new Date();
+
+  document.getElementById("statusTime").textContent =
+    now.toLocaleTimeString([], {
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+
+  document.getElementById("homeClock").textContent =
+    now.toLocaleDateString(undefined, {
+      weekday:"long",
+      month:"long",
+      day:"numeric"
+    }) + " · " +
+    now.toLocaleTimeString([], {
+      hour:"2-digit",
+      minute:"2-digit"
+    });
+}
+
+const savedAnimation = localStorage.getItem("buddy_animation");
+
+if (savedAnimation === "off") {
+  document.getElementById("animationToggle").checked = false;
+
+  document.querySelectorAll(".eye").forEach(eye => {
+    eye.style.animation = "none";
+  });
+}
+
+updateClock();
+setInterval(updateClock,1000);
+
+renderList("messages");
+renderList("notes");
+renderList("memories");
+renderReminders();
+renderTimer();
+
+</script>
+</body>
+</html>
+
