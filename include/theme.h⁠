@@ -1,0 +1,30 @@
+
+#ifndef MANDYS_BUDDY_THEME_H
+#define MANDYS_BUDDY_THEME_H
+
+#include <Arduino.h>
+
+enum BuddyTheme {
+    THEME_DARK,
+    THEME_LIGHT,
+    THEME_MIDNIGHT
+};
+
+struct ThemeColors {
+    uint16_t background;
+    uint16_t foreground;
+    uint16_t accent;
+    uint16_t secondary;
+};
+
+void initializeTheme();
+
+void setTheme(BuddyTheme theme);
+
+BuddyTheme getCurrentTheme();
+
+ThemeColors getThemeColors();
+
+const char* getThemeName(BuddyTheme theme);
+
+#endif
