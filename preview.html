@@ -1850,6 +1850,91 @@ function clearData() {
   notify("Preview data cleared.");
 }
 
+const dailyQuotes = [
+  "Small steps still move you forward.",
+  "Curiosity makes ordinary days extraordinary.",
+  "You do not have to do everything at once.",
+  "A kind thought can change someone's day.",
+  "Keep learning. Keep becoming.",
+  "Progress is built one choice at a time.",
+  "There is always something new to discover."
+];
+
+function rotateQuote() {
+  const el = document.getElementById("dailyQuote");
+  const current = el.textContent;
+
+  let next = current;
+
+  while (next === current) {
+    next = dailyQuotes[
+      Math.floor(Math.random() * dailyQuotes.length)
+    ];
+  }
+
+  el.textContent = next;
+}
+
+function updateHomeDashboard() {
+  const now = new Date();
+
+  const time = now.toLocaleTimeString([], {
+    hour:"numeric",
+    minute:"2-digit"
+  });
+
+  const parts = time.split(" ");
+
+  document.getElementById("homeTime").textContent = parts[0];
+  document.getElementById("homePeriod").textContent = parts[1] || "";
+
+  document.getElementById("homeWeekday").textContent =
+    now.toLocaleDateString([], {weekday:"long"});
+
+  document.getElementById("homeDate").textContent =
+    now.toLocaleDateString([], {
+      month:"long",
+      day:"numeric",
+      year:"numeric"
+    });
+
+  const dayNumber = Math.floor(
+    new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    ).getTime() / 86400000
+  );
+
+  const quoteIndex =
+    ((dayNumber % dailyQuotes.length) + dailyQuotes.length)
+    % dailyQuotes.length;
+
+  document.getElementById("dailyQuote").textContent =
+    dailyQuotes[quoteIndex];
+
+  const upcoming = data.reminders
+    .filter(r =>
+      !r.done &&
+      new Date(r.date).getTime() >= now.getTime()
+    )
+    .sort((a,b) =>
+      new Date(a.date) - new Date(b.date)
+    )[0];
+
+  document.getElementById("nextReminder").textContent =
+    upcoming ? upcoming.text : "No upcoming reminders";
+
+  document.getElementById("nextReminderTime").textContent =
+    upcoming
+      ? new Date(upcoming.date).toLocaleString([], {
+          weekday:"short",
+          hour:"numeric",
+          minute:"2-digit"
+        })
+      : "Your day is clear";
+}
+
 function updateClock() {
   const now = new Date();
 
@@ -1859,17 +1944,8 @@ function updateClock() {
       minute:"2-digit"
     });
 
-  document.getElementById("homeClock").textContent =
-    now.toLocaleDateString(undefined, {
-      weekday:"long",
-      month:"long",
-      day:"numeric"
-    }) + " · " +
-    now.toLocaleTimeString([], {
-      hour:"2-digit",
-      minute:"2-digit"
-    });
-}
+  updateHomeDashboard();
+  }
 
 const savedAnimation = localStorage.getItem("buddy_animation");
 
