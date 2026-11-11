@@ -1582,7 +1582,8 @@ function deleteItem(type, id) {
   notify("Item deleted.");
 }
 
-function addReminder() {
+function addReminder()
+  updateHomeDashboard(); {
   const text = document.getElementById("reminderInput").value.trim();
   const date = document.getElementById("reminderDate").value;
 
@@ -1634,7 +1635,8 @@ function renderReminders() {
   `).join("");
 }
 
-function toggleReminder(id) {
+function toggleReminder(id)
+  updateHomeDashboard(); {
   const item = data.reminders.find(r => r.id === id);
   if (!item) return;
 
@@ -1711,9 +1713,11 @@ function guessGame() {
 
 function setExpression(expression) {
   const face = document.getElementById("expressionFace");
+
   face.className = "face " + expression;
 
-  document.getElementById("face").className = "face " + expression;
+  document.getElementById("face").className =
+    "face mini-face " + expression;
 
   const captions = {
     normal:"I'm right here.",
