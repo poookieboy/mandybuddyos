@@ -1,0 +1,19 @@
+
+#ifndef MANDYS_BUDDY_PHOTOS_H
+#define MANDYS_BUDDY_PHOTOS_H
+
+#include <Arduino.h>
+
+void initializePhotos();
+
+void listPhotos();
+
+void displayPhoto(const String& filename);
+
+void deletePhoto(const String& filename);
+
+int getPhotoCount();
+
+bool photoExists(const String& filename);
+
+#endif
