@@ -722,11 +722,29 @@ textarea {min-height:65px;resize:vertical}
 <div class="screen">
 
 <div class="status">
-  <span>MANDY'S BUDDY</span>
-  <div class="status-right">
+  <span class="status-brand">MANDY'S BUDDY</span>
+
+  <div class="status-island">
     <span id="statusTime">--:--</span>
-    <span class="dot"></span>
-    <span>100%</span>
+  </div>
+
+  <div class="status-right">
+    <svg class="status-symbol" viewBox="0 0 20 16">
+      <path d="M2 5.5a12 12 0 0 1 16 0M5 8.5a7.5 7.5 0 0 1 10 0M8 11.5a3 3 0 0 1 4 0"/>
+      <circle cx="10" cy="14" r="1" fill="currentColor"/>
+    </svg>
+
+    <svg class="status-symbol bluetooth" viewBox="0 0 14 18">
+      <path d="M7 1v16l5-4.5L2 5.5M7 9l5-4.5L7 1"/>
+    </svg>
+
+    <svg class="battery-icon" viewBox="0 0 30 16">
+      <rect x="1" y="2" width="25" height="12" rx="3"/>
+      <path class="battery-fill" d="M4 4h19v8H4z"/>
+      <path d="M27 6h2v4h-2z"/>
+    </svg>
+
+    <span id="batteryPercent">100%</span>
   </div>
 </div>
 
