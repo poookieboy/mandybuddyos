@@ -1,0 +1,74 @@
+
+#include "sync.h"
+
+static bool syncConnected = false;
+static String currentServer = "";
+
+void initializeSync() {
+    syncConnected = false;
+    currentServer = "";
+
+    Serial.println("Initializing synchronisation...");
+    Serial.println("Sync system ready.");
+}
+
+bool connectToSyncServer(const String& serverAddress) {
+    if (serverAddress.length() == 0) {
+        Serial.println("Sync server address is empty.");
+        return false;
+    }
+
+    currentServer = serverAddress;
+
+    Serial.print("Sync server configured: ");
+    Serial.println(currentServer);
+
+    Serial.println("Actual server connection is not implemented yet.");
+
+    syncConnected = false;
+    return false;
+}
+
+void syncMessages() {
+    if (!syncConnected) {
+        Serial.println("Cannot sync messages: disconnected.");
+        return;
+    }
+
+    Serial.println("Synchronising messages...");
+}
+
+void syncNotes() {
+    if (!syncConnected) {
+        Serial.println("Cannot sync notes: disconnected.");
+        return;
+    }
+
+    Serial.println("Synchronising notes...");
+}
+
+void syncReminders() {
+    if (!syncConnected) {
+        Serial.println("Cannot sync reminders: disconnected.");
+        return;
+    }
+
+    Serial.println("Synchronising reminders...");
+}
+
+void disconnectSync() {
+    syncConnected = false;
+    Serial.println("Synchronisation disconnected.");
+}
+
+bool isSyncConnected() {
+    return syncConnected;
+}
+
+String getSyncStatus() {
+    if (syncConnected) {
+        return "Connected";
+    }
+
+    return "Disconnected";
+}
