@@ -1,0 +1,73 @@
+
+#include "theme.h"
+
+static BuddyTheme currentTheme = THEME_DARK;
+
+void initializeTheme() {
+    currentTheme = THEME_DARK;
+
+    Serial.println("Initializing theme manager...");
+    Serial.println("Default theme: Dark");
+}
+
+void setTheme(BuddyTheme theme) {
+    if (theme < THEME_DARK || theme > THEME_MIDNIGHT) {
+        Serial.println("Invalid theme selected.");
+        return;
+    }
+
+    currentTheme = theme;
+
+    Serial.print("Theme changed to: ");
+    Serial.println(getThemeName(currentTheme));
+}
+
+BuddyTheme getCurrentTheme() {
+    return currentTheme;
+}
+
+ThemeColors getThemeColors() {
+    ThemeColors colors;
+
+    switch (currentTheme) {
+        case THEME_LIGHT:
+            colors.background = 0xFFFF;
+            colors.foreground = 0x0000;
+            colors.accent = 0x001F;
+            colors.secondary = 0xC618;
+            break;
+
+        case THEME_MIDNIGHT:
+            colors.background = 0x0841;
+            colors.foreground = 0xFFFF;
+            colors.accent = 0x781F;
+            colors.secondary = 0x4208;
+            break;
+
+        case THEME_DARK:
+        default:
+            colors.background = 0x0000;
+            colors.foreground = 0xFFFF;
+            colors.accent = 0x07FF;
+            colors.secondary = 0x7BEF;
+            break;
+    }
+
+    return colors;
+}
+
+const char* getThemeName(BuddyTheme theme) {
+    switch (theme) {
+        case THEME_DARK:
+            return "Dark";
+
+        case THEME_LIGHT:
+            return "Light";
+
+        case THEME_MIDNIGHT:
+            return "Midnight";
+
+        default:
+            return "Unknown";
+    }
+}
