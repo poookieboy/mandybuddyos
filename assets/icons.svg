@@ -1,0 +1,116 @@
+
+<svg xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#B9E7FF"/>
+    <stop offset="1" stop-color="#477BE0"/>
+  </linearGradient>
+  <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#D5C8FF"/>
+    <stop offset="1" stop-color="#8B78E8"/>
+  </linearGradient>
+  <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#FFC5D9"/>
+    <stop offset="1" stop-color="#E879A7"/>
+  </linearGradient>
+  <linearGradient id="mint" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#BDF5E2"/>
+    <stop offset="1" stop-color="#45B99A"/>
+  </linearGradient>
+  <linearGradient id="amber" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#FFE4A8"/>
+    <stop offset="1" stop-color="#E7A344"/>
+  </linearGradient>
+  <linearGradient id="coral" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#FFC3B4"/>
+    <stop offset="1" stop-color="#E97869"/>
+  </linearGradient>
+</defs>
+
+<symbol id="home" viewBox="0 0 64 64">
+  <path d="M9 29 32 10l23 19v24H9Z" fill="url(#blue)"/>
+  <path d="M25 56V37h14v19" fill="#14243A"/>
+  <path d="m5 30 27-23 27 23" fill="none" stroke="#D9F1FF" stroke-width="4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="photos" viewBox="0 0 64 64">
+  <rect x="7" y="9" width="50" height="46" rx="12" fill="url(#violet)"/>
+  <circle cx="22" cy="24" r="5" fill="#FFF"/>
+  <path d="m11 47 14-14 9 9 7-7 13 13" fill="none" stroke="#FFF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+<symbol id="messages" viewBox="0 0 64 64">
+  <path d="M9 14a9 9 0 0 1 9-9h28a9 9 0 0 1 9 9v23a9 9 0 0 1-9 9H27L13 57v-11a9 9 0 0 1-4-9Z" fill="url(#mint)"/>
+  <path d="M20 23h24M20 32h17" stroke="#123A36" stroke-width="4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="notes" viewBox="0 0 64 64">
+  <path d="M15 6h26l10 10v39H11V10a4 4 0 0 1 4-4Z" fill="url(#amber)"/>
+  <path d="M40 7v12h11M20 29h22M20 38h22M20 47h15" stroke="#66451B" stroke-width="3.5" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="memories" viewBox="0 0 64 64">
+  <path d="M32 55S7 40 7 23C7 10 24 5 32 19 40 5 57 10 57 23c0 17-25 32-25 32Z" fill="url(#pink)"/>
+  <path d="M19 26c2-5 7-7 11-4" stroke="#FFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+</symbol>
+
+<symbol id="calendar" viewBox="0 0 64 64">
+  <rect x="7" y="12" width="50" height="45" rx="9" fill="url(#coral)"/>
+  <path d="M7 23h50M20 7v11M44 7v11" stroke="#FFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="M19 33h7m7 0h7m-21 9h7m7 0h7" stroke="#763A38" stroke-width="3.5" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="reminders" viewBox="0 0 64 64">
+  <path d="M17 45V28a15 15 0 0 1 30 0v17l5 6H12Z" fill="url(#amber)"/>
+  <path d="M27 55a5 5 0 0 0 10 0M32 8V4" fill="none" stroke="#FFF" stroke-width="4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="games" viewBox="0 0 64 64">
+  <path d="M17 19h30a11 11 0 0 1 10 7l5 19a7 7 0 0 1-11 7L41 43H23l-10 9A7 7 0 0 1 2 45l5-19a11 11 0 0 1 10-7Z" fill="url(#violet)"/>
+  <path d="M18 29v12m-6-6h12m20-3h.1m7 7h.1" stroke="#34265F" stroke-width="4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="expressions" viewBox="0 0 64 64">
+  <circle cx="32" cy="32" r="26" fill="url(#blue)"/>
+  <ellipse cx="23" cy="28" rx="3.5" ry="5" fill="#183451"/>
+  <ellipse cx="41" cy="28" rx="3.5" ry="5" fill="#183451"/>
+  <path d="M22 39q10 12 20 0" fill="none" stroke="#183451" stroke-width="3.5" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="settings" viewBox="0 0 64 64">
+  <path d="m27 5 10 0 2 8 6 3 7-3 7 9-5 6v8l5 6-7 9-7-3-6 3-2 8H27l-2-8-6-3-7 3-7-9 5-6v-8l-5-6 7-9 7 3 6-3Z" fill="url(#blue)"/>
+  <circle cx="32" cy="32" r="10" fill="#14243A"/>
+  <circle cx="32" cy="32" r="5" fill="#B9E7FF"/>
+</symbol>
+
+<symbol id="sounds" viewBox="0 0 64 64">
+  <path d="M8 25h12l15-12v38L20 39H8Z" fill="url(#mint)"/>
+  <path d="M44 23q12 9 0 18m5-27q20 18 0 36" fill="none" stroke="#8EDFC9" stroke-width="4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="weather" viewBox="0 0 64 64">
+  <circle cx="25" cy="25" r="12" fill="url(#amber)"/>
+  <path d="M24 48h25a9 9 0 0 0 0-18 14 14 0 0 0-27-2 10 10 0 0 0 2 20Z" fill="url(#blue)"/>
+</symbol>
+
+<symbol id="timer" viewBox="0 0 64 64">
+  <circle cx="32" cy="35" r="23" fill="url(#violet)"/>
+  <path d="M32 20v16l11 7M25 6h14" stroke="#382D67" stroke-width="4" stroke-linecap="round"/>
+</symbol>
+
+<symbol id="connectivity" viewBox="0 0 64 64">
+  <path d="M7 23Q32 2 57 23M15 33q17-15 34 0M23 43q9-8 18 0" fill="none" stroke="url(#blue)" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="32" cy="53" r="4" fill="#B9E7FF"/>
+</symbol>
+
+<symbol id="battery" viewBox="0 0 64 64">
+  <rect x="7" y="17" width="47" height="31" rx="7" fill="none" stroke="url(#mint)" stroke-width="5"/>
+  <path d="M55 26h5v13h-5M29 21l-8 14h8l-3 9 15-17h-9l4-6Z" fill="#BDF5E2"/>
+</symbol>
+
+<symbol id="about" viewBox="0 0 64 64">
+  <path d="m32 5 7 18 19 2-15 12 5 19-16-11-16 11 5-19L6 25l19-2Z" fill="url(#amber)"/>
+  <circle cx="32" cy="31" r="5" fill="#FFF3D6"/>
+</symbol>
+</svg>
+    
