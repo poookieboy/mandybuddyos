@@ -1,0 +1,33 @@
+
+#ifndef MANDYS_BUDDY_INPUT_H
+#define MANDYS_BUDDY_INPUT_H
+
+#include <Arduino.h>
+
+enum InputType {
+    INPUT_NONE,
+    INPUT_TAP,
+    INPUT_LONG_PRESS,
+    INPUT_SWIPE_LEFT,
+    INPUT_SWIPE_RIGHT,
+    INPUT_SWIPE_UP,
+    INPUT_SWIPE_DOWN
+};
+
+struct InputEvent {
+    InputType type;
+    int x;
+    int y;
+};
+
+void initializeInput();
+
+void updateInput();
+
+InputEvent getInputEvent();
+
+bool isInputAvailable();
+
+void clearInputEvent();
+
+#endif
