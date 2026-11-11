@@ -752,52 +752,89 @@ textarea {min-height:65px;resize:vertical}
 
 <!-- HOME -->
 <section class="page active" id="home">
-  <div class="header">
-    <div>
-      <div class="brand">Mandy's <span>Buddy</span></div>
-      <div class="small-muted">Your little everyday companion</div>
+
+  <div class="home-top">
+
+    <button class="buddy-mini"
+      onclick="showPage('expressions')">
+
+      <div class="face mini-face" id="face">
+        <div class="eye"></div>
+        <div class="eye"></div>
+      </div>
+
+      <span class="buddy-status" id="faceCaption">
+        I'm right here.
+      </span>
+
+    </button>
+
+    <div class="home-datetime">
+
+      <div class="home-time">
+        <span id="homeTime">--:--</span>
+        <small id="homePeriod"></small>
+      </div>
+
+      <div class="home-weekday" id="homeWeekday">
+        Loading day
+      </div>
+
+      <div class="home-date" id="homeDate">
+        Loading date
+      </div>
+
     </div>
-    <div class="avatar">M</div>
+
   </div>
 
-  <div class="face-card">
-    <div class="face" id="face">
-      <div class="eye"></div>
-      <div class="eye"></div>
-    </div>
-    <div class="face-caption" id="faceCaption">I'm right here.</div>
-    <div class="greeting" id="greeting">Hello, Mandy!</div>
-    <div class="sub-greeting">It's nice to have you here.</div>
-    <div class="clock" id="homeClock">Loading time...</div>
+  <button class="quote-card"
+    onclick="rotateQuote()">
+
+    <span class="quote-label">
+      A LITTLE THOUGHT FOR TODAY
+    </span>
+
+    <span class="quote-text" id="dailyQuote">
+      Small steps still move you forward.
+    </span>
+
+    <span class="quote-hint">
+      Tap for another thought
+    </span>
+
+  </button>
+
+  <div class="home-widgets">
+
+    <button class="home-widget"
+      onclick="notify('Weather updates will be available when a weather source is connected.')">
+
+      <span class="widget-icon">☀</span>
+      <span class="widget-heading">WEATHER</span>
+      <b class="widget-main">Weather</b>
+      <small>Not connected yet</small>
+
+    </button>
+
+    <button class="home-widget"
+      onclick="showPage('reminders')">
+
+      <span class="widget-icon">◷</span>
+      <span class="widget-heading">UP NEXT</span>
+
+      <b class="widget-main" id="nextReminder">
+        No upcoming reminders
+      </b>
+
+      <small id="nextReminderTime">
+        Your day is clear
+      </small>
+
+    </button>
+
   </div>
 
-  <div class="section-title">Your everyday tools</div>
-
-  <div class="quick-grid">
-    <button class="quick" onclick="showPage('messages')">
-      <div class="icon-box">
-        <svg class="icon"><use href="#i-message"/></svg>
-      </div>
-      <b>Messages</b>
-      <small>Your messages</small>
-    </button>
-
-    <button class="quick" onclick="showPage('notes')">
-      <div class="icon-box">
-        <svg class="icon"><use href="#i-notes"/></svg>
-      </div>
-      <b>Notes</b>
-      <small>Save an idea</small>
-    </button>
-
-    <button class="quick" onclick="showPage('reminders')">
-      <div class="icon-box">
-        <svg class="icon"><use href="#i-bell"/></svg>
-      </div>
-      <b>Reminders</b>
-      <small>Stay organised</small>
-    </button>
-  </div>
 </section>
 
 <!-- APPS -->
