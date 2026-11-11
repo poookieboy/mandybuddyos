@@ -1,4 +1,3 @@
-
 name: Mandy's Buddy OS Build
 
 on:
@@ -15,6 +14,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Inspect repository structure
+        run: |
+          echo "CURRENT DIRECTORY:"
+          pwd
+          echo "ROOT FILES:"
+          ls -la
+          echo "PROJECT FILES:"
+          find . -maxdepth 5 -type f | sort
+          echo "APP HEADER SEARCH:"
+          find . -iname "app.h" -print
 
       - name: Set up Python
         uses: actions/setup-python@v5
