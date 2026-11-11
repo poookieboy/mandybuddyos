@@ -872,7 +872,18 @@ function toggleTheme(){
   }
 }
 
-function toggleAnimations(){
-  animations=!animations;
 
-  doc
+function toggleAnimations(){
+  animations = !animations;
+
+  document.querySelectorAll('.eye').forEach(eye => {
+    eye.style.animation = animations ? 'blink 5s infinite' : 'none';
+  });
+
+  document.getElementById('animationButton').textContent =
+    animations ? 'On' : 'Off';
+}
+</script>
+</body>
+</html>
+
