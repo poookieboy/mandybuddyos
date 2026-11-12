@@ -1735,39 +1735,6 @@ document.addEventListener("keydown", event => {
   }
 });
     
-
-/* KEYBOARD PREVIEW SUPPORT */
-
-let mouseStartY = 0;
-let mouseStartX = 0;
-
-screen.addEventListener("mousedown", event => {
-  mouseStartX = event.clientX;
-  mouseStartY = event.clientY;
-});
-
-screen.addEventListener("mouseup", event => {
-  const deltaY = event.clientY - mouseStartY;
-  const deltaX = event.clientX - mouseStartX;
-
-  if (Math.abs(deltaY) > 45 && Math.abs(deltaX) < 65 && mouseStartY < 90) {
-    const middle = screen.getBoundingClientRect().left +
-      screen.getBoundingClientRect().width / 2;
-
-    if (deltaY > 0) {
-      togglePanel(mouseStartX < middle
-        ? "notificationPanel"
-        : "controlPanel");
-    } else {
-      closePanels();
-    }
-  }
-});
-
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closePanels();
-});
-
 /* INITIALIZE */
 
 updateClock();
