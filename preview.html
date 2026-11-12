@@ -2270,34 +2270,74 @@ function addReminder() {
 }
 
 function renderReminders() {
-  const container = document.getElementById("remindersList");
-  if (!container) return;
+let reminderFilter = "all";
 
-  if (!data.reminders.length) {
-    container.innerHTML = '<div class="empty">No reminders yet.</div>';
+function toggleReminderForm(force) {
+  const form = document.getElementById("reminderForm");
+  const shouldOpen = typeof force === "boolean"
+    ? force
+    : form.hidden;
+
+  form.hidden = !shouldOpen;
+
+  if (shouldOpen) {
+    const dateInput = document.getElementById("reminderDate");
+
+    if (!dateInput.value) {
+      const defaultDate = new Date(Date.now() + 60 * 60 * 1000);
+      defaultDate.setMinutes(
+        Math.ceil(defaultDate.getMinutes() / 5) * 5,
+        0,
+        0
+      );
+
+      const localDate = new Date(
+        defaultDate.getTime() - defaultDate.getTimezoneOffset() * 60000
+      );
+
+      dateInput.value = localDate.toISOString().slice(0, 16);
+    }
+
+    document.getElementById("reminderInput").focus();
+  }
+}
+
+function setReminderFilter(filter, button) {
+  reminderFilter = filter;
+
+  document.querySelectorAll(".reminder-filters button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  if (button) button.classList.add("active");
+
+  renderReminders();
+}
+
+function addReminder() {
+  const text = document.getElementById("reminderInput").value.trim();
+  const date = document.getElementById("reminderDate").value;
+
+  if (!text) {
+    notify("Enter a reminder.");
     return;
   }
 
-  const sorted = [...data.reminders].sort((a,b) =>
-    (a.date || "").localeCompare(b.date || "")
-  );
+  data.reminders.push({
+    id: Date.now(),
+    text,
+    date,
+    done: false,
+    alerted: false
+  });
 
-  container.innerHTML = sorted.map(item => `
-    <div class="item">
-      <div>
-        <b style="${item.done ? 'text-decoration:line-through;color:#8994a4' : ''}">
-          ${escapeHTML(item.text)}
-        </b>
-        <small>${item.date ? new Date(item.date).toLocaleString() : "No date set"}</small>
-      </div>
-      <div class="item-actions">
-        <button class="secondary" onclick="toggleReminder(${item.id})">
-          ${item.done ? "Undo" : "Done"}
-        </button>
-        <button class="secondary" onclick="deleteReminder(${item.id})">×</button>
-      </div>
-    </div>
-  `).join("");
+  document.getElementById("reminderInput").value = "";
+  document.getElementById("reminderDate").value = "";
+
+  saveData();
+  toggleReminderForm(false);
+  renderReminders();
+  updateHomeReminder();
+  notify("Reminder added.");
 }
 
 function toggleReminder(id) {
