@@ -4,14 +4,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f5f7fa">
+<meta name="theme-color" content="#f4f6f9">
 <title>Mandy's Buddy OS</title>
 
 <style>
 :root {
   --bg:#f4f6f9;
   --surface:#fff;
-  --surface2:#f0f3f7;
+  --surface2:#eef2f7;
   --text:#202b3b;
   --muted:#788598;
   --blue:#347fe5;
@@ -26,7 +26,7 @@
 body {
   margin:0;
   min-height:100vh;
-  padding:15px;
+  padding:12px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -40,16 +40,16 @@ button {cursor:pointer}
 
 .device {
   width:min(900px,100%);
-  padding:14px;
-  border-radius:32px;
+  padding:12px;
+  border-radius:28px;
   background:linear-gradient(145deg,#fff,#e9edf2);
   border:1px solid #fff;
   box-shadow:0 25px 70px rgba(27,43,66,.17);
 }
 
 .bezel {
-  padding:9px;
-  border-radius:24px;
+  padding:8px;
+  border-radius:22px;
   background:#182334;
 }
 
@@ -60,19 +60,15 @@ button {cursor:pointer}
   min-height:390px;
   max-height:650px;
   overflow:hidden;
-  border-radius:16px;
+  border-radius:15px;
   background:var(--bg);
   display:flex;
   flex-direction:column;
 }
 
-/* SVG ICON SYSTEM */
-
 svg.icon {
-  width:21px;
-  height:21px;
-  display:block;
-  flex-shrink:0;
+  width:20px;
+  height:20px;
   fill:none;
   stroke:currentColor;
   stroke-width:1.8;
@@ -80,113 +76,118 @@ svg.icon {
   stroke-linejoin:round;
 }
 
-.icon-box {
-  width:42px;
-  height:42px;
-  display:grid;
-  place-items:center;
-  flex-shrink:0;
-  border-radius:14px;
-  color:var(--blue);
-  background:var(--blue-light);
-}
-
-.icon-box svg {width:23px;height:23px}
-
 .status {
-  height:37px;
+  position:relative;
+  height:30px;
   flex-shrink:0;
-  padding:0 17px;
+  padding:0 12px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:700;
-  background:rgba(255,255,255,.9);
+  background:rgba(255,255,255,.96);
   border-bottom:1px solid var(--border);
+  color:var(--muted);
+  font-size:9px;
+  font-weight:750;
+  z-index:2;
+}
+
+.status-brand {
+  font-size:8px;
+  letter-spacing:.6px;
+}
+
+.status-island {
+  position:absolute;
+  left:50%;
+  top:4px;
+  transform:translateX(-50%);
+  min-width:78px;
+  height:21px;
+  padding:0 13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:20px;
+  background:#172438;
+  color:white;
+  font-size:9px;
 }
 
 .status-right {
   display:flex;
-  gap:9px;
   align-items:center;
+  gap:5px;
 }
 
-.dot {
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#36bd85;
+.status-symbol {
+  width:13px;
+  height:13px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.7;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
+
+.status-symbol.bluetooth {width:10px}
+
+.battery-icon {
+  width:23px;
+  height:13px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.3;
+  stroke-linejoin:round;
+}
+
+.battery-icon .battery-fill {
+  fill:#39b982;
+  stroke:none;
+}
+
+#batteryPercent {font-size:8px}
 
 .content {
   flex:1;
   min-height:0;
   overflow-y:auto;
-  padding:17px;
+  padding:10px;
   scrollbar-width:thin;
 }
 
 .page {display:none}
 .page.active {display:block}
 
-.header {
+#home.active {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.home-top {
+  height:78px;
+  min-height:78px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin-bottom:16px;
+  gap:10px;
 }
 
-.brand {
-  font-size:17px;
-  font-weight:850;
-  letter-spacing:-.6px;
-}
-
-.brand span {color:var(--blue)}
-
-.small-muted {
-  margin-top:3px;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.avatar {
-  width:36px;
-  height:36px;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:var(--blue-light);
-  color:var(--blue);
-  font-weight:800;
-}
-
-.face-card {
-  min-height:175px;
-  padding:15px;
+.buddy-mini {
+  height:70px;
+  min-width:112px;
+  padding:7px 10px;
+  border:0;
+  border-radius:15px;
+  background:linear-gradient(145deg,#1d3049,#101b2b);
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  position:relative;
-  overflow:hidden;
-  border-radius:20px;
-  color:white;
-  background:linear-gradient(140deg,#1c2c43,#101b2b);
-  box-shadow:0 8px 22px rgba(20,36,58,.16);
-}
-
-.face-card:before {
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  top:-110px;
-  right:-35px;
-  border-radius:50%;
-  background:rgba(80,157,230,.10);
+  gap:5px;
+  color:#dce9f8;
 }
 
 .face {
@@ -196,6 +197,14 @@ svg.icon {
   justify-content:center;
   gap:23px;
   position:relative;
+}
+
+.face.mini-face {
+  height:36px;
+  gap:13px;
+  margin:0;
+  background:transparent;
+  border-radius:0;
 }
 
 .eye {
@@ -218,100 +227,155 @@ svg.icon {
 .face.happy .eye {height:19px}
 .face.surprised .eye {height:40px}
 
-.face-caption {
-  margin-top:4px;
+.mini-face .eye {
+  width:12px;
+  height:18px;
+  border-radius:50%;
+  background:#8ed6ff;
+  box-shadow:0 0 10px #68caff88;
+}
+
+.buddy-status {
+  font-size:8px;
   color:#c9d9ec;
-  font-size:12px;
 }
 
-.greeting {
-  margin-top:12px;
-  font-size:20px;
+.home-datetime {
+  flex:1;
+  min-width:0;
+  text-align:right;
+}
+
+.home-time {
+  display:flex;
+  justify-content:flex-end;
+  align-items:baseline;
+  gap:4px;
+  font-size:27px;
+  line-height:1;
   font-weight:850;
-  letter-spacing:-.7px;
+  letter-spacing:-1.2px;
 }
 
-.sub-greeting {
-  margin-top:4px;
-  color:#bdcde0;
-  font-size:11px;
+.home-time small {
+  font-size:9px;
+  color:var(--muted);
 }
 
-.clock {
-  margin-top:9px;
-  color:#dce8f6;
-  font-size:12px;
-}
-
-.section-title {
-  margin:18px 0 10px;
-  font-size:14px;
+.home-weekday {
+  margin-top:6px;
+  font-size:10px;
   font-weight:800;
 }
 
-.quick-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:9px;
-}
-
-.quick {
-  padding:12px 8px;
-  min-width:0;
-  text-align:center;
-  border:1px solid var(--border);
-  border-radius:15px;
-  background:var(--surface);
-  transition:.18s;
-}
-
-.quick:active,.app-tile:active {
-  transform:scale(.97);
-  background:#f0f5fc;
-}
-
-.quick .icon-box {
-  width:36px;
-  height:36px;
-  margin:0 auto 7px;
-}
-
-.quick b {font-size:11px}
-
-.quick small {
-  display:block;
-  margin-top:3px;
-  color:var(--muted);
+.home-date {
+  margin-top:2px;
   font-size:9px;
+  color:var(--muted);
+}
+
+.quote-card {
+  width:100%;
+  min-height:67px;
+  padding:9px 12px;
+  text-align:left;
+  border:1px solid #dce8f7;
+  border-radius:14px;
+  background:linear-gradient(110deg,#eaf3ff,#f7faff);
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  color:var(--text);
+}
+
+.quote-label,.widget-heading {
+  font-size:7px;
+  letter-spacing:1px;
+  font-weight:850;
+  color:#6681a4;
+}
+
+.quote-text {
+  font-size:11px;
+  line-height:1.3;
+  font-weight:750;
+}
+
+.quote-hint {
+  font-size:7px;
+  color:#8392a7;
+}
+
+.home-widgets {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  flex:1;
+  min-height:65px;
+}
+
+.home-widget {
+  min-width:0;
+  padding:9px 10px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:white;
+  text-align:left;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:3px;
+  color:var(--text);
+  overflow:hidden;
+}
+
+.widget-icon {
+  font-size:15px;
+  color:var(--blue);
+  line-height:1;
+}
+
+.widget-main {
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:10px;
+  line-height:1.2;
+}
+
+.home-widget small {
+  font-size:8px;
+  color:var(--muted);
 }
 
 .nav {
-  height:56px;
+  height:43px;
   flex-shrink:0;
   display:flex;
   align-items:center;
-  justify-content:space-around;
+  justify-content:space-evenly;
   border-top:1px solid var(--border);
   background:#fff;
 }
 
 .nav button {
-  min-width:48px;
-  padding:5px 4px;
+  min-width:65px;
+  padding:4px;
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:3px;
+  gap:2px;
   border:0;
   background:transparent;
   color:#8994a4;
-  font-size:10px;
-  font-weight:650;
+  font-size:8px;
+  font-weight:700;
 }
 
 .nav button svg {
-  width:19px;
-  height:19px;
+  width:16px;
+  height:16px;
 }
 
 .nav button.active {color:var(--blue)}
@@ -324,7 +388,7 @@ svg.icon {
 }
 
 .page-description {
-  margin-bottom:17px;
+  margin-bottom:15px;
   color:var(--muted);
   font-size:11px;
 }
@@ -383,11 +447,6 @@ textarea {min-height:65px;resize:vertical}
   font-weight:650;
 }
 
-.secondary svg,.primary svg {
-  width:15px;
-  height:15px;
-}
-
 .item {
   padding:11px 0;
   display:flex;
@@ -416,11 +475,11 @@ textarea {min-height:65px;resize:vertical}
 .apps-grid {
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px;
+  gap:9px;
 }
 
 .app-tile {
-  min-height:88px;
+  min-height:82px;
   padding:10px 5px;
   display:flex;
   flex-direction:column;
@@ -431,19 +490,18 @@ textarea {min-height:65px;resize:vertical}
   border-radius:16px;
   background:white;
   color:var(--text);
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
-  transition:.18s;
 }
 
-.app-tile .icon-box {
-  width:40px;
-  height:40px;
-}
-
-.app-tile .icon-box svg {
-  width:22px;
-  height:22px;
+.icon-box {
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:var(--blue-light);
+  color:var(--blue);
 }
 
 .setting-row {
@@ -474,8 +532,8 @@ textarea {min-height:65px;resize:vertical}
 
 .toast {
   position:absolute;
-  z-index:5;
-  bottom:65px;
+  z-index:50;
+  bottom:55px;
   left:50%;
   padding:9px 14px;
   transform:translateX(-50%);
@@ -491,35 +549,8 @@ textarea {min-height:65px;resize:vertical}
 
 .toast.show {opacity:1}
 
-@media(max-width:550px) {
-  body {padding:7px}
-  .device {padding:7px;border-radius:22px}
-  .bezel {padding:5px;border-radius:17px}
-  .screen {min-height:0;aspect-ratio:4/3;border-radius:12px}
-  .status {height:27px;padding:0 10px;font-size:9px}
-  .content {padding:11px}
-  .face-card {min-height:145px;border-radius:15px}
-  .face {height:60px}
-  .eye {width:20px;height:28px}
-  .greeting {margin-top:8px;font-size:16px}
-  .nav {height:46px}
-  .nav button {font-size:8px}
-  .nav button svg {width:17px;height:17px}
-  .quick-grid {gap:6px}
-  .quick {padding:8px 3px}
-  .quick .icon-box {width:30px;height:30px}
-  .quick .icon-box svg {width:19px;height:19px}
-  .quick b {font-size:9px}
-  .quick small {font-size:8px}
-  .apps-grid {gap:6px}
-  .app-tile {min-height:72px;font-size:9px}
-  .app-tile .icon-box {width:34px;height:34px}
-  .app-tile .icon-box svg {width:20px;height:20px}
-  .page-title {font-size:17px}
-  .section-title {font-size:12px}
-} 
-  
 /* PULL-DOWN PANELS */
+
 .pull-panel {
   position:absolute;
   z-index:30;
@@ -533,24 +564,30 @@ textarea {min-height:65px;resize:vertical}
   box-shadow:0 12px 35px rgba(20,35,55,.2);
   transition:transform .26s ease;
 }
+
 .pull-panel.left {
   left:0;
   transform:translateY(-110%);
   border-radius:0 0 18px 0;
 }
+
 .pull-panel.right {
   right:0;
   transform:translateY(-110%);
   border-radius:0 0 0 18px;
 }
+
 .pull-panel.open {transform:translateY(0)}
+
 .panel-head {
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:14px;
 }
-.panel-head b {font-size:16px}
+
+.panel-head b {font-size:15px}
+
 .panel-close {
   border:0;
   border-radius:10px;
@@ -559,18 +596,15 @@ textarea {min-height:65px;resize:vertical}
   color:#40516a;
   font-size:18px;
 }
-.panel-date {
-  color:var(--muted);
-  font-size:11px;
-  margin-bottom:13px;
-}
+
 .quick-grid {
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
 }
+
 .quick-toggle {
-  min-height:68px;
+  min-height:65px;
   padding:10px;
   text-align:left;
   border:1px solid var(--border);
@@ -580,16 +614,19 @@ textarea {min-height:65px;resize:vertical}
   font-size:11px;
   font-weight:750;
 }
+
 .quick-toggle.active {
   background:var(--blue-light);
   border-color:#c9dcff;
   color:var(--blue);
 }
+
 .quick-toggle small {
   display:block;
   margin-top:5px;
   color:var(--muted);
 }
+
 .panel-card {
   background:white;
   border:1px solid var(--border);
@@ -597,383 +634,50 @@ textarea {min-height:65px;resize:vertical}
   padding:12px;
   margin-top:10px;
 }
-.panel-card b {font-size:12px}
-.panel-card label {
-  display:flex;
-  justify-content:space-between;
-  margin:12px 0 5px;
-  font-size:11px;
-}
-.panel-card input {width:100%;accent-color:var(--blue)}
+
 .notice {
   padding:11px 0;
   border-bottom:1px solid var(--border);
   font-size:11px;
 }
+
 .notice:last-child {border:0}
+
 .notice small {
   display:block;
   margin-top:4px;
   color:var(--muted);
 }
+
 .panel-empty {
   padding:20px 5px;
   text-align:center;
   color:var(--muted);
   font-size:11px;
 }
-.panel-hint {
-  text-align:center;
-  font-size:9px;
-  color:var(--muted);
-  margin-top:13px;
-}
-@media(max-width:560px) {
-  .pull-panel {width:78%}
-}
-/* =================================
-   MANDY'S BUDDY HOME DASHBOARD
-   320 x 240 LANDSCAPE
-================================= */
-
-.status {
-  position:relative;
-  height:29px;
-  padding:0 12px;
-  font-size:9px;
-}
-
-.status-brand {
-  font-size:8px;
-  letter-spacing:.7px;
-  font-weight:800;
-}
-
-.status-island {
-  position:absolute;
-  left:50%;
-  top:4px;
-  transform:translateX(-50%);
-  min-width:76px;
-  height:21px;
-  padding:0 13px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:20px;
-  background:#172438;
-  color:white;
-  font-size:9px;
-  font-weight:750;
-}
-
-.status-right {
-  gap:5px;
-  font-size:8px;
-}
-
-.status-symbol {
-  width:13px;
-  height:13px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.7;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.status-symbol.bluetooth {
-  width:10px;
-}
-
-.battery-icon {
-  width:23px;
-  height:13px;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.3;
-  stroke-linejoin:round;
-}
-
-.battery-icon .battery-fill {
-  fill:#39b982;
-  stroke:none;
-}
-
-#batteryPercent {
-  font-size:8px;
-  font-weight:750;
-}
-
-.content {
-  padding:10px;
-}
-
-/* HOME LAYOUT */
-
-#home {
-  height:100%;
-  display:none;
-}
-
-#home.active {
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-
-.home-top {
-  height:78px;
-  min-height:78px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-/* BUDDY FACE */
-
-.buddy-mini {
-  height:70px;
-  min-width:112px;
-  padding:7px 10px;
-  border:0;
-  border-radius:15px;
-  background:linear-gradient(145deg,#1d3049,#101b2b);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-  color:#dce9f8;
-}
-
-.face.mini-face {
-  height:36px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:13px;
-  background:transparent;
-  border-radius:0;
-  margin:0;
-}
-
-.mini-face .eye {
-  width:12px;
-  height:18px;
-  border-radius:50%;
-  background:#8ed6ff;
-  box-shadow:0 0 10px #68caff88;
-}
-
-.buddy-status {
-  font-size:8px;
-  color:#c9d9ec;
-}
-
-/* CLOCK AND DATE */
-
-.home-datetime {
-  flex:1;
-  text-align:right;
-  min-width:0;
-}
-
-.home-time {
-  display:flex;
-  justify-content:flex-end;
-  align-items:baseline;
-  gap:4px;
-  font-size:27px;
-  line-height:1;
-  font-weight:850;
-  letter-spacing:-1.2px;
-  color:#1d2b40;
-}
-
-.home-time small {
-  font-size:9px;
-  letter-spacing:0;
-  color:var(--muted);
-}
-
-.home-weekday {
-  margin-top:6px;
-  font-size:10px;
-  font-weight:800;
-}
-
-.home-date {
-  margin-top:2px;
-  font-size:9px;
-  color:var(--muted);
-}
-
-/* DAILY QUOTE */
-
-.quote-card {
-  width:100%;
-  min-height:67px;
-  padding:9px 12px;
-  text-align:left;
-  border:1px solid #dce8f7;
-  border-radius:14px;
-  background:linear-gradient(110deg,#eaf3ff,#f7faff);
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  color:var(--text);
-}
-
-.quote-label,
-.widget-heading {
-  font-size:7px;
-  letter-spacing:1px;
-  font-weight:850;
-  color:#6681a4;
-}
-
-.quote-text {
-  font-size:11px;
-  line-height:1.3;
-  font-weight:750;
-}
-
-.quote-hint {
-  font-size:7px;
-  color:#8392a7;
-}
-
-/* WEATHER AND REMINDERS */
-
-.home-widgets {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  flex:1;
-  min-height:65px;
-}
-
-.home-widget {
-  min-width:0;
-  padding:9px 10px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:white;
-  text-align:left;
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:3px;
-  color:var(--text);
-  overflow:hidden;
-}
-
-.widget-icon {
-  font-size:15px;
-  color:var(--blue);
-  line-height:1;
-}
-
-.widget-main {
-  font-size:10px;
-  line-height:1.2;
-  max-width:100%;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.home-widget small {
-  font-size:8px;
-  color:var(--muted);
-}
-
-/* BOTTOM NAVIGATION */
-
-.nav {
-  height:42px;
-  justify-content:space-evenly;
-}
-
-.nav button {
-  min-width:65px;
-  gap:2px;
-  font-size:8px;
-}
-
-.nav button svg {
-  width:16px;
-  height:16px;
-}
-
-/* SMALL SCREENS */
 
 @media(max-width:550px) {
-
-  .status {
-    height:25px;
-    padding:0 8px;
-  }
-
-  .status-brand {
-    font-size:7px;
-  }
-
-  .status-island {
-    top:3px;
-    height:19px;
-    min-width:67px;
-    font-size:8px;
-  }
-
-  .status-right {
-    gap:4px;
-  }
-
-  .battery-icon {
-    width:20px;
-    height:12px;
-  }
-
-  .content {
-    padding:8px;
-  }
-
-  .home-top {
-    height:72px;
-    min-height:72px;
-  }
-
-  .buddy-mini {
-    height:65px;
-    min-width:100px;
-    padding:5px 7px;
-  }
-
-  .home-time {
-    font-size:24px;
-  }
-
-  .quote-card {
-    min-height:61px;
-    padding:7px 9px;
-  }
-
-  .home-widgets {
-    gap:6px;
-  }
-
-  .home-widget {
-    padding:7px;
-  }
-
-  .nav {
-    height:39px;
-  }
-  }
-  
+  body {padding:6px}
+  .device {padding:6px;border-radius:20px}
+  .bezel {padding:5px;border-radius:15px}
+  .screen {min-height:0;aspect-ratio:4/3;border-radius:11px}
+  .status {height:25px;padding:0 8px}
+  .status-brand {font-size:7px}
+  .status-island {top:3px;height:19px;min-width:67px;font-size:8px}
+  .status-right {gap:4px}
+  .battery-icon {width:20px;height:12px}
+  .content {padding:8px}
+  .home-top {height:72px;min-height:72px}
+  .buddy-mini {height:65px;min-width:100px;padding:5px 7px}
+  .home-time {font-size:24px}
+  .quote-card {min-height:61px;padding:7px 9px}
+  .home-widgets {gap:6px}
+  .home-widget {padding:7px}
+  .nav {height:39px}
+  .pull-panel {width:78%}
+  .apps-grid {gap:6px}
+  .app-tile {min-height:70px;font-size:9px}
+}
 </style>
 </head>
 
@@ -981,89 +685,75 @@ textarea {min-height:65px;resize:vertical}
 
 <!-- ICON DEFINITIONS -->
 <svg xmlns="http://www.w3.org/2000/svg"
-     style="position:absolute;width:0;height:0;overflow:hidden"
-     aria-hidden="true">
+style="position:absolute;width:0;height:0;overflow:hidden"
+aria-hidden="true">
 
-  <symbol id="i-home" viewBox="0 0 24 24">
-    <path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>
-  </symbol>
+<symbol id="i-home" viewBox="0 0 24 24">
+<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>
+</symbol>
 
-  <symbol id="i-apps" viewBox="0 0 24 24">
-    <rect x="3" y="3" width="7" height="7" rx="2"/>
-    <rect x="14" y="3" width="7" height="7" rx="2"/>
-    <rect x="3" y="14" width="7" height="7" rx="2"/>
-    <rect x="14" y="14" width="7" height="7" rx="2"/>
-  </symbol>
+<symbol id="i-apps" viewBox="0 0 24 24">
+<rect x="3" y="3" width="7" height="7" rx="2"/>
+<rect x="14" y="3" width="7" height="7" rx="2"/>
+<rect x="3" y="14" width="7" height="7" rx="2"/>
+<rect x="14" y="14" width="7" height="7" rx="2"/>
+</symbol>
 
-  <symbol id="i-message" viewBox="0 0 24 24">
-    <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8 8 0 0 1 8 8z"/>
-  </symbol>
+<symbol id="i-settings" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="3"/>
+<path d="m19 15 2 1-2 4-3-1-2 1-1 3h-4l-1-3-2-1-3 1-2-4 2-2v-2l-2-2 2-4 3 1 2-1 1-3h4l1 3 2 1 3-1 2 4-2 2z"/>
+</symbol>
 
-  <symbol id="i-notes" viewBox="0 0 24 24">
-    <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
-    <path d="M8 8h8M8 12h8M8 16h5"/>
-  </symbol>
+<symbol id="i-message" viewBox="0 0 24 24">
+<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5a9 9 0 0 1-.9-4A8.5 8.5 0 0 1 12.5 3H13a8 8 0 0 1 8 8z"/>
+</symbol>
 
-  <symbol id="i-heart" viewBox="0 0 24 24">
-    <path d="M20.8 8.6c0 5.4-8.8 11-8.8 11s-8.8-5.6-8.8-11A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.8 2.6z"/>
-  </symbol>
+<symbol id="i-notes" viewBox="0 0 24 24">
+<path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/>
+<path d="M8 8h8M8 12h8M8 16h5"/>
+</symbol>
 
-  <symbol id="i-bell" viewBox="0 0 24 24">
-    <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
-    <path d="M10 21h4"/>
-  </symbol>
+<symbol id="i-heart" viewBox="0 0 24 24">
+<path d="M20.8 8.6c0 5.4-8.8 11-8.8 11s-8.8-5.6-8.8-11A4.6 4.6 0 0 1 12 6a4.6 4.6 0 0 1 8.8 2.6z"/>
+</symbol>
 
-  <symbol id="i-calendar" viewBox="0 0 24 24">
-    <rect x="3" y="5" width="18" height="16" rx="2"/>
-    <path d="M16 3v4M8 3v4M3 10h18M8 14h2M14 14h2M8 17h2"/>
-  </symbol>
+<symbol id="i-bell" viewBox="0 0 24 24">
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+<path d="M10 21h4"/>
+</symbol>
 
-  <symbol id="i-timer" viewBox="0 0 24 24">
-    <circle cx="12" cy="13" r="8"/>
-    <path d="M12 9v4l3 2M9 2h6M12 2v3"/>
-  </symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24">
+<rect x="3" y="5" width="18" height="16" rx="2"/>
+<path d="M16 3v4M8 3v4M3 10h18"/>
+</symbol>
 
-  <symbol id="i-games" viewBox="0 0 24 24">
-    <path d="M6 9h12a4 4 0 0 1 3.8 5.2l-1 3a2 2 0 0 1-3.3 1l-2.5-2.2H9l-2.5 2.2a2 2 0 0 1-3.3-1l-1-3A4 4 0 0 1 6 9z"/>
-    <path d="M7 12v4M5 14h4M16 13h.01M18 15h.01"/>
-  </symbol>
+<symbol id="i-timer" viewBox="0 0 24 24">
+<circle cx="12" cy="13" r="8"/>
+<path d="M12 9v4l3 2M9 2h6M12 2v3"/>
+</symbol>
 
-  <symbol id="i-smile" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="9"/>
-    <path d="M8 14s1.5 3 4 3 4-3 4-3M9 9h.01M15 9h.01"/>
-  </symbol>
+<symbol id="i-games" viewBox="0 0 24 24">
+<path d="M6 9h12a4 4 0 0 1 3.8 5.2l-1 3a2 2 0 0 1-3.3 1l-2.5-2.2H9l-2.5 2.2a2 2 0 0 1-3.3-1l-1-3A4 4 0 0 1 6 9z"/>
+<path d="M7 12v4M5 14h4M16 13h.01M18 15h.01"/>
+</symbol>
 
-  <symbol id="i-settings" viewBox="0 0 24 24">
-    <circle cx="12" cy="12" r="3"/>
-    <path d="m19.4 15 .1.1 1.4 1.1-1.5 2.6-1.7-.6a8 8 0 0 1-1.5.9l-.3 1.8h-3l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.6-1.5-2.6 1.4-1.1a8 8 0 0 1 0-1.8l-1.4-1.1 1.5-2.6 1.7.6a8 8 0 0 1 1.5-.9l.3-1.8h3l.3 1.8a8 8 0 0 1 1.5.9l1.7-.6 1.5 2.6-1.4 1.1a8 8 0 0 1 0 1.7z"/>
-  </symbol>
+<symbol id="i-smile" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9"/>
+<path d="M8 14s1.5 3 4 3 4-3 4-3M9 9h.01M15 9h.01"/>
+</symbol>
 
-  <symbol id="i-search" viewBox="0 0 24 24">
-    <circle cx="10.8" cy="10.8" r="6.8"/>
-    <path d="m16 16 5 5"/>
-  </symbol>
-
-  <symbol id="i-send" viewBox="0 0 24 24">
-    <path d="m22 2-7 20-4-9-9-4z"/>
-    <path d="M22 2 11 13"/>
-  </symbol>
-
-  <symbol id="i-trash" viewBox="0 0 24 24">
-    <path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6"/>
-    <path d="M10 11v5M14 11v5"/>
-  </symbol>
-
-  <symbol id="i-check" viewBox="0 0 24 24">
-    <path d="m5 12 4 4L19 6"/>
-  </symbol>
-
+<symbol id="i-trash" viewBox="0 0 24 24">
+<path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6"/>
+<path d="M10 11v5M14 11v5"/>
+</symbol>
 </svg>
 
 <div class="device">
 <div class="bezel">
 <div class="screen">
 
-<div class="status">
+<!-- STATUS BAR -->
+<div class="status" id="statusBar">
   <span class="status-brand">MANDY'S BUDDY</span>
 
   <div class="status-island">
@@ -1072,20 +762,19 @@ textarea {min-height:65px;resize:vertical}
 
   <div class="status-right">
     <svg class="status-symbol" viewBox="0 0 20 16">
-      <path d="M2 5.5a12 12 0 0 1 16 0M5 8.5a7.5 7.5 0 0 1 10 0M8 11.5a3 3 0 0 1 4 0"/>
-      <circle cx="10" cy="14" r="1" fill="currentColor"/>
+      <path d="M2 5.5a12 12 0 0 1 16 0M5 8.5a7 7 0 0 1 10 0M8 11.5a3 3 0 0 1 4 0"/>
+      <circle cx="10" cy="14" r=".7" fill="currentColor"/>
     </svg>
 
-    <svg class="status-symbol bluetooth" viewBox="0 0 14 18">
-      <path d="M7 1v16l5-4.5L2 5.5M7 9l5-4.5L7 1"/>
+    <svg class="status-symbol bluetooth" viewBox="0 0 16 20">
+      <path d="M8 1v18l6-5-12-8 6-5 6 5-12 8"/>
     </svg>
 
-    <svg class="battery-icon" viewBox="0 0 30 16">
-      <rect x="1" y="2" width="25" height="12" rx="3"/>
-      <path class="battery-fill" d="M4 4h19v8H4z"/>
-      <path d="M27 6h2v4h-2z"/>
+    <svg class="battery-icon" viewBox="0 0 26 14">
+      <rect x="1" y="2" width="21" height="10" rx="2"/>
+      <path d="M24 5v4"/>
+      <rect class="battery-fill" x="3" y="4" width="16" height="6" rx="1"/>
     </svg>
-
     <span id="batteryPercent">100%</span>
   </div>
 </div>
@@ -1096,155 +785,105 @@ textarea {min-height:65px;resize:vertical}
 <section class="page active" id="home">
 
   <div class="home-top">
-
-    <button class="buddy-mini"
-      onclick="showPage('expressions')">
-
+    <button class="buddy-mini" onclick="showPage('expressions')">
       <div class="face mini-face" id="face">
         <div class="eye"></div>
         <div class="eye"></div>
       </div>
-
-      <span class="buddy-status" id="faceCaption">
-        I'm right here.
-      </span>
-
+      <span class="buddy-status" id="faceCaption">I'm right here.</span>
     </button>
 
     <div class="home-datetime">
-
       <div class="home-time">
         <span id="homeTime">--:--</span>
         <small id="homePeriod"></small>
       </div>
-
-      <div class="home-weekday" id="homeWeekday">
-        Loading day
-      </div>
-
-      <div class="home-date" id="homeDate">
-        Loading date
-      </div>
-
+      <div class="home-weekday" id="homeWeekday">Today</div>
+      <div class="home-date" id="homeDate">Loading date...</div>
     </div>
-
   </div>
 
-  <button class="quote-card"
-    onclick="rotateQuote()">
-
-    <span class="quote-label">
-      A LITTLE THOUGHT FOR TODAY
-    </span>
-
-    <span class="quote-text" id="dailyQuote">
-      Small steps still move you forward.
-    </span>
-
-    <span class="quote-hint">
-      Tap for another thought
-    </span>
-
+  <button class="quote-card" onclick="rotateQuote()">
+    <span class="quote-label">A LITTLE THOUGHT FOR TODAY</span>
+    <span class="quote-text" id="dailyQuote">Keep learning. Keep becoming.</span>
+    <span class="quote-hint">Tap for another thought</span>
   </button>
 
   <div class="home-widgets">
 
-    <button class="home-widget"
-      onclick="notify('Weather updates will be available when a weather source is connected.')">
-
+    <button class="home-widget" onclick="notify('Weather service is not connected yet.')">
       <span class="widget-icon">☀</span>
       <span class="widget-heading">WEATHER</span>
-      <b class="widget-main">Weather</b>
-      <small>Not connected yet</small>
-
+      <b class="widget-main">Weather unavailable</b>
+      <small>Weather connection coming later</small>
     </button>
 
-    <button class="home-widget"
-      onclick="showPage('reminders')">
-
+    <button class="home-widget" onclick="showPage('reminders')">
       <span class="widget-icon">◷</span>
       <span class="widget-heading">UP NEXT</span>
-
-      <b class="widget-main" id="nextReminder">
-        No upcoming reminders
-      </b>
-
-      <small id="nextReminderTime">
-        Your day is clear
-      </small>
-
+      <b class="widget-main" id="nextReminder">No upcoming reminders</b>
+      <small id="nextReminderTime">Your day is clear</small>
     </button>
 
   </div>
-
 </section>
 
 <!-- APPS -->
 <section class="page" id="apps">
-  <h1 class="page-title">Applications</h1>
-  <div class="page-description">Everything you need, in one place.</div>
+  <h1 class="page-title">Apps</h1>
+  <div class="page-description">Everything Buddy can do.</div>
 
   <div class="apps-grid">
-
     <button class="app-tile" onclick="showPage('messages')">
-      <div class="icon-box"><svg class="icon"><use href="#i-message"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-message"/></svg></span>
       Messages
     </button>
 
     <button class="app-tile" onclick="showPage('notes')">
-      <div class="icon-box"><svg class="icon"><use href="#i-notes"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-notes"/></svg></span>
       Notes
     </button>
 
     <button class="app-tile" onclick="showPage('memories')">
-      <div class="icon-box"><svg class="icon"><use href="#i-heart"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-heart"/></svg></span>
       Memories
     </button>
 
     <button class="app-tile" onclick="showPage('reminders')">
-      <div class="icon-box"><svg class="icon"><use href="#i-bell"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-bell"/></svg></span>
       Reminders
     </button>
 
     <button class="app-tile" onclick="showPage('calendar')">
-      <div class="icon-box"><svg class="icon"><use href="#i-calendar"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-calendar"/></svg></span>
       Calendar
     </button>
 
     <button class="app-tile" onclick="showPage('timer')">
-      <div class="icon-box"><svg class="icon"><use href="#i-timer"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-timer"/></svg></span>
       Timer
     </button>
 
     <button class="app-tile" onclick="showPage('games')">
-      <div class="icon-box"><svg class="icon"><use href="#i-games"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-games"/></svg></span>
       Games
     </button>
 
     <button class="app-tile" onclick="showPage('expressions')">
-      <div class="icon-box"><svg class="icon"><use href="#i-smile"/></svg></div>
+      <span class="icon-box"><svg class="icon"><use href="#i-smile"/></svg></span>
       Expressions
     </button>
-
-    <button class="app-tile" onclick="showPage('settings')">
-      <div class="icon-box"><svg class="icon"><use href="#i-settings"/></svg></div>
-      Settings
-    </button>
-
   </div>
 </section>
 
 <!-- MESSAGES -->
 <section class="page" id="messages">
   <h1 class="page-title">Messages</h1>
-  <div class="page-description">Little notes and messages for Buddy.</div>
+  <div class="page-description">A little place for messages.</div>
 
   <div class="panel">
     <textarea id="messageInput" placeholder="Write a message..."></textarea>
-    <button class="primary" onclick="addItem('messages','messageInput')">
-      <svg class="icon"><use href="#i-send"/></svg>
-      Save message
-    </button>
+    <button class="primary" onclick="addItem('messages','messageInput')">Save message</button>
   </div>
 
   <div class="panel" id="messagesList"></div>
@@ -1309,668 +948,9 @@ textarea {min-height:65px;resize:vertical}
 
   <div class="panel" style="text-align:center;padding:25px">
     <div id="timerDisplay" style="font-size:42px;font-weight:850;letter-spacing:-2px">25:00</div>
-    <p class="small-muted">Minutes of focused time</p>
+    <p style="font-size:11px;color:var(--muted)">Minutes of focused time</p>
 
     <button class="secondary" onclick="changeTimer(-5)">− 5 min</button>
     <button class="secondary" onclick="changeTimer(5)">+ 5 min</button>
 
-    <div style="margin-top:15px">
-      <button class="primary" id="timerButton" onclick="toggleTimer()">Start</button>
-      <button class="secondary" onclick="resetTimer()">Reset</button>
-    </div>
-  </div>
-</section>
-
-<!-- GAMES -->
-<section class="page" id="games">
-  <h1 class="page-title">Little games</h1>
-  <div class="page-description">A few simple ways to have fun.</div>
-
-  <div class="panel">
-    <b style="font-size:12px">Tap challenge</b>
-    <p class="small-muted">Tap the button as many times as you can.</p>
-    <div style="font-size:30px;font-weight:800;margin:12px" id="tapScore">0</div>
-    <button class="primary" onclick="tapGame()">Tap me!</button>
-    <button class="secondary" onclick="resetTap()">Reset</button>
-  </div>
-
-  <div class="panel">
-    <b style="font-size:12px">Number guessing</b>
-    <p class="small-muted">Guess a number from 1 to 10.</p>
-    <input id="guessInput" type="number" min="1" max="10" placeholder="Your guess">
-    <button class="primary" onclick="guessGame()">Guess</button>
-    <p id="guessResult" class="small-muted"></p>
-  </div>
-</section>
-
-<!-- EXPRESSIONS -->
-<section class="page" id="expressions">
-  <h1 class="page-title">Expressions</h1>
-  <div class="page-description">Choose Buddy's current expression.</div>
-
-  <div class="panel">
-    <div class="face" id="expressionFace"
-      style="background:#172438;border-radius:15px;height:110px;margin-bottom:15px">
-      <div class="eye"></div>
-      <div class="eye"></div>
-    </div>
-
-    <div class="apps-grid">
-      <button class="app-tile" onclick="setExpression('normal')">Normal</button>
-      <button class="app-tile" onclick="setExpression('happy')">Happy</button>
-      <button class="app-tile" onclick="setExpression('sleepy')">Sleepy</button>
-      <button class="app-tile" onclick="setExpression('surprised')">Surprised</button>
-    </div>
-  </div>
-</section>
-
-<!-- SETTINGS -->
-<section class="page" id="settings">
-  <h1 class="page-title">Settings</h1>
-  <div class="page-description">Make Buddy feel right for you.</div>
-
-  <div class="panel">
-
-    <div class="setting-row">
-      <div>
-        <b>Eye animations</b>
-        <div class="small-muted">Allow Buddy to blink</div>
-      </div>
-      <input class="toggle" type="checkbox" id="animationToggle"
-        checked onchange="toggleAnimation()">
-    </div>
-
-    
-<div class="setting-row">
-  <div>
-    <b>Eye animations</b>
-    <div class="small-muted">Allow Buddy to blink</div>
-  </div>
-  <input class="toggle" type="checkbox" id="animationToggle"
-    checked onchange="toggleAnimation()">
-</div>
-
-<div class="setting-row">
-  <div>
-    <b>Notifications</b>
-    <div class="small-muted">Browser reminder alerts</div>
-  </div>
-  <button class="secondary" onclick="enableNotifications()">Enable</button>
-</div>
-
-<div class="setting-row">
-  <div>
-    <b>Clear preview data</b>
-    <div class="small-muted">Remove locally saved items</div>
-  </div>
-  <button class="secondary" onclick="clearData()">Clear</button>
-</div>
-
-</div>
-
-<div class="panel">
-  <b style="font-size:12px">About Mandy's Buddy</b>
-  <p class="small-muted">Mandy's Buddy OS · Browser preview</p>
-  <p class="small-muted">A little companion, always here.</p>
-</div>
-</section>
-
-</main>
-
-<nav class="nav">
-  <button class="active" data-page="home" onclick="showPage('home')">
-    <svg class="icon"><use href="#i-home"/></svg>
-    Home
-  </button>
-  <button data-page="apps" onclick="showPage('apps')">
-    <svg class="icon"><use href="#i-apps"/></svg>
-    Apps
-  </button>
-  <button data-page="messages" onclick="showPage('messages')">
-    <svg class="icon"><use href="#i-message"/></svg>
-    Messages
-  </button>
-  <button data-page="memories" onclick="showPage('memories')">
-    <svg class="icon"><use href="#i-heart"/></svg>
-    Memories
-  </button>
-  <button data-page="settings" onclick="showPage('settings')">
-    <svg class="icon"><use href="#i-settings"/></svg>
-    Settings
-  </button>
-</nav>
-
-<div class="toast" id="toast"></div>
-
-</div>
-</div>
-</div>
-
-<script>
-const storageKey = "mandy_buddy_light_v1";
-
-let data = JSON.parse(localStorage.getItem(storageKey) || "{}");
-
-data.messages ||= [];
-data.notes ||= [];
-data.memories ||= [];
-data.reminders ||= [];
-
-function saveData() {
-  localStorage.setItem(storageKey, JSON.stringify(data));
-}
-
-function notify(text) {
-  const toast = document.getElementById("toast");
-  toast.textContent = text;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2200);
-}
-
-function showPage(id) {
-  document.querySelectorAll(".page").forEach(p =>
-    p.classList.remove("active")
-  );
-
-  const page = document.getElementById(id);
-  if (!page) return;
-
-  page.classList.add("active");
-
-  document.querySelectorAll(".nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.page === id);
-  });
-
-  if (id === "calendar") renderCalendar();
-  if (id === "messages") renderList("messages");
-  if (id === "notes") renderList("notes");
-  if (id === "memories") renderList("memories");
-  if (id === "reminders") renderReminders();
-}
-
-function addItem(type, inputId) {
-  const input = document.getElementById(inputId);
-  const value = input.value.trim();
-
-  if (!value) return notify("Write something first.");
-
-  data[type].unshift({
-    id: Date.now(),
-    text: value,
-    date: new Date().toLocaleString()
-  });
-
-  input.value = "";
-  saveData();
-  renderList(type);
-  notify("Saved successfully.");
-}
-
-function saveNote() {
-  const title = document.getElementById("noteTitle").value.trim();
-  const text = document.getElementById("noteInput").value.trim();
-
-  if (!title && !text) return notify("Write a note first.");
-
-  data.notes.unshift({
-    id: Date.now(),
-    title: title || "Untitled note",
-    text,
-    date: new Date().toLocaleString()
-  });
-
-  document.getElementById("noteTitle").value = "";
-  document.getElementById("noteInput").value = "";
-
-  saveData();
-  renderList("notes");
-  notify("Note saved.");
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c]));
-}
-
-function renderList(type) {
-  const target = document.getElementById(type + "List");
-  if (!target) return;
-
-  const entries = data[type];
-
-  if (!entries.length) {
-    target.innerHTML = '<div class="empty">Nothing here yet.</div>';
-    return;
-  }
-
-  target.innerHTML = entries.map(item => {
-    const title = item.title
-      ? `<b>${escapeHTML(item.title)}</b>`
-      : "";
-
-    return `
-      <div class="item">
-        <div>
-          ${title}
-          <div>${escapeHTML(item.text)}</div>
-          <small>${escapeHTML(item.date)}</small>
-        </div>
-        <div class="item-actions">
-          <button class="secondary"
-            onclick="deleteItem('${type}',${item.id})"
-            aria-label="Delete item">
-            <svg class="icon"><use href="#i-trash"/></svg>
-          </button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function deleteItem(type, id) {
-  data[type] = data[type].filter(item => item.id !== id);
-  saveData();
-
-  if (type === "reminders") renderReminders();
-  else renderList(type);
-
-  notify("Item deleted.");
-}
-
-function addReminder()
-  updateHomeDashboard(); {
-  const text = document.getElementById("reminderInput").value.trim();
-  const date = document.getElementById("reminderDate").value;
-
-  if (!text || !date) return notify("Enter a reminder and time.");
-
-  data.reminders.unshift({
-    id: Date.now(),
-    text,
-    date,
-    done: false,
-    alerted: false
-  });
-
-  document.getElementById("reminderInput").value = "";
-  document.getElementById("reminderDate").value = "";
-
-  saveData();
-  renderReminders();
-  notify("Reminder added.");
-}
-
-function renderReminders() {
-  const target = document.getElementById("remindersList");
-  if (!target) return;
-
-  if (!data.reminders.length) {
-    target.innerHTML = '<div class="empty">No reminders yet.</div>';
-    return;
-  }
-
-  target.innerHTML = data.reminders.map(r => `
-    <div class="item">
-      <div>
-        <b>${escapeHTML(r.text)}</b>
-        <small>${new Date(r.date).toLocaleString()}</small>
-        <small>${r.done ? "Completed" : "Pending"}</small>
-      </div>
-      <div class="item-actions">
-        <button class="secondary" onclick="toggleReminder(${r.id})">
-          ${r.done ? "Undo" : "Done"}
-        </button>
-        <button class="secondary"
-          onclick="deleteItem('reminders',${r.id})"
-          aria-label="Delete reminder">
-          <svg class="icon"><use href="#i-trash"/></svg>
-        </button>
-      </div>
-    </div>
-  `).join("");
-}
-
-function toggleReminder(id)
-  updateHomeDashboard(); {
-  const item = data.reminders.find(r => r.id === id);
-  if (!item) return;
-
-  item.done = !item.done;
-  saveData();
-  renderReminders();
-}
-
-function renderCalendar() {
-  const now = new Date();
-
-  document.getElementById("calendarDate").textContent =
-    now.toLocaleDateString(undefined, {
-      weekday:"long",
-      year:"numeric",
-      month:"long",
-      day:"numeric"
-    });
-
-  const today = now.toDateString();
-  const items = data.reminders.filter(r =>
-    new Date(r.date).toDateString() === today
-  );
-
-  const target = document.getElementById("calendarList");
-
-  target.innerHTML = items.length
-    ? items.map(r => `
-      <div class="item">
-        <div>
-          ${escapeHTML(r.text)}
-          <small>${new Date(r.date).toLocaleTimeString([], {
-            hour:"2-digit",
-            minute:"2-digit"
-          })}</small>
-        </div>
-        <span>${r.done ? "✓" : "•"}</span>
-      </div>
-    `).join("")
-    : '<div class="empty">Nothing scheduled for today.</div>';
-}
-
-let tapScore = 0;
-
-function tapGame() {
-  tapScore++;
-  document.getElementById("tapScore").textContent = tapScore;
-}
-
-function resetTap() {
-  tapScore = 0;
-  document.getElementById("tapScore").textContent = "0";
-}
-
-let secretNumber = Math.floor(Math.random() * 10) + 1;
-
-function guessGame() {
-  const guess = Number(document.getElementById("guessInput").value);
-  const result = document.getElementById("guessResult");
-
-  if (guess < 1 || guess > 10 || !Number.isInteger(guess)) {
-    result.textContent = "Choose a whole number from 1 to 10.";
-    return;
-  }
-
-  if (guess === secretNumber) {
-    result.textContent = "You got it! A new number is ready.";
-    secretNumber = Math.floor(Math.random() * 10) + 1;
-  } else {
-    result.textContent =
-      guess < secretNumber ? "Try a higher number." : "Try a lower number.";
-  }
-}
-
-function setExpression(expression) {
-  const face = document.getElementById("expressionFace");
-
-  face.className = "face " + expression;
-
-  document.getElementById("face").className =
-    "face mini-face " + expression;
-
-  const captions = {
-    normal:"I'm right here.",
-    happy:"I'm feeling happy!",
-    sleepy:"Time to rest.",
-    surprised:"Oh! What's that?"
-  };
-
-  document.getElementById("faceCaption").textContent =
-    captions[expression] || captions.normal;
-
-  notify("Expression changed.");
-}
-
-function toggleAnimation() {
-  const enabled = document.getElementById("animationToggle").checked;
-
-  document.querySelectorAll(".eye").forEach(eye => {
-    eye.style.animation = enabled ? "" : "none";
-  });
-
-  localStorage.setItem("buddy_animation", enabled ? "on" : "off");
-  notify(enabled ? "Animations enabled." : "Animations paused.");
-}
-
-function enableNotifications() {
-  if (!("Notification" in window)) {
-    return notify("Notifications are not supported here.");
-  }
-
-  Notification.requestPermission().then(result => {
-    notify(
-      result === "granted"
-        ? "Notifications enabled."
-        : "Permission not granted."
-    );
-  });
-}
-
-function checkReminders() {
-  const now = Date.now();
-
-  data.reminders.forEach(r => {
-    if (!r.done && !r.alerted && new Date(r.date).getTime() <= now) {
-      r.alerted = true;
-      notify("Reminder: " + r.text);
-
-      if ("Notification" in window &&
-          Notification.permission === "granted") {
-        new Notification("Mandy's Buddy", {body:r.text});
-      }
-    }
-  });
-
-  saveData();
-}
-
-setInterval(checkReminders, 10000);
-
-let timerSeconds = 25 * 60;
-let timerInterval = null;
-
-function renderTimer() {
-  const minutes = Math.floor(timerSeconds / 60);
-  const seconds = timerSeconds % 60;
-
-  document.getElementById("timerDisplay").textContent =
-    String(minutes).padStart(2,"0") + ":" +
-    String(seconds).padStart(2,"0");
-}
-
-function changeTimer(amount) {
-  if (timerInterval) return notify("Pause the timer first.");
-
-  timerSeconds = Math.max(
-    60,
-    Math.min(90 * 60, timerSeconds + amount * 60)
-  );
-
-  renderTimer();
-}
-
-function toggleTimer() {
-  const button = document.getElementById("timerButton");
-
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-    button.textContent = "Resume";
-    return;
-  }
-
-  button.textContent = "Pause";
-
-  timerInterval = setInterval(() => {
-    timerSeconds--;
-    renderTimer();
-
-    if (timerSeconds <= 0) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      button.textContent = "Start";
-      notify("Focus session complete!");
-    }
-  },1000);
-}
-
-function resetTimer() {
-  clearInterval(timerInterval);
-  timerInterval = null;
-  timerSeconds = 25 * 60;
-
-  document.getElementById("timerButton").textContent = "Start";
-  renderTimer();
-}
-
-function clearData() {
-  if (!confirm("Delete all saved preview data?")) return;
-
-  data = {
-    messages:[],
-    notes:[],
-    memories:[],
-    reminders:[]
-  };
-
-  saveData();
-
-  renderList("messages");
-  renderList("notes");
-  renderList("memories");
-  renderReminders();
-
-  notify("Preview data cleared.");
-}
-
-const dailyQuotes = [
-  "Small steps still move you forward.",
-  "Curiosity makes ordinary days extraordinary.",
-  "You do not have to do everything at once.",
-  "A kind thought can change someone's day.",
-  "Keep learning. Keep becoming.",
-  "Progress is built one choice at a time.",
-  "There is always something new to discover."
-];
-
-function rotateQuote() {
-  const el = document.getElementById("dailyQuote");
-  const current = el.textContent;
-
-  let next = current;
-
-  while (next === current) {
-    next = dailyQuotes[
-      Math.floor(Math.random() * dailyQuotes.length)
-    ];
-  }
-
-  el.textContent = next;
-}
-
-function updateHomeDashboard() {
-  const now = new Date();
-
-  const time = now.toLocaleTimeString([], {
-    hour:"numeric",
-    minute:"2-digit"
-  });
-
-  const parts = time.split(" ");
-
-  document.getElementById("homeTime").textContent = parts[0];
-  document.getElementById("homePeriod").textContent = parts[1] || "";
-
-  document.getElementById("homeWeekday").textContent =
-    now.toLocaleDateString([], {weekday:"long"});
-
-  document.getElementById("homeDate").textContent =
-    now.toLocaleDateString([], {
-      month:"long",
-      day:"numeric",
-      year:"numeric"
-    });
-
-  const dayNumber = Math.floor(
-    new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate()
-    ).getTime() / 86400000
-  );
-
-  const quoteIndex =
-    ((dayNumber % dailyQuotes.length) + dailyQuotes.length)
-    % dailyQuotes.length;
-
-  document.getElementById("dailyQuote").textContent =
-    dailyQuotes[quoteIndex];
-
-  const upcoming = data.reminders
-    .filter(r =>
-      !r.done &&
-      new Date(r.date).getTime() >= now.getTime()
-    )
-    .sort((a,b) =>
-      new Date(a.date) - new Date(b.date)
-    )[0];
-
-  document.getElementById("nextReminder").textContent =
-    upcoming ? upcoming.text : "No upcoming reminders";
-
-  document.getElementById("nextReminderTime").textContent =
-    upcoming
-      ? new Date(upcoming.date).toLocaleString([], {
-          weekday:"short",
-          hour:"numeric",
-          minute:"2-digit"
-        })
-      : "Your day is clear";
-}
-
-function updateClock() {
-  const now = new Date();
-
-  document.getElementById("statusTime").textContent =
-    now.toLocaleTimeString([], {
-      hour:"2-digit",
-      minute:"2-digit"
-    });
-
-  updateHomeDashboard();
-  }
-
-const savedAnimation = localStorage.getItem("buddy_animation");
-
-if (savedAnimation === "off") {
-  document.getElementById("animationToggle").checked = false;
-
-  document.querySelectorAll(".eye").forEach(eye => {
-    eye.style.animation = "none";
-  });
-}
-
-updateClock();
-setInterval(updateClock,1000);
-
-renderList("messages");
-renderList("notes");
-renderList("memories");
-renderReminders();
-renderTimer();
-
-</script>
-</body>
-</html>
-
+    <div sty
