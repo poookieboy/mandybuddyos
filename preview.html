@@ -2492,49 +2492,200 @@ function deleteItem(type, id) {
   notify("Deleted.");
 }
 
-function saveNote() {
-  const title = document.getElementById("noteTitle").value.trim();
-  const text = document.getElementById("noteInput").value.trim();
 
-  if (!title && !text) {
-    notify("Write a note first.");
-    return;
-  }
+/* =========================
+   NOTES APP
+========================= */
 
-  data.notes.unshift({
+let currentNoteId = null;
+
+function createNote() {
+  const note = {
     id: Date.now(),
-    title: title || "Untitled note",
-    text,
-    created: new Date().toISOString()
-  });
+    title: "",
+    text: "",
+    pinned: false,
+    created: new Date().toISOString(),
+    updated: new Date().toISOString()
+  };
+
+  data.notes.unshift(note);
+  saveData();
+
+  currentNoteId = note.id;
 
   document.getElementById("noteTitle").value = "";
-  document.getElementById("noteInput").value = "";
+  document.getElementById("noteContent").value = "";
+
+  document.getElementById("notesEditor").hidden = false;
+  document.getElementById("noteTitle").focus();
+
+  updateNoteEditor();
+  renderNotes();
+}
+
+function openNoteEditor(id) {
+  const note = data.notes.find(n => n.id === id);
+  if (!note) return;
+
+  currentNoteId = id;
+
+  document.getElementById("noteTitle").value = note.title || "";
+  document.getElementById("noteContent").value = note.text || "";
+
+  document.getElementById("notesEditor").hidden = false;
+
+  updateNoteEditor();
+}
+
+function closeNoteEditor() {
+  saveCurrentNote();
+
+  document.getElementById("notesEditor").hidden = true;
+  currentNoteId = null;
+
+  renderNotes();
+}
+
+function saveCurrentNote() {
+  if (currentNoteId === null) return;
+
+  const note = data.notes.find(n => n.id === currentNoteId);
+  if (!note) return;
+
+  note.title = document.getElementById("noteTitle").value.trim();
+  note.text = document.getElementById("noteContent").value;
+  note.updated = new Date().toISOString();
 
   saveData();
+  updateNoteEditor();
+}
+
+function updateNoteEditor() {
+  const title = document.getElementById("noteTitle");
+  const content = document.getElementById("noteContent");
+  const wordCount = document.getElementById("noteWordCount");
+  const saveStatus = document.getElementById("noteSaveStatus");
+  const edited = document.getElementById("noteLastEdited");
+  const pinButton = document.getElementById("notePinButton");
+
+  if (!title || !content) return;
+
+  const note = data.notes.find(n => n.id === currentNoteId);
+  if (!note) return;
+
+  const words = content.value.trim()
+    ? content.value.trim().split(/\s+/).length
+    : 0;
+
+  wordCount.textContent = words + (words === 1 ? " word" : " words");
+
+  saveStatus.textContent = "Saved";
+  edited.textContent = "Last edited " +
+    new Date(note.updated || note.created).toLocaleString();
+
+  pinButton.textContent = note.pinned ? "★ Pinned" : "☆ Pin";
+}
+
+function toggleNotePin() {
+  const note = data.notes.find(n => n.id === currentNoteId);
+  if (!note) return;
+
+  note.pinned = !note.pinned;
+  note.updated = new Date().toISOString();
+
+  saveData();
+  updateNoteEditor();
   renderNotes();
-  notify("Note saved.");
+}
+
+function deleteCurrentNote() {
+  if (currentNoteId === null) return;
+
+  data.notes = data.notes.filter(n => n.id !== currentNoteId);
+
+  saveData();
+
+  currentNoteId = null;
+  document.getElementById("notesEditor").hidden = true;
+
+  renderNotes();
+  notify("Note deleted.");
 }
 
 function renderNotes() {
-  const container = document.getElementById("notesList");
-  if (!container) return;
+  const pinnedContainer = document.getElementById("pinnedNotes");
+  const allContainer = document.getElementById("allNotes");
+  const emptyState = document.getElementById("notesEmpty");
 
-  if (!data.notes.length) {
-    container.innerHTML = '<div class="empty">No notes yet.</div>';
-    return;
+  if (!pinnedContainer || !allContainer) return;
+
+  const search = (
+    document.getElementById("notesSearch")?.value || ""
+  ).toLowerCase().trim();
+
+  const filtered = data.notes.filter(note =>
+    (note.title || "").toLowerCase().includes(search) ||
+    (note.text || "").toLowerCase().includes(search)
+  );
+
+  const pinned = filtered.filter(note => note.pinned);
+  const regular = filtered.filter(note => !note.pinned);
+
+  const sorted = notes => notes.sort((a, b) =>
+    new Date(b.updated || b.created) -
+    new Date(a.updated || a.created)
+  );
+
+  sorted(pinned);
+  sorted(regular);
+
+  function noteCard(note) {
+    const preview = (note.text || "").trim() || "Empty note";
+    const date = new Date(
+      note.updated || note.created
+    ).toLocaleDateString();
+
+    return `
+      <div class="note-card ${note.pinned ? "pinned" : ""}"
+           onclick="openNoteEditor(${note.id})">
+
+        <h4>${escapeHTML(note.title || "Untitled note")}</h4>
+
+        <p>${escapeHTML(preview)}</p>
+
+        <small>${date}</small>
+      </div>
+    `;
   }
 
-  container.innerHTML = data.notes.map(note => `
-    <div class="item">
-      <div>
-        <b>${escapeHTML(note.title)}</b>
-        <small>${escapeHTML(note.text)}</small>
-      </div>
-      <button class="secondary" onclick="deleteItem('notes',${note.id})">Delete</button>
-    </div>
-  `).join("");
+  pinnedContainer.innerHTML = pinned.map(noteCard).join("");
+  allContainer.innerHTML = regular.map(noteCard).join("");
+
+  document.getElementById("pinnedNotesCount").textContent =
+    pinned.length;
+
+  document.getElementById("allNotesCount").textContent =
+    regular.length;
+
+  emptyState.hidden = data.notes.length > 0;
+
+  document.querySelectorAll(".notes-section-heading").forEach(
+    heading => {
+      heading.hidden = heading.nextElementSibling.children.length === 0;
+    }
+  );
 }
+
+/* AUTO-SAVE */
+
+document.getElementById("noteTitle").oninput = function() {
+  saveCurrentNote();
+};
+
+document.getElementById("noteContent").oninput = function() {
+  saveCurrentNote();
+};
 
  
 let reminderFilter = "all";
