@@ -2027,6 +2027,59 @@ aria-hidden="true">
   </div>
 
 </section>
+<!-- CALCULATOR -->
+<section class="page calculator-page" id="calculator">
+
+  <div class="calculator-heading">
+    <div>
+      <h1 class="page-title">Calculator</h1>
+      <div class="page-description">Simple calculations, made easy.</div>
+    </div>
+    <button class="calculator-history-toggle"
+      onclick="toggleCalculatorHistory()">History</button>
+  </div>
+
+  <div class="calculator-display">
+    <div id="calculatorExpression"> </div>
+    <div id="calculatorResult">0</div>
+  </div>
+
+  <div class="calculator-keypad">
+    <button class="calc-function" onclick="calculatorClear()">AC</button>
+    <button class="calc-function" onclick="calculatorDelete()">⌫</button>
+    <button class="calc-function" onclick="calculatorPercent()">%</button>
+    <button class="calc-operator" onclick="calculatorOperator('÷')">÷</button>
+
+    <button onclick="calculatorInput('7')">7</button>
+    <button onclick="calculatorInput('8')">8</button>
+    <button onclick="calculatorInput('9')">9</button>
+    <button class="calc-operator" onclick="calculatorOperator('×')">×</button>
+
+    <button onclick="calculatorInput('4')">4</button>
+    <button onclick="calculatorInput('5')">5</button>
+    <button onclick="calculatorInput('6')">6</button>
+    <button class="calc-operator" onclick="calculatorOperator('-')">−</button>
+
+    <button onclick="calculatorInput('1')">1</button>
+    <button onclick="calculatorInput('2')">2</button>
+    <button onclick="calculatorInput('3')">3</button>
+    <button class="calc-operator" onclick="calculatorOperator('+')">+</button>
+
+    <button class="calc-function" onclick="calculatorSign()">±</button>
+    <button onclick="calculatorInput('0')">0</button>
+    <button onclick="calculatorInput('.')">.</button>
+    <button class="calc-equals" onclick="calculatorEquals()">=</button>
+  </div>
+
+  <div class="calculator-history" id="calculatorHistory" hidden>
+    <div class="calculator-history-heading">
+      <b>Recent calculations</b>
+      <button onclick="clearCalculatorHistory()">Clear</button>
+    </div>
+    <div id="calculatorHistoryList"></div>
+  </div>
+
+</section>
   
 <!-- TIMER -->
 <section class="page" id="timer">
