@@ -2646,52 +2646,7 @@ function setReminderFilter(filter, button) {
 
   if (button) button.classList.add("active");
 
-  renderReminders();
-}
 
-function addReminder() {
-  const text = document.getElementById("reminderInput").value.trim();
-  const date = document.getElementById("reminderDate").value;
-
-  if (!text) {
-    notify("Enter a reminder.");
-    return;
-  }
-
-  data.reminders.push({
-    id: Date.now(),
-    text,
-    date,
-    done: false,
-    alerted: false
-  });
-
-  document.getElementById("reminderInput").value = "";
-  document.getElementById("reminderDate").value = "";
-
-  saveData();
-  toggleReminderForm(false);
-  renderReminders();
-  updateHomeReminder();
-  notify("Reminder added.");
-}
-
-function toggleReminder(id) {
-  const item = data.reminders.find(reminder => reminder.id === id);
-  if (!item) return;
-
-  item.done = !item.done;
-  saveData();
-  renderReminders();
-  updateHomeReminder();
-}
-
-function deleteReminder(id) {
-  data.reminders = data.reminders.filter(item => item.id !== id);
-  saveData();
-  renderReminders();
-  updateHomeReminder();
-}
 
 function updateHomeReminder() {
   const now = Date.now();
