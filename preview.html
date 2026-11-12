@@ -1037,6 +1037,246 @@ button.calendar-day {
 .calendar-form input:focus,.calendar-form textarea:focus {border-color:#9bbcf5}
 .calendar-form-row {display:grid;grid-template-columns:1.2fr 1fr;gap:7px}
 .calendar-form .primary {width:100%}
+
+/* REMINDERS APP */
+
+.reminders-page {
+  padding-bottom: 16px;
+}
+
+.reminders-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.reminders-heading .page-title {
+  margin:0;
+}
+
+.reminders-heading .page-description {
+  margin:4px 0 0;
+}
+
+.reminder-add-button {
+  width:35px;
+  height:35px;
+  flex-shrink:0;
+  border:0;
+  border-radius:12px;
+  background:var(--blue);
+  color:white;
+  font-size:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.reminder-summary {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin-bottom:13px;
+}
+
+.reminder-summary-card {
+  min-width:0;
+  padding:10px 7px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:white;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+
+.reminder-summary-card strong {
+  font-size:19px;
+  line-height:1;
+  color:var(--text);
+}
+
+.reminder-summary-card small {
+  font-size:8px;
+  color:var(--muted);
+}
+
+.reminder-filters {
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  margin-bottom:7px;
+  scrollbar-width:none;
+}
+
+.reminder-filters::-webkit-scrollbar {
+  display:none;
+}
+
+.reminder-filters button {
+  flex-shrink:0;
+  padding:7px 11px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:white;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:750;
+}
+
+.reminder-filters button.active {
+  background:var(--blue);
+  border-color:var(--blue);
+  color:white;
+}
+
+.reminder-form {
+  padding:12px;
+  margin-bottom:12px;
+}
+
+.reminder-form[hidden] {
+  display:none;
+}
+
+.reminder-form-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+  font-size:12px;
+}
+
+.reminder-form-heading button {
+  width:25px;
+  height:25px;
+  border:0;
+  border-radius:8px;
+  background:#edf1f6;
+  color:var(--muted);
+  font-size:18px;
+}
+
+.reminder-date-label {
+  display:block;
+  margin:0 0 5px;
+  color:var(--muted);
+  font-size:9px;
+  font-weight:700;
+}
+
+.reminder-form input {
+  font-size:11px;
+}
+
+.reminder-form .primary {
+  width:100%;
+}
+
+.reminder-section {
+  margin-bottom:13px;
+}
+
+.reminder-section-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:10px 2px 7px;
+}
+
+.reminder-section-heading b {
+  font-size:11px;
+}
+
+.reminder-section-heading small {
+  color:var(--muted);
+  font-size:9px;
+}
+
+.reminder-task {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:10px;
+  margin-bottom:6px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:white;
+}
+
+.reminder-check {
+  width:19px;
+  height:19px;
+  flex-shrink:0;
+  border:1.5px solid #b7c3d2;
+  border-radius:50%;
+  background:white;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+}
+
+.reminder-check.done {
+  background:var(--blue);
+  border-color:var(--blue);
+}
+
+.reminder-task-copy {
+  display:flex;
+  flex:1;
+  min-width:0;
+  flex-direction:column;
+  gap:4px;
+}
+
+.reminder-task-copy b {
+  font-size:10px;
+  overflow-wrap:anywhere;
+}
+
+.reminder-task-copy small {
+  color:var(--muted);
+  font-size:8px;
+}
+
+.reminder-task.overdue {
+  border-color:#f0caca;
+  background:#fffafa;
+}
+
+.reminder-task.overdue .reminder-task-copy small {
+  color:#c45c5c;
+}
+
+.reminder-task.completed .reminder-task-copy b {
+  color:#929cab;
+  text-decoration:line-through;
+}
+
+.reminder-delete {
+  width:25px;
+  height:25px;
+  flex-shrink:0;
+  border:0;
+  border-radius:8px;
+  background:#f2f5f9;
+  color:#8491a2;
+  font-size:15px;
+}
+
+.reminder-empty {
+  padding:18px 10px;
+  border:1px dashed var(--border);
+  border-radius:12px;
+  color:var(--muted);
+  text-align:center;
+  font-size:10px;
+  }
   
 </style>
 </head>
