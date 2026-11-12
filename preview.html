@@ -1277,6 +1277,220 @@ button.calendar-day {
   text-align:center;
   font-size:10px;
   }
+
+/* =========================
+   NOTES APP
+========================= */
+
+.notes-page {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.notes-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.notes-add-button {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--blue);
+  color: white;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.notes-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.notes-search span {
+  font-size: 21px;
+  color: var(--muted);
+}
+
+.notes-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+}
+
+.notes-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 17px 0 10px;
+}
+
+.notes-section-heading h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.notes-section-heading span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.note-card {
+  min-width: 0;
+  min-height: 100px;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+}
+
+.note-card:active {
+  transform: scale(.97);
+}
+
+.note-card h4 {
+  margin: 0 0 7px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.note-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.note-card small {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+.note-card.pinned {
+  border-color: #a9c9f5;
+  background: #f5f9ff;
+}
+
+.notes-empty {
+  text-align: center;
+  padding: 30px 12px;
+  color: var(--muted);
+}
+
+.notes-empty-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.notes-empty h3 {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.notes-empty p {
+  font-size: 11px;
+}
+
+.notes-editor {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow-y: auto;
+}
+
+.notes-editor[hidden] {
+  display: none;
+}
+
+.notes-editor-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.notes-editor-toolbar button {
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.notes-title-input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 21px;
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.notes-editor-meta {
+  color: var(--muted);
+  font-size: 10px;
+  margin-bottom: 14px;
+}
+
+.notes-content-input {
+  flex: 1;
+  width: 100%;
+  min-height: 150px;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.notes-editor-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10px;
+  }
   
 </style>
 </head>
