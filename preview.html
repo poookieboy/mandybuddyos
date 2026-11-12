@@ -941,20 +941,82 @@ textarea {min-height:65px;resize:vertical}
   min-width:27px;height:27px;font-size:17px;line-height:1
 }
 .calendar-monthbar .calendar-today {padding:0 9px;font-size:10px;font-weight:750}
-.calendar-card {background:white;border:1px solid var(--border);border-radius:13px;padding:8px 7px 7px;box-shadow:0 3px 12px rgba(35,55,80,.04)}
-.calendar-weekdays,.calendar-grid {display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
-.calendar-weekdays {margin-bottom:4px}
-.calendar-weekdays span {text-align:center;color:var(--muted);font-size:8px;font-weight:800;padding:3px 0}
-.calendar-day {
-  position:relative;display:flex;align-items:center;justify-content:center;min-width:0;
-  height:27px;border:0;border-radius:8px;background:transparent;color:var(--text);font-size:10px
+
+.calendar-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 9px 7px;
+  box-shadow: 0 3px 12px rgba(35,55,80,.04);
 }
-button.calendar-day {cursor:pointer}
-.calendar-day.outside {color:#c2cbd7}
-.calendar-day.today {background:#edf4ff;color:var(--blue);font-weight:850}
-.calendar-day.selected {background:var(--blue);color:white;font-weight:850}
-.calendar-day i {position:absolute;bottom:3px;width:3px;height:3px;border-radius:50%;background:#5b9df5}
-.calendar-day.selected i {background:white}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  gap: 3px;
+}
+
+.calendar-weekdays {
+  margin-bottom: 7px;
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 800;
+  padding: 5px 0;
+}
+
+.calendar-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  height: 31px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text);
+  font-size: 11px;
+}
+
+button.calendar-day {
+  cursor: pointer;
+}
+
+.calendar-day.outside {
+  color: #c2cbd7;
+}
+
+.calendar-day.today {
+  background: #e9f1ff;
+  color: var(--blue);
+  font-weight: 850;
+}
+
+.calendar-day.selected {
+  background: var(--blue);
+  color: white;
+  font-weight: 850;
+}
+
+.calendar-day i {
+  position: absolute;
+  bottom: 2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #5b9df5;
+}
+
+.calendar-day.selected i {
+  background: white;
+}
+  
 .calendar-selected-head {display:flex;align-items:center;justify-content:space-between;margin:11px 1px 7px}
 .calendar-selected-head>div {display:flex;flex-direction:column;gap:2px}
 .calendar-selected-head b {font-size:11px}
