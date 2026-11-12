@@ -1115,6 +1115,27 @@ aria-hidden="true">
 </div>
 </div>
 </div>
+  
+<script>
+window.addEventListener("error", function(event) {
+  const date = document.getElementById("homeDate");
+
+  if (date) {
+    date.textContent =
+      "JS ERROR: " + event.message +
+      " | Line: " + event.lineno;
+  }
+});
+
+window.addEventListener("unhandledrejection", function(event) {
+  const date = document.getElementById("homeDate");
+
+  if (date) {
+    date.textContent =
+      "PROMISE ERROR: " + event.reason;
+  }
+});
+</script>
 
 <script>
 const storageKey = "mandy_buddy_light_v1";
