@@ -1921,6 +1921,113 @@ aria-hidden="true">
   
 
 
+<!-- WEATHER -->
+<section class="page weather-page" id="weather">
+
+  <div class="weather-heading">
+    <div>
+      <h1 class="page-title">Weather</h1>
+      <div class="page-description" id="weatherLocation">
+        Kajiado, Kenya
+      </div>
+    </div>
+
+    <button class="weather-refresh" type="button"
+      onclick="refreshWeather()">↻</button>
+  </div>
+
+  <!-- CURRENT WEATHER -->
+  <div class="weather-current">
+
+    <div class="weather-current-top">
+      <div>
+        <div class="weather-condition" id="weatherCondition">
+          Partly cloudy
+        </div>
+        <div class="weather-temperature">
+          <span id="weatherTemperature">--</span><sup>°C</sup>
+        </div>
+        <div class="weather-feels">
+          Feels like <span id="weatherFeelsLike">--</span>°C
+        </div>
+      </div>
+
+      <div class="weather-main-icon" id="weatherMainIcon">
+        ☀️
+      </div>
+    </div>
+
+    <div class="weather-high-low">
+      <span>↑ <b id="weatherHigh">--°</b></span>
+      <span>↓ <b id="weatherLow">--°</b></span>
+      <span id="weatherSummary">Today's weather</span>
+    </div>
+
+  </div>
+
+  <!-- WEATHER DETAILS -->
+  <div class="weather-details">
+
+    <div class="weather-detail">
+      <span>💧</span>
+      <div>
+        <small>Humidity</small>
+        <b id="weatherHumidity">--%</b>
+      </div>
+    </div>
+
+    <div class="weather-detail">
+      <span>💨</span>
+      <div>
+        <small>Wind</small>
+        <b id="weatherWind">-- km/h</b>
+      </div>
+    </div>
+
+    <div class="weather-detail">
+      <span>☀️</span>
+      <div>
+        <small>UV index</small>
+        <b id="weatherUV">--</b>
+      </div>
+    </div>
+
+    <div class="weather-detail">
+      <span>🌅</span>
+      <div>
+        <small>Sunrise</small>
+        <b id="weatherSunrise">--:--</b>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HOURLY FORECAST -->
+  <div class="weather-section-heading">
+    <b>Hourly forecast</b>
+    <small>Next 24 hours</small>
+  </div>
+
+  <div class="weather-hourly" id="weatherHourly">
+    <div class="weather-loading">Loading forecast...</div>
+  </div>
+
+  <!-- FIVE DAY FORECAST -->
+  <div class="weather-section-heading">
+    <b>5-day forecast</b>
+    <small>Coming days</small>
+  </div>
+
+  <div class="weather-daily" id="weatherDaily">
+    <div class="weather-loading">Loading forecast...</div>
+  </div>
+
+  <div class="weather-footer" id="weatherUpdated">
+    Weather data not connected yet
+  </div>
+
+</section>
+  
 <!-- TIMER -->
 <section class="page" id="timer">
   <h1 class="page-title">Focus timer</h1>
