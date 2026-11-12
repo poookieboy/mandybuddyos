@@ -1730,18 +1730,6 @@ function addItem(type, inputId) {
 }
   
 
-  data[type].unshift({
-    id: Date.now(),
-    text: value,
-    created: new Date().toISOString()
-  });
-
-  input.value = "";
-  saveData();
-  renderList(type);
-  notify("Saved.");
-}
-
 function renderList(type) {
   const container = document.getElementById(type + "List");
   if (!container) return;
