@@ -1489,19 +1489,98 @@ aria-hidden="true">
   <div class="panel" id="messagesList"></div>
 </section>
 
-<!-- NOTES -->
-<section class="page" id="notes">
-  <h1 class="page-title">Notes</h1>
-  <div class="page-description">Keep your ideas somewhere safe.</div>
 
-  <div class="panel">
-    <input id="noteTitle" placeholder="Note title">
-    <textarea id="noteInput" placeholder="Write your note..."></textarea>
-    <button class="primary" onclick="saveNote()">Save note</button>
+<!-- NOTES -->
+<section class="page notes-page" id="notes">
+
+  <div class="notes-heading">
+    <div>
+      <h1 class="page-title">Notes</h1>
+      <div class="page-description">Your thoughts, all in one place.</div>
+    </div>
+
+    <button class="notes-add-button" onclick="createNote()">
+      ＋
+    </button>
   </div>
 
-  <div class="panel" id="notesList"></div>
+  <!-- SEARCH -->
+  <div class="notes-search">
+    <span>⌕</span>
+    <input
+      type="search"
+      id="notesSearch"
+      placeholder="Search your notes..."
+      oninput="renderNotes()"
+    >
+  </div>
+
+  <!-- PINNED NOTES -->
+  <div class="notes-section-heading">
+    <h3>Pinned</h3>
+    <span id="pinnedNotesCount">0</span>
+  </div>
+
+  <div class="notes-grid" id="pinnedNotes"></div>
+
+  <!-- ALL NOTES -->
+  <div class="notes-section-heading">
+    <h3>All notes</h3>
+    <span id="allNotesCount">0</span>
+  </div>
+
+  <div class="notes-grid" id="allNotes"></div>
+
+  <!-- EMPTY STATE -->
+  <div class="notes-empty" id="notesEmpty" hidden>
+    <div class="notes-empty-icon">▤</div>
+    <h3>No notes yet</h3>
+    <p>Create your first note to get started.</p>
+    <button class="primary" onclick="createNote()">
+      Create a note
+    </button>
+  </div>
+
+  <!-- NOTE EDITOR -->
+  <div class="notes-editor panel" id="notesEditor" hidden>
+
+    <div class="notes-editor-toolbar">
+      <button onclick="closeNoteEditor()">← Back</button>
+
+      <div>
+        <button onclick="toggleNotePin()" id="notePinButton">
+          ☆ Pin
+        </button>
+        <button onclick="deleteCurrentNote()">Delete</button>
+      </div>
+    </div>
+
+    <input
+      id="noteTitle"
+      class="notes-title-input"
+      placeholder="Untitled note"
+      maxlength="80"
+    >
+
+    <div class="notes-editor-meta" id="noteLastEdited">
+      New note
+    </div>
+
+    <textarea
+      id="noteContent"
+      class="notes-content-input"
+      placeholder="Start writing..."
+    ></textarea>
+
+    <div class="notes-editor-footer">
+      <span id="noteWordCount">0 words</span>
+      <span id="noteSaveStatus">Not saved</span>
+    </div>
+
+  </div>
+
 </section>
+  
 
 <!-- MEMORIES -->
 <section class="page" id="memories">
