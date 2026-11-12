@@ -1705,6 +1705,29 @@ function launchBuddyApp(name) {
 
   showPage(app.page);
   }
+
+
+  
+function addItem(type, inputId) {
+  const input = document.getElementById(inputId);
+  const value = input.value.trim();
+
+  if (!value) {
+    notify("Write something first.");
+    return;
+  }
+
+  data[type].unshift({
+    id: Date.now(),
+    text: value,
+    created: new Date().toISOString()
+  });
+
+  input.value = "";
+  saveData();
+  renderList(type);
+  notify("Saved.");
+}
   
 
   data[type].unshift({
