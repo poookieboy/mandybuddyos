@@ -1693,6 +1693,7 @@ screen.addEventListener("touchend", event => {
   }
 }, {passive:true});
 
+
 /* KEYBOARD PREVIEW SUPPORT */
 
 let mouseStartY = 0;
@@ -1707,55 +1708,33 @@ screen.addEventListener("mouseup", event => {
   const deltaY = event.clientY - mouseStartY;
   const deltaX = event.clientX - mouseStartX;
 
-  if (Math.abs(deltaY) > 45 && Math.abs(deltaX) < 65 && mouseStartY < 90) {
-    const middle = screen.getBoundingClientRect().left +
+  if (
+    Math.abs(deltaY) > 45 &&
+    Math.abs(deltaX) < 65 &&
+    mouseStartY < 90
+  ) {
+    const middle =
+      screen.getBoundingClientRect().left +
       screen.getBoundingClientRect().width / 2;
 
     if (deltaY > 0) {
-      togglePanel(mouseStartX < middle
-        ? "notificationPanel"
-        : "controlPanel");
+      togglePanel(
+        mouseStartX < middle
+          ? "notificationPanel"
+          : "controlPanel"
+      );
     } else {
       closePanels();
     }
   }
 });
 
-screen.addEventListener("mouseup", event => {
-  const deltaY = event.clientY - mouseStartY;
-  const deltaX = event.clientX - mouseStartX;
-
-  if (Math.abs(deltaY) > 45 && Math.abs(deltaX) < 65 && mouseStartY < 90) {
-    const middle = screen.getBoundingClientRect().left +
-      screen.getBoundingClientRect().width / 2;
-
-    if (deltaY > 0) {
-      togglePanel(mouseStartX < middle
-        ? "notificationPanel"
-        : "controlPanel");
-    } else {
-      closePanels();
-    }
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    closePanels();
   }
 });
-
-screen.addEventListener("mouseup", event => {
-  const deltaY = event.clientY - startY;
-  const deltaX = touch.clientX - startX;
-
-  if (Math.abs(deltaY) > 45 && Math.abs(deltaX) < 65 && startY < 90) {
-    if (deltaY > 0) {
-      const middle = screen.getBoundingClientRect().left +
-        screen.getBoundingClientRect().width / 2;
-
-      togglePanel(startX < middle
-        ? "notificationPanel"
-        : "controlPanel");
-    } else {
-      closePanels();
-    }
-  }
-}, {passive:true});
+    
 
 /* KEYBOARD PREVIEW SUPPORT */
 
