@@ -1177,16 +1177,65 @@ aria-hidden="true">
   <div class="panel" id="remindersList"></div>
 </section>
 
-<!-- CALENDAR -->
-<section class="page" id="calendar">
-  <h1 class="page-title">Calendar</h1>
-  <div class="page-description" id="calendarDate"></div>
 
-  <div class="panel">
-    <b style="font-size:12px">Today's reminders</b>
-    <div id="calendarList"></div>
+<!-- CALENDAR -->
+<section class="page calendar-page" id="calendar">
+  <div class="calendar-heading">
+    <div>
+      <h1 class="page-title">Calendar</h1>
+      <div class="page-description" id="calendarDate">Your schedule</div>
+    </div>
+    <button class="calendar-add-top" type="button" onclick="toggleCalendarForm()">＋ Event</button>
+  </div>
+
+  <div class="calendar-monthbar">
+    <button type="button" onclick="changeCalendarMonth(-1)">‹</button>
+    <strong id="calendarMonthLabel">Month Year</strong>
+    <button type="button" onclick="changeCalendarMonth(1)">›</button>
+    <button class="calendar-today" type="button" onclick="goCalendarToday()">Today</button>
+  </div>
+
+  <div class="calendar-card">
+    <div class="calendar-weekdays">
+      <span>Sun</span><span>Mon</span><span>Tue</span>
+      <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+
+  <div class="calendar-selected-head">
+    <div>
+      <b id="calendarSelectedLabel">Today</b>
+      <small id="calendarSelectedCount">No events</small>
+    </div>
+    <button type="button" onclick="toggleCalendarForm()">＋ Add</button>
+  </div>
+
+  <div class="calendar-event-list" id="calendarList"></div>
+
+  <div class="calendar-form panel" id="calendarForm" hidden>
+    <div class="calendar-form-title">
+      <b>New event</b>
+      <button type="button" onclick="toggleCalendarForm(false)">×</button>
+    </div>
+
+    <input id="calendarEventTitle" maxlength="60" placeholder="Event title">
+
+    <div class="calendar-form-row">
+      <input id="calendarEventDate" type="date">
+      <input id="calendarEventTime" type="time">
+    </div>
+
+    <textarea id="calendarEventNotes" rows="2" maxlength="180"
+      placeholder="Notes (optional)"></textarea>
+
+    <button class="primary" type="button" onclick="saveCalendarEvent()">
+      Save event
+    </button>
   </div>
 </section>
+  
+
 
 <!-- TIMER -->
 <section class="page" id="timer">
