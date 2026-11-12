@@ -1704,6 +1704,24 @@ screen.addEventListener("mousedown", event => {
 });
 
 screen.addEventListener("mouseup", event => {
+  const deltaY = event.clientY - mouseStartY;
+  const deltaX = event.clientX - mouseStartX;
+
+  if (Math.abs(deltaY) > 45 && Math.abs(deltaX) < 65 && mouseStartY < 90) {
+    const middle = screen.getBoundingClientRect().left +
+      screen.getBoundingClientRect().width / 2;
+
+    if (deltaY > 0) {
+      togglePanel(mouseStartX < middle
+        ? "notificationPanel"
+        : "controlPanel");
+    } else {
+      closePanels();
+    }
+  }
+});
+
+screen.addEventListener("mouseup", event => {
   const deltaY = event.clientY - startY;
   const deltaX = touch.clientX - startX;
 
