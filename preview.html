@@ -1286,6 +1286,82 @@ aria-hidden="true">
 
 </main>
 
+<!-- FLOATING APP LAUNCHER -->
+<div class="launcher-overlay" id="appLauncher"
+     onclick="launcherBackdrop(event)">
+
+  <section class="launcher-window"
+           role="dialog"
+           aria-label="App launcher"
+           onclick="event.stopPropagation()">
+
+    <div class="launcher-header">
+      <div class="launcher-heading">Apps</div>
+      <button class="launcher-close"
+              onclick="closeAppLauncher()">×</button>
+    </div>
+
+    <label class="launcher-search">
+      <span>⌕</span>
+      <input id="launcherSearch"
+             type="search"
+             placeholder="Search apps..."
+             autocomplete="off"
+             oninput="filterLauncherApps()">
+    </label>
+
+    <div class="launcher-scroll" id="launcherScroll">
+
+      <div id="launcherPinnedWrap">
+        <div class="launcher-section-head">
+          <span>Pinned</span>
+          <button class="launcher-link"
+                  onclick="showAllLauncherApps()">All apps →</button>
+        </div>
+        <div class="launcher-pinned" id="launcherPinned"></div>
+      </div>
+
+      <div class="launcher-section-head">
+        <span id="launcherAllHeading">All apps</span>
+        <span>15 apps</span>
+      </div>
+
+      <div class="launcher-categories">
+        <button class="launcher-category active"
+                data-category="All"
+                onclick="setLauncherCategory('All')">All</button>
+        <button class="launcher-category"
+                data-category="Productivity"
+                onclick="setLauncherCategory('Productivity')">Productivity</button>
+        <button class="launcher-category"
+                data-category="Buddy"
+                onclick="setLauncherCategory('Buddy')">Buddy</button>
+        <button class="launcher-category"
+                data-category="Utilities"
+                onclick="setLauncherCategory('Utilities')">Utilities</button>
+        <button class="launcher-category"
+                data-category="Entertainment"
+                onclick="setLauncherCategory('Entertainment')">Fun</button>
+      </div>
+
+      <div class="launcher-all-grid" id="launcherAllApps"></div>
+      <div class="launcher-empty" id="launcherEmpty" hidden>
+        No apps found.
+      </div>
+
+    </div>
+
+    <div class="launcher-footer">
+      <div class="launcher-user">
+        <span class="launcher-avatar">M</span>
+        Mandy's Buddy
+      </div>
+      <span>Buddy OS · Apps</span>
+    </div>
+
+  </section>
+</div>
+  
 <!-- BOTTOM NAVIGATION -->
 <nav class="nav">
   <button class="active" data-page="home" onclick="showPage('home')">
