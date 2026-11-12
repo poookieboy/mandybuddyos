@@ -953,4 +953,755 @@ aria-hidden="true">
     <button class="secondary" onclick="changeTimer(-5)">− 5 min</button>
     <button class="secondary" onclick="changeTimer(5)">+ 5 min</button>
 
-    <div sty
+    <div style="margin-top:15px">
+      <button class="primary" id="timerStart" onclick="toggleTimer()">Start</button>
+      <button class="secondary" onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+</section>
+
+<!-- GAMES -->
+<section class="page" id="games">
+  <h1 class="page-title">Games</h1>
+  <div class="page-description">A little fun with Buddy.</div>
+
+  <div class="panel" style="text-align:center">
+    <h3 style="font-size:14px">Tap Challenge</h3>
+    <p style="font-size:10px;color:var(--muted)">How many times can you tap in 10 seconds?</p>
+    <div id="tapScore" style="font-size:38px;font-weight:850">0</div>
+    <div id="tapTime" style="font-size:12px;color:var(--muted)">Ready?</div>
+    <button class="primary" id="tapButton" onclick="tapGame()">Start game</button>
+    <button class="secondary" onclick="resetGame()">Reset</button>
+  </div>
+</section>
+
+<!-- EXPRESSIONS -->
+<section class="page" id="expressions">
+  <h1 class="page-title">Expressions</h1>
+  <div class="page-description">Give Buddy a different expression.</div>
+
+  <div class="panel" style="text-align:center">
+    <div class="face" id="expressionFace" style="height:110px;background:var(--face);border-radius:15px;margin-bottom:15px">
+      <div class="eye"></div>
+      <div class="eye"></div>
+    </div>
+
+    <div id="expressionLabel" style="font-size:12px;font-weight:750;margin-bottom:15px">Normal</div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center">
+      <button class="secondary" onclick="setExpression('normal')">Normal</button>
+      <button class="secondary" onclick="setExpression('happy')">Happy</button>
+      <button class="secondary" onclick="setExpression('sleepy')">Sleepy</button>
+      <button class="secondary" onclick="setExpression('surprised')">Surprised</button>
+    </div>
+  </div>
+</section>
+
+<!-- SETTINGS -->
+<section class="page" id="settings">
+  <h1 class="page-title">Settings</h1>
+  <div class="page-description">Make Buddy feel right at home.</div>
+
+  <div class="panel">
+    <div class="setting-row">
+      <span>Face animations</span>
+      <input class="toggle" type="checkbox" id="animationToggle" checked onchange="toggleAnimation(this.checked)">
+    </div>
+
+    <div class="setting-row">
+      <span>Notifications</span>
+      <button class="secondary" onclick="requestNotifications()">Enable</button>
+    </div>
+
+    <div class="setting-row">
+      <span>Device name</span>
+      <b>Mandy's Buddy</b>
+    </div>
+
+    <div class="setting-row">
+      <span>Operating system</span>
+      <b>Buddy OS</b>
+    </div>
+
+    <div class="setting-row">
+      <span>Version</span>
+      <b>1.0 Preview</b>
+    </div>
+  </div>
+
+  <div class="panel">
+    <b style="font-size:12px">About Buddy</b>
+    <p style="font-size:10px;color:var(--muted);line-height:1.6">
+      Mandy's Buddy is a little desktop companion powered by Buddy OS.
+    </p>
+  </div>
+</section>
+
+</main>
+
+<!-- BOTTOM NAVIGATION -->
+<nav class="nav">
+  <button class="active" data-page="home" onclick="showPage('home')">
+    <svg class="icon"><use href="#i-home"/></svg>
+    Home
+  </button>
+
+  <button data-page="apps" onclick="showPage('apps')">
+    <svg class="icon"><use href="#i-apps"/></svg>
+    Apps
+  </button>
+
+  <button data-page="settings" onclick="showPage('settings')">
+    <svg class="icon"><use href="#i-settings"/></svg>
+    Settings
+  </button>
+</nav>
+
+<!-- NOTIFICATIONS PANEL -->
+<div class="pull-panel left" id="notificationPanel">
+  <div class="panel-head">
+    <b>Notifications</b>
+    <button class="panel-close" onclick="closePanels()">×</button>
+  </div>
+  <div id="notificationList">
+    <div class="panel-empty">You're all caught up.</div>
+  </div>
+  <button class="secondary" onclick="clearNotifications()">Clear all</button>
+</div>
+
+<!-- CONTROL PANEL -->
+<div class="pull-panel right" id="controlPanel">
+  <div class="panel-head">
+    <b>Control centre</b>
+    <button class="panel-close" onclick="closePanels()">×</button>
+  </div>
+
+  <div class="quick-grid">
+    <button class="quick-toggle active" id="wifiToggle" onclick="toggleQuick('wifiToggle')">
+      Wi-Fi
+      <small>Connected preview</small>
+    </button>
+
+    <button class="quick-toggle active" id="bluetoothToggle" onclick="toggleQuick('bluetoothToggle')">
+      Bluetooth
+      <small>Enabled preview</small>
+    </button>
+
+    <button class="quick-toggle" id="soundToggle" onclick="toggleQuick('soundToggle')">
+      Sound
+      <small>Tap to toggle</small>
+    </button>
+
+    <button class="quick-toggle" id="animationQuick" onclick="toggleQuickAnimation()">
+      Animations
+      <small>Face movement</small>
+    </button>
+  </div>
+
+  <div class="panel-card">
+    <b style="font-size:11px">Battery</b>
+    <div style="font-size:10px;color:var(--muted);margin-top:5px">
+      Browser preview · Battery status is simulated
+    </div>
+    <div style="height:7px;background:#e7edf4;border-radius:10px;margin-top:10px;overflow:hidden">
+      <div style="height:100%;width:100%;background:#39b982;border-radius:10px" id="controlBattery"></div>
+    </div>
+    <div style="font-size:10px;margin-top:5px" id="controlBatteryText">100%</div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+</div>
+</div>
+</div>
+
+<script>
+const storageKey = "mandy_buddy_light_v1";
+
+let data = {};
+
+try {
+  data = JSON.parse(localStorage.getItem(storageKey) || "{}");
+} catch {
+  data = {};
+}
+
+data.messages ||= [];
+data.notes ||= [];
+data.memories ||= [];
+data.reminders ||= [];
+
+let notifications = [];
+let animationEnabled = true;
+let timerSeconds = 25 * 60;
+let timerRunning = false;
+let timerInterval = null;
+let gameRunning = false;
+let gameScore = 0;
+let gameTime = 10;
+let gameInterval = null;
+
+function saveData() {
+  localStorage.setItem(storageKey, JSON.stringify(data));
+}
+
+function notify(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(toast.hideTimer);
+  toast.hideTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2300);
+}
+
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const target = document.getElementById(id);
+  if (!target) return;
+
+  target.classList.add("active");
+
+  document.querySelectorAll(".nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === id);
+  });
+
+  if (id === "messages") renderList("messages");
+  if (id === "notes") renderNotes();
+  if (id === "memories") renderList("memories");
+  if (id === "reminders") renderReminders();
+  if (id === "calendar") renderCalendar();
+  if (id === "timer") updateTimerDisplay();
+}
+
+function addItem(type, inputId) {
+  const input = document.getElementById(inputId);
+  const value = input.value.trim();
+
+  if (!value) {
+    notify("Write something first.");
+    return;
+  }
+
+  data[type].unshift({
+    id: Date.now(),
+    text: value,
+    created: new Date().toISOString()
+  });
+
+  input.value = "";
+  saveData();
+  renderList(type);
+  notify("Saved.");
+}
+
+function renderList(type) {
+  const container = document.getElementById(type + "List");
+  if (!container) return;
+
+  const items = data[type] || [];
+
+  if (!items.length) {
+    container.innerHTML = '<div class="empty">Nothing here yet.</div>';
+    return;
+  }
+
+  container.innerHTML = items.map(item => `
+    <div class="item">
+      <div>${escapeHTML(item.text)}</div>
+      <div class="item-actions">
+        <button class="secondary" onclick="deleteItem('${type}',${item.id})">Delete</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function deleteItem(type, id) {
+  data[type] = data[type].filter(item => item.id !== id);
+  saveData();
+  renderList(type);
+  notify("Deleted.");
+}
+
+function saveNote() {
+  const title = document.getElementById("noteTitle").value.trim();
+  const text = document.getElementById("noteInput").value.trim();
+
+  if (!title && !text) {
+    notify("Write a note first.");
+    return;
+  }
+
+  data.notes.unshift({
+    id: Date.now(),
+    title: title || "Untitled note",
+    text,
+    created: new Date().toISOString()
+  });
+
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteInput").value = "";
+
+  saveData();
+  renderNotes();
+  notify("Note saved.");
+}
+
+function renderNotes() {
+  const container = document.getElementById("notesList");
+  if (!container) return;
+
+  if (!data.notes.length) {
+    container.innerHTML = '<div class="empty">No notes yet.</div>';
+    return;
+  }
+
+  container.innerHTML = data.notes.map(note => `
+    <div class="item">
+      <div>
+        <b>${escapeHTML(note.title)}</b>
+        <small>${escapeHTML(note.text)}</small>
+      </div>
+      <button class="secondary" onclick="deleteItem('notes',${note.id})">Delete</button>
+    </div>
+  `).join("");
+}
+
+function addReminder() {
+  const text = document.getElementById("reminderInput").value.trim();
+  const date = document.getElementById("reminderDate").value;
+
+  if (!text) {
+    notify("Enter a reminder.");
+    return;
+  }
+
+  data.reminders.push({
+    id: Date.now(),
+    text,
+    date,
+    done: false,
+    alerted: false
+  });
+
+  document.getElementById("reminderInput").value = "";
+  document.getElementById("reminderDate").value = "";
+
+  saveData();
+  renderReminders();
+  updateHomeReminder();
+  notify("Reminder added.");
+}
+
+function renderReminders() {
+  const container = document.getElementById("remindersList");
+  if (!container) return;
+
+  if (!data.reminders.length) {
+    container.innerHTML = '<div class="empty">No reminders yet.</div>';
+    return;
+  }
+
+  const sorted = [...data.reminders].sort((a,b) =>
+    (a.date || "").localeCompare(b.date || "")
+  );
+
+  container.innerHTML = sorted.map(item => `
+    <div class="item">
+      <div>
+        <b style="${item.done ? 'text-decoration:line-through;color:#8994a4' : ''}">
+          ${escapeHTML(item.text)}
+        </b>
+        <small>${item.date ? new Date(item.date).toLocaleString() : "No date set"}</small>
+      </div>
+      <div class="item-actions">
+        <button class="secondary" onclick="toggleReminder(${item.id})">
+          ${item.done ? "Undo" : "Done"}
+        </button>
+        <button class="secondary" onclick="deleteReminder(${item.id})">×</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggleReminder(id) {
+  const item = data.reminders.find(reminder => reminder.id === id);
+  if (!item) return;
+
+  item.done = !item.done;
+  saveData();
+  renderReminders();
+  updateHomeReminder();
+}
+
+function deleteReminder(id) {
+  data.reminders = data.reminders.filter(item => item.id !== id);
+  saveData();
+  renderReminders();
+  updateHomeReminder();
+}
+
+function updateHomeReminder() {
+  const now = Date.now();
+
+  const upcoming = data.reminders
+    .filter(item => !item.done && item.date && new Date(item.date).getTime() >= now)
+    .sort((a,b) => new Date(a.date) - new Date(b.date))[0];
+
+  document.getElementById("nextReminder").textContent =
+    upcoming ? upcoming.text : "No upcoming reminders";
+
+  document.getElementById("nextReminderTime").textContent =
+    upcoming ? new Date(upcoming.date).toLocaleString() : "Your day is clear";
+}
+
+function renderCalendar() {
+  const now = new Date();
+
+  document.getElementById("calendarDate").textContent =
+    now.toLocaleDateString(undefined, {
+      weekday:"long",
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    });
+
+  const today = now.toDateString();
+
+  const items = data.reminders.filter(item =>
+    item.date && new Date(item.date).toDateString() === today
+  );
+
+  const container = document.getElementById("calendarList");
+
+  container.innerHTML = items.length
+    ? items.map(item => `
+      <div class="item">
+        <div>
+          ${escapeHTML(item.text)}
+          <small>${new Date(item.date).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</small>
+        </div>
+        <span>${item.done ? "Done" : "Upcoming"}</span>
+      </div>
+    `).join("")
+    : '<div class="empty">Nothing scheduled for today.</div>';
+}
+
+function updateClock() {
+  const now = new Date();
+
+  const time = now.toLocaleTimeString([], {
+    hour:"2-digit",
+    minute:"2-digit",
+    hour12:false
+  });
+
+  document.getElementById("homeTime").textContent = time;
+  document.getElementById("statusTime").textContent = time;
+
+  document.getElementById("homePeriod").textContent =
+    now.toLocaleTimeString([], {hour:"numeric",hour12:true}).slice(-2);
+
+  document.getElementById("homeWeekday").textContent =
+    now.toLocaleDateString([], {weekday:"long"});
+
+  document.getElementById("homeDate").textContent =
+    now.toLocaleDateString([], {day:"numeric",month:"long",year:"numeric"});
+}
+
+const quotes = [
+  "Keep learning. Keep becoming.",
+  "Small steps still move you forward.",
+  "Curiosity makes ordinary days interesting.",
+  "You can always begin again.",
+  "A thoughtful mind is a powerful thing.",
+  "Make today count in your own way.",
+  "Every question is a new beginning."
+];
+
+function rotateQuote() {
+  const current = document.getElementById("dailyQuote").textContent;
+  let next = current;
+
+  while (next === current) {
+    next = quotes[Math.floor(Math.random() * quotes.length)];
+  }
+
+  document.getElementById("dailyQuote").textContent = next;
+}
+
+function setExpression(expression) {
+  const face = document.getElementById("expressionFace");
+  const mini = document.getElementById("face");
+
+  face.className = "face " + expression;
+  mini.className = "face mini-face " + expression;
+
+  const labels = {
+    normal:"Normal",
+    happy:"Happy",
+    sleepy:"Sleepy",
+    surprised:"Surprised"
+  };
+
+  document.getElementById("expressionLabel").textContent =
+    labels[expression] || "Normal";
+
+  document.getElementById("faceCaption").textContent =
+    expression === "happy" ? "Feeling happy!" :
+    expression === "sleepy" ? "Getting sleepy..." :
+    expression === "surprised" ? "Oh!" :
+    "I'm right here.";
+}
+
+function toggleAnimation(enabled) {
+  animationEnabled = enabled;
+  document.body.classList.toggle("no-animation", !enabled);
+  document.getElementById("animationQuick").classList.toggle("active", enabled);
+}
+
+function toggleQuickAnimation() {
+  animationEnabled = !animationEnabled;
+
+  document.getElementById("animationToggle").checked = animationEnabled;
+  toggleAnimation(animationEnabled);
+}
+
+function toggleQuick(id) {
+  const button = document.getElementById(id);
+  button.classList.toggle("active");
+}
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(timerSeconds / 60);
+  const seconds = timerSeconds % 60;
+
+  document.getElementById("timerDisplay").textContent =
+    String(minutes).padStart(2,"0") + ":" +
+    String(seconds).padStart(2,"0");
+}
+
+function changeTimer(amount) {
+  if (timerRunning) return;
+
+  timerSeconds = Math.max(60, timerSeconds + amount * 60);
+  updateTimerDisplay();
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById("timerStart").textContent = "Resume";
+    return;
+  }
+
+  timerRunning = true;
+  document.getElementById("timerStart").textContent = "Pause";
+
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    updateTimerDisplay();
+
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 0;
+      document.getElementById("timerStart").textContent = "Start";
+      notify("Focus session complete!");
+      updateTimerDisplay();
+    }
+  },1000);
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 25 * 60;
+  document.getElementById("timerStart").textContent = "Start";
+  updateTimerDisplay();
+}
+
+function tapGame() {
+  if (!gameRunning) {
+    gameRunning = true;
+    gameScore = 0;
+    gameTime = 10;
+
+    document.getElementById("tapScore").textContent = "0";
+    document.getElementById("tapButton").textContent = "TAP!";
+
+    gameInterval = setInterval(() => {
+      gameTime--;
+      document.getElementById("tapTime").textContent =
+        gameTime + " seconds left";
+
+      if (gameTime <= 0) {
+        clearInterval(gameInterval);
+        gameRunning = false;
+        document.getElementById("tapButton").textContent = "Play again";
+        document.getElementById("tapTime").textContent =
+          "Finished! Score: " + gameScore;
+      }
+    },1000);
+
+    return;
+  }
+
+  gameScore++;
+  document.getElementById("tapScore").textContent = gameScore;
+}
+
+function resetGame() {
+  clearInterval(gameInterval);
+  gameRunning = false;
+  gameScore = 0;
+  gameTime = 10;
+
+  document.getElementById("tapScore").textContent = "0";
+  document.getElementById("tapTime").textContent = "Ready?";
+  document.getElementById("tapButton").textContent = "Start game";
+}
+
+function requestNotifications() {
+  if (!("Notification" in window)) {
+    notify("Notifications are not supported here.");
+    return;
+  }
+
+  Notification.requestPermission().then(permission => {
+    notify(permission === "granted"
+      ? "Notifications enabled."
+      : "Notification permission not granted.");
+  });
+}
+
+function addNotification(title, message) {
+  notifications.unshift({
+    title,
+    message,
+    time:new Date().toLocaleTimeString([], {
+      hour:"2-digit",
+      minute:"2-digit"
+    })
+  });
+
+  renderNotifications();
+
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification(title, {body:message});
+  }
+}
+
+function renderNotifications() {
+  const container = document.getElementById("notificationList");
+
+  container.innerHTML = notifications.length
+    ? notifications.map(item => `
+      <div class="notice">
+        <b>${escapeHTML(item.title)}</b>
+        <div>${escapeHTML(item.message)}</div>
+        <small>${escapeHTML(item.time)}</small>
+      </div>
+    `).join("")
+    : '<div class="panel-empty">You are all caught up.</div>';
+}
+
+function clearNotifications() {
+  notifications = [];
+  renderNotifications();
+  notify("Notifications cleared.");
+}
+
+function checkReminders() {
+  const now = Date.now();
+
+  data.reminders.forEach(item => {
+    if (!item.done && !item.alerted && item.date) {
+      const time = new Date(item.date).getTime();
+
+      if (time <= now && time > now - 60000) {
+        item.alerted = true;
+        addNotification("Reminder", item.text);
+        saveData();
+      }
+    }
+  });
+}
+
+function closePanels() {
+  document.getElementById("notificationPanel").classList.remove("open");
+  document.getElementById("controlPanel").classList.remove("open");
+}
+
+function togglePanel(panel) {
+  const target = document.getElementById(panel);
+  const wasOpen = target.classList.contains("open");
+
+  closePanels();
+
+  if (!wasOpen) target.classList.add("open");
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+/* TOUCH AND MOUSE SWIPE DETECTION */
+
+const screen = document.querySelector(".screen");
+let startX = 0;
+let startY = 0;
+let startTarget = null;
+
+screen.addEventListener("touchstart", event => {
+  const touch = event.touches[0];
+  startX = touch.clientX;
+  startY = touch.clientY;
+  startTarget = event.target;
+}, {passive:true});
+
+screen.addEventListener("touchend", event => {
+  if (!event.changedTouches.length) return;
+
+  const touch = event.changedTouches[0];
+  const deltaX = touch.clientX - startX;
+  const deltaY = touch.clientY - startY;
+
+  if (Math.abs(deltaY) > 45 && Math.abs(deltaX) < 65 && startY < 90) {
+    if (deltaY > 0) {
+      const middle = screen.getBoundingClientRect().left +
+        screen.getBoundingClientRect().width / 2;
+
+      togglePanel(startX < middle
+        ? "notificationPanel"
+        : "controlPanel");
+    } else {
+      closePanels();
+    }
+  }
+}, {passive:true});
+
+/* KEYBOARD PREVIEW SUPPORT */
+
+let mouseStartY = 0;
+let mouseStartX = 0;
+
+screen.addEventListener("mousedown", event => {
+  mouseStartX = event.clientX;
+  mouseStartY = event.clientY;
+});
+
+screen.addEventListener("mouseup", event => {
+  const deltaY = even
