@@ -1575,6 +1575,7 @@ data.messages ||= [];
 data.notes ||= [];
 data.memories ||= [];
 data.reminders ||= [];
+data.events ||= [];
 
 let notifications = [];
 let animationEnabled = true;
@@ -1990,38 +1991,224 @@ function updateHomeReminder() {
     upcoming ? new Date(upcoming.date).toLocaleString() : "Your day is clear";
 }
 
-function renderCalendar() {
-  const now = new Date();
 
-  document.getElementById("calendarDate").textContent =
-    now.toLocaleDateString(undefined, {
-      weekday:"long",
-      year:"numeric",
-      month:"long",
-      day:"numeric"
-    });
+let calendarMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+let calendarSelectedDate = new Date();
 
-  const today = now.toDateString();
-
-  const items = data.reminders.filter(item =>
-    item.date && new Date(item.date).toDateString() === today
-  );
-
-  const container = document.getElementById("calendarList");
-
-  container.innerHTML = items.length
-    ? items.map(item => `
-      <div class="item">
-        <div>
-          ${escapeHTML(item.text)}
-          <small>${new Date(item.date).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})}</small>
-        </div>
-        <span>${item.done ? "Done" : "Upcoming"}</span>
-      </div>
-    `).join("")
-    : '<div class="empty">Nothing scheduled for today.</div>';
+function calendarDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
+function parseCalendarDate(value) {
+  const [year, month, day] = value.split("-").map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function changeCalendarMonth(amount) {
+  calendarMonth = new Date(
+    calendarMonth.getFullYear(),
+    calendarMonth.getMonth() + amount,
+    1
+  );
+  renderCalendar();
+}
+
+function goCalendarToday() {
+  calendarMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  calendarSelectedDate = new Date();
+  renderCalendar();
+}
+
+function selectCalendarDate(key) {
+  calendarSelectedDate = parseCalendarDate(key);
+  renderCalendar();
+}
+
+function toggleCalendarForm(force) {
+  const form = document.getElementById("calendarForm");
+  if (!form) return;
+
+  const shouldOpen = typeof force === "boolean" ? force : form.hidden;
+  form.hidden = !shouldOpen;
+
+  if (shouldOpen) {
+    document.getElementById("calendarEventDate").value =
+      calendarDateKey(calendarSelectedDate);
+    document.getElementById("calendarEventTitle").focus();
+  }
+}
+
+function saveCalendarEvent() {
+  const titleInput = document.getElementById("calendarEventTitle");
+  const dateInput = document.getElementById("calendarEventDate");
+  const timeInput = document.getElementById("calendarEventTime");
+  const notesInput = document.getElementById("calendarEventNotes");
+
+  const title = titleInput.value.trim();
+  const date = dateInput.value;
+
+  if (!title || !date) {
+    alert("Please enter an event title and date.");
+    return;
+  }
+
+  data.events ||= [];
+
+  data.events.push({
+    id: Date.now(),
+    title,
+    date,
+    time: timeInput.value,
+    notes: notesInput.value.trim()
+  });
+
+  saveData();
+
+  calendarSelectedDate = parseCalendarDate(date);
+  calendarMonth = new Date(
+    calendarSelectedDate.getFullYear(),
+    calendarSelectedDate.getMonth(),
+    1
+  );
+
+  titleInput.value = "";
+  timeInput.value = "";
+  notesInput.value = "";
+
+  toggleCalendarForm(false);
+  renderCalendar();
+
+  if (typeof notify === "function") {
+    notify("Event saved");
+  }
+}
+
+function deleteCalendarEvent(id) {
+  data.events = (data.events || []).filter(event => event.id !== id);
+  saveData();
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const grid = document.getElementById("calendarGrid");
+  const monthLabel = document.getElementById("calendarMonthLabel");
+  const selectedLabel = document.getElementById("calendarSelectedLabel");
+  const selectedCount = document.getElementById("calendarSelectedCount");
+  const list = document.getElementById("calendarList");
+  const dateDescription = document.getElementById("calendarDate");
+
+  if (!grid || !monthLabel || !list) return;
+
+  data.events ||= [];
+
+  const year = calendarMonth.getFullYear();
+  const month = calendarMonth.getMonth();
+  const todayKey = calendarDateKey(new Date());
+  const selectedKey = calendarDateKey(calendarSelectedDate);
+
+  monthLabel.textContent = calendarMonth.toLocaleDateString(undefined, {
+    month: "long",
+    year: "numeric"
+  });
+
+  if (dateDescription) {
+    dateDescription.textContent = "Your schedule and upcoming events";
+  }
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const previousMonthDays = new Date(year, month, 0).getDate();
+
+  let cells = "";
+
+  for (let i = 0; i < 42; i++) {
+    let dayNumber;
+    let cellDate;
+    let outside = false;
+
+    if (i < firstDay) {
+      dayNumber = previousMonthDays - firstDay + i + 1;
+      cellDate = new Date(year, month - 1, dayNumber);
+      outside = true;
+    } else if (i >= firstDay + daysInMonth) {
+      dayNumber = i - firstDay - daysInMonth + 1;
+      cellDate = new Date(year, month + 1, dayNumber);
+      outside = true;
+    } else {
+      dayNumber = i - firstDay + 1;
+      cellDate = new Date(year, month, dayNumber);
+    }
+
+    const key = calendarDateKey(cellDate);
+    const hasEvents = data.events.some(event => event.date === key);
+
+    const classes = [
+      "calendar-day",
+      outside ? "outside" : "",
+      key === todayKey ? "today" : "",
+      key === selectedKey ? "selected" : ""
+    ].filter(Boolean).join(" ");
+
+    cells += `
+      <button type="button" class="${classes}"
+        onclick="selectCalendarDate('${key}')">
+        ${dayNumber}
+        ${hasEvents ? "<i></i>" : ""}
+      </button>
+    `;
+  }
+
+  grid.innerHTML = cells;
+
+  const selectedEvents = data.events
+    .filter(event => event.date === selectedKey)
+    .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+
+  if (selectedLabel) {
+    selectedLabel.textContent = calendarSelectedDate.toLocaleDateString(
+      undefined,
+      { weekday: "long", day: "numeric", month: "long" }
+    );
+  }
+
+  if (selectedCount) {
+    selectedCount.textContent =
+      selectedEvents.length === 1
+        ? "1 event"
+        : `${selectedEvents.length} events`;
+  }
+
+  if (!selectedEvents.length) {
+    list.innerHTML = `
+      <div class="calendar-empty">
+        No events scheduled for this day.
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = selectedEvents.map(event => `
+    <div class="calendar-event">
+      <div class="calendar-event-time">
+        ${event.time || "Any time"}
+      </div>
+      <div class="calendar-event-copy">
+        <b>${escapeHTML(event.title)}</b>
+        ${event.notes
+          ? `<small>${escapeHTML(event.notes)}</small>`
+          : ""}
+      </div>
+      <button type="button"
+        class="calendar-event-delete"
+        onclick="deleteCalendarEvent(${event.id})"
+        aria-label="Delete event">×</button>
+    </div>
+  `).join("");
+      }
+  
 function updateClock() {
   const now = new Date();
 
