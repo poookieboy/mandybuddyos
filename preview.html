@@ -1276,19 +1276,57 @@ aria-hidden="true">
   <div class="panel" id="memoriesList"></div>
 </section>
 
-<!-- REMINDERS -->
-<section class="page" id="reminders">
-  <h1 class="page-title">Reminders</h1>
-  <div class="page-description">Keep track of things to do.</div>
 
-  <div class="panel">
-    <input id="reminderInput" placeholder="What should you remember?">
-    <input id="reminderDate" type="datetime-local">
-    <button class="primary" onclick="addReminder()">Add reminder</button>
+<!-- REMINDERS -->
+<section class="page reminders-page" id="reminders">
+
+  <div class="reminders-heading">
+    <div>
+      <h1 class="page-title">Reminders</h1>
+      <div class="page-description">A little help keeping things on track.</div>
+    </div>
+    <button class="reminder-add-button" onclick="toggleReminderForm()">＋</button>
   </div>
 
-  <div class="panel" id="remindersList"></div>
+  <div class="reminder-summary">
+    <div class="reminder-summary-card">
+      <strong id="reminderTotal">0</strong>
+      <small>Total tasks</small>
+    </div>
+    <div class="reminder-summary-card">
+      <strong id="reminderPending">0</strong>
+      <small>Remaining</small>
+    </div>
+    <div class="reminder-summary-card">
+      <strong id="reminderCompleted">0</strong>
+      <small>Completed</small>
+    </div>
+  </div>
+
+  <div class="reminder-filters">
+    <button class="active" onclick="setReminderFilter('all',this)">All</button>
+    <button onclick="setReminderFilter('today',this)">Today</button>
+    <button onclick="setReminderFilter('upcoming',this)">Upcoming</button>
+    <button onclick="setReminderFilter('completed',this)">Completed</button>
+  </div>
+
+  <div class="reminder-form panel" id="reminderForm" hidden>
+    <div class="reminder-form-heading">
+      <b>New reminder</b>
+      <button onclick="toggleReminderForm(false)">×</button>
+    </div>
+
+    <input id="reminderInput" placeholder="What should you remember?">
+    <label class="reminder-date-label" for="reminderDate">Date and time</label>
+    <input id="reminderDate" type="datetime-local">
+
+    <button class="primary" onclick="addReminder()">Save reminder</button>
+  </div>
+
+  <div id="remindersList"></div>
+
 </section>
+  
 
 
 <!-- CALENDAR -->
