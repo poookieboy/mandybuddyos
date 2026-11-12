@@ -2243,28 +2243,6 @@ function renderNotes() {
   `).join("");
 }
 
-  
-let reminderFilter = "all";
-
-function toggleReminderForm(force) {
-  const form = document.getElementById("reminderForm");
-  if (!form) return;
-
-  const shouldOpen = typeof force === "boolean" ? force : form.hidden;
-  form.hidden = !shouldOpen;
-
-  if (shouldOpen) {
-    const dateInput = document.getElementById("reminderDate");
-    if (dateInput && !dateInput.value) {
-      const defaultDate = new Date(Date.now() + 60 * 60 * 1000);
-      defaultDate.setMinutes(Math.ceil(defaultDate.getMinutes() / 5) * 5, 0, 0);
-      const localDate = new Date(defaultDate.getTime() - defaultDate.getTimezoneOffset() * 60000);
-      dateInput.value = localDate.toISOString().slice(0, 16);
-    }
-    document.getElementById("reminderInput")?.focus();
-  }
-}
-
 function setReminderFilter(filter, button) {
   reminderFilter = filter;
   document.querySelectorAll(".reminder-filters button")
