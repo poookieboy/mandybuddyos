@@ -2244,6 +2244,46 @@ function renderNotes() {
 }
 
 function addReminder() {
+
+let reminderFilter = "all";
+
+function toggleReminderForm(force) {
+  const form = document.getElementById("reminderForm");
+  if (!form) return;
+
+  const shouldOpen = typeof force === "boolean" ? force : form.hidden;
+  form.hidden = !shouldOpen;
+
+  if (shouldOpen) {
+    const dateInput = document.getElementById("reminderDate");
+
+    if (!dateInput.value) {
+      const defaultDate = new Date(Date.now() + 60 * 60 * 1000);
+      defaultDate.setMinutes(Math.ceil(defaultDate.getMinutes() / 5) * 5, 0, 0);
+
+      const localDate = new Date(
+        defaultDate.getTime() - defaultDate.getTimezoneOffset() * 60000
+      );
+
+      dateInput.value = localDate.toISOString().slice(0, 16);
+    }
+
+    document.getElementById("reminderInput").focus();
+  }
+}
+
+function setReminderFilter(filter, button) {
+  reminderFilter = filter;
+
+  document.querySelectorAll(".reminder-filters button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  if (button) button.classList.add("active");
+
+  renderReminders();
+}
+
+function addReminder() {
   const text = document.getElementById("reminderInput").value.trim();
   const date = document.getElementById("reminderDate").value;
 
@@ -2251,6 +2291,8 @@ function addReminder() {
     notify("Enter a reminder.");
     return;
   }
+
+  data.reminders ||= [];
 
   data.reminders.push({
     id: Date.now(),
@@ -2264,10 +2306,154 @@ function addReminder() {
   document.getElementById("reminderDate").value = "";
 
   saveData();
+  toggleReminderForm(false);
   renderReminders();
   updateHomeReminder();
   notify("Reminder added.");
 }
+
+function renderReminders() {
+  const container = document.getElementById("remindersList");
+  if (!container) return;
+
+  const reminders = data.reminders || [];
+  const now = new Date();
+
+  const todayKey = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0")
+  ].join("-");
+
+  function getGroup(item) {
+    if (item.done) return "completed";
+    if (!item.date) return "no-date";
+
+    const date = new Date(item.date);
+    if (isNaN(date.getTime())) return "no-date";
+
+    const key = [
+      date.getFullYear(),
+      String(date.getMonth() + 1).padStart(2, "0"),
+      String(date.getDate()).padStart(2, "0")
+    ].join("-");
+
+    if (key < todayKey) return "overdue";
+    if (key === todayKey) return "today";
+    return "upcoming";
+  }
+
+  document.getElementById("reminderTotal").textContent = reminders.length;
+  document.getElementById("reminderPending").textContent =
+    reminders.filter(item => !item.done).length;
+  document.getElementById("reminderCompleted").textContent =
+    reminders.filter(item => item.done).length;
+
+  const groups = [
+    { id: "overdue", title: "Overdue" },
+    { id: "today", title: "Today" },
+    { id: "upcoming", title: "Upcoming" },
+    { id: "no-date", title: "No date" },
+    { id: "completed", title: "Completed" }
+  ];
+
+  const filtered = reminderFilter === "all"
+    ? reminders
+    : reminders.filter(item => getGroup(item) === reminderFilter);
+
+  const sorted = [...filtered].sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return (a.date || "").localeCompare(b.date || "");
+  });
+
+  function createTask(item) {
+    const group = getGroup(item);
+    const isDone = item.done;
+    let dateText = "No date set";
+
+    if (item.date) {
+      const date = new Date(item.date);
+
+      if (!isNaN(date.getTime())) {
+        dateText = date.toLocaleString([], {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          hour: "numeric",
+          minute: "2-digit"
+        });
+      }
+    }
+
+    if (group === "overdue") dateText = "Overdue · " + dateText;
+
+    return `
+      <div class="reminder-task ${group === "overdue" ? "overdue" : ""} ${isDone ? "completed" : ""}">
+        <button class="reminder-check ${isDone ? "done" : ""}"
+          onclick="toggleReminder(${item.id})">
+          ${isDone ? "✓" : ""}
+        </button>
+
+        <div class="reminder-task-copy">
+          <b>${escapeHTML(item.text)}</b>
+          <small>${escapeHTML(dateText)}</small>
+        </div>
+
+        <button class="reminder-delete"
+          onclick="deleteReminder(${item.id})">×</button>
+      </div>
+    `;
+  }
+
+  if (!sorted.length) {
+    container.innerHTML = `
+      <div class="empty">
+        ${reminderFilter === "all"
+          ? "No reminders yet. Add your first task."
+          : "Nothing to show here yet."}
+      </div>
+    `;
+    return;
+  }
+
+  if (reminderFilter !== "all") {
+    container.innerHTML = sorted.map(createTask).join("");
+    return;
+  }
+
+  container.innerHTML = groups.map(group => {
+    const items = sorted.filter(item => getGroup(item) === group.id);
+    if (!items.length) return "";
+
+    return `
+      <div class="reminder-section">
+        <div class="reminder-section-heading">
+          <b>${group.title}</b>
+          <small>${items.length}</small>
+        </div>
+        ${items.map(createTask).join("")}
+      </div>
+    `;
+  }).join("");
+}
+
+function toggleReminder(id) {
+  const item = data.reminders.find(reminder => reminder.id === id);
+  if (!item) return;
+
+  item.done = !item.done;
+  saveData();
+  renderReminders();
+  updateHomeReminder();
+}
+
+function deleteReminder(id) {
+  data.reminders = data.reminders.filter(item => item.id !== id);
+  saveData();
+  renderReminders();
+  updateHomeReminder();
+}
+  
 
 function renderReminders() {
 let reminderFilter = "all";
