@@ -2580,7 +2580,7 @@ const buddyApps = [
   {name:"Clock",icon:"timer",category:"Utilities",page:"timer",pinned:true},
   {name:"Expressions",icon:"smile",category:"Buddy",page:"expressions",pinned:true},
   {name:"Chat",icon:"message",category:"Buddy",page:"messages",pinned:true},
-  {name:"Calculator",icon:"calculator",category:"Utilities",page:null,pinned:true},
+  {name:"Calculator",icon:"calculator",category:"Utilities",page:"calculator",pinned:true},
   {name:"Journal",icon:"book",category:"Productivity",page:"memories"},
   {name:"Mini Games",icon:"games",category:"Entertainment",page:"games"},
   {name:"Gallery",icon:"image",category:"Entertainment",page:null},
@@ -3787,7 +3787,208 @@ document.addEventListener("keydown", event => {
     closePanels();
   }
 });
-    
+  
+/* =========================
+   CALCULATOR LOGIC
+========================= */
+
+let calculatorCurrent = "0";
+let calculatorStored = null;
+let calculatorPendingOperator = null;
+let calculatorResetInput = false;
+let calculatorExpressionText = "";
+
+data.calculatorHistory ||= [];
+
+function updateCalculatorDisplay() {
+  document.getElementById("calculatorResult").textContent =
+    calculatorCurrent;
+
+  document.getElementById("calculatorExpression").textContent =
+    calculatorExpressionText;
+}
+
+function calculatorFormat(value) {
+  if (!Number.isFinite(value)) return "Error";
+
+  const rounded = Number(value.toPrecision(12));
+  return String(rounded);
+}
+
+function calculatorInput(value) {
+  if (calculatorCurrent === "Error") calculatorClear();
+
+  if (calculatorResetInput) {
+    calculatorCurrent = value === "." ? "0." : value;
+    calculatorResetInput = false;
+  } else if (value === ".") {
+    if (!calculatorCurrent.includes(".")) {
+      calculatorCurrent += ".";
+    }
+  } else {
+    calculatorCurrent =
+      calculatorCurrent === "0" ? value : calculatorCurrent + value;
+  }
+
+  updateCalculatorDisplay();
+}
+
+function calculatorCalculate(a, b, operator) {
+  switch (operator) {
+    case "+": return a + b;
+    case "-": return a - b;
+    case "×": return a * b;
+    case "÷": return b === 0 ? NaN : a / b;
+    default: return b;
+  }
+}
+
+function calculatorOperator(operator) {
+  if (calculatorCurrent === "Error") return;
+
+  const current = Number(calculatorCurrent);
+
+  if (calculatorPendingOperator && !calculatorResetInput) {
+    const result = calculatorCalculate(
+      calculatorStored,
+      current,
+      calculatorPendingOperator
+    );
+
+    calculatorCurrent = calculatorFormat(result);
+  }
+
+  calculatorStored = Number(calculatorCurrent);
+  calculatorPendingOperator = operator;
+  calculatorExpressionText =
+    calculatorCurrent + " " + operator;
+
+  calculatorResetInput = true;
+  updateCalculatorDisplay();
+}
+
+function calculatorEquals() {
+  if (
+    calculatorPendingOperator === null ||
+    calculatorStored === null
+  ) return;
+
+  const first = calculatorStored;
+  const second = Number(calculatorCurrent);
+  const operator = calculatorPendingOperator;
+
+  const result = calculatorCalculate(first, second, operator);
+  const formatted = calculatorFormat(result);
+
+  const expression =
+    calculatorFormat(first) + " " +
+    operator + " " +
+    calculatorFormat(second);
+
+  if (formatted !== "Error") {
+    data.calculatorHistory.unshift({
+      expression: expression,
+      result: formatted,
+      time: Date.now()
+    });
+
+    data.calculatorHistory =
+      data.calculatorHistory.slice(0, 10);
+
+    saveData();
+  }
+
+  calculatorExpressionText = expression + " =";
+  calculatorCurrent = formatted;
+
+  calculatorStored = null;
+  calculatorPendingOperator = null;
+  calculatorResetInput = true;
+
+  updateCalculatorDisplay();
+  renderCalculatorHistory();
+}
+
+function calculatorClear() {
+  calculatorCurrent = "0";
+  calculatorStored = null;
+  calculatorPendingOperator = null;
+  calculatorResetInput = false;
+  calculatorExpressionText = "";
+
+  updateCalculatorDisplay();
+}
+
+function calculatorDelete() {
+  if (calculatorResetInput || calculatorCurrent === "Error") {
+    calculatorCurrent = "0";
+    calculatorResetInput = false;
+  } else {
+    calculatorCurrent = calculatorCurrent.length > 1
+      ? calculatorCurrent.slice(0, -1)
+      : "0";
+
+    if (calculatorCurrent === "-") calculatorCurrent = "0";
+  }
+
+  updateCalculatorDisplay();
+}
+
+function calculatorPercent() {
+  if (calculatorCurrent === "Error") return;
+
+  calculatorCurrent = calculatorFormat(
+    Number(calculatorCurrent) / 100
+  );
+
+  updateCalculatorDisplay();
+}
+
+function calculatorSign() {
+  if (calculatorCurrent === "Error") return;
+
+  calculatorCurrent = calculatorFormat(
+    Number(calculatorCurrent) * -1
+  );
+
+  updateCalculatorDisplay();
+}
+
+function toggleCalculatorHistory() {
+  const panel = document.getElementById("calculatorHistory");
+
+  panel.hidden = !panel.hidden;
+
+  if (!panel.hidden) renderCalculatorHistory();
+}
+
+function renderCalculatorHistory() {
+  const list = document.getElementById("calculatorHistoryList");
+
+  if (!list) return;
+
+  if (!data.calculatorHistory.length) {
+    list.innerHTML =
+      '<div class="calculator-history-item">No calculations yet.</div>';
+    return;
+  }
+
+  list.innerHTML = data.calculatorHistory.map(item => `
+    <div class="calculator-history-item">
+      <span>${escapeHTML(item.expression)}</span>
+      <b>${escapeHTML(item.result)}</b>
+    </div>
+  `).join("");
+}
+
+function clearCalculatorHistory() {
+  data.calculatorHistory = [];
+  saveData();
+  renderCalculatorHistory();
+}
+
+/* END CALCULATOR */
+  
 /* INITIALIZE */
 
 updateClock();
